@@ -29,3 +29,6 @@ The riskiest part of this project would be attempting to add some sort of twist 
 
 We hope to learn how to better incorporate programming and refactoring patterns into our games, such as using the Flyweight pattern on our characters to keep memory usage down.
 
+
+## Devlog
+see Devlog [here](Devlog.md)
