@@ -13,6 +13,10 @@ export class Robot {
         this.mixer; //animation mixer for the bot
         this.bot; //the robots mesh
 
+        this.actions = {}; //dictionary for actions for easy stop start
+
+
+
         const gltfLoader = new GLTFLoader();
         let url = "./glb/UV_the_robot.glb";
         gltfLoader.load(url, (gltf) => {
@@ -32,7 +36,12 @@ export class Robot {
             //add all animations to a dictionary
             this.animations = clips;
 
-            const clip = THREE.AnimationClip.findByName(clips, 'Run'); //find the run animation
+            this.clips["Run"] = THREE.AnimationClip.findByName(clips, 'Run');//find the run animation
+            this.clips["Fall"] = THREE.AnimationClip.findByName(clips, 'Fall');//find the fall animation
+            this.clips["Idle"] = THREE.AnimationClip.findByName(clips, 'Idle');//find the fall animation
+
+
+            const clip = this.clips["Run"]; 
             const action = this.mixer.clipAction(clip);
             action.play();
         });
