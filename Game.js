@@ -9,6 +9,7 @@ window.onload = function() {main()}
 let g_canvas;
 let g_renderer;
 let g_camera;
+let g_camera_pivot;
 let g_scene;
 const g_raycaster = new THREE.Raycaster();
 let g_clock = new THREE.Clock();
@@ -21,23 +22,40 @@ function main(){
     g_canvas = canvas;
     const renderer = new THREE.WebGLRenderer({antialias: true, canvas});
     g_renderer = renderer;
-
+    
     //create cammera
     const fov = 75;
     const aspect = 2;  // the canvas default
     const near = 0.1;
     const far = 1000;
     const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-
-    //set camera pos
-    camera.position.z = -10;
-    camera.position.y = 4;
-    camera.position.x = -10;
-    g_camera = camera;
+    //used for rotating along x axis
+    const pivot = new THREE.Object3D();
 
     //create scene
     const scene = new THREE.Scene();
     g_scene = scene;
+
+    g_scene.add(pivot)
+    pivot.add(camera)
+
+    g_camera_pivot = pivot;
+    g_camera = camera;
+
+    //set camera pos
+
+    g_camera_pivot.position.z = 1
+    g_camera_pivot.position.y = 1
+    g_camera_pivot.position.x = 1
+
+    rotateCamera(new THREE.Vector3(0,1,0), THREE.MathUtils.degToRad(45))
+    rotateCamera(new THREE.Vector3(1,0,0), THREE.MathUtils.degToRad(-45))
+
+    // add mesh to scene
+    const geometry = new THREE.BoxGeometry(1,1,1);
+    const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } )
+    const cube = new THREE.Mesh( geometry, material );
+    g_scene.add( cube );
 
     //initially render the scene
     g_renderer.render(scene, camera);
@@ -75,3 +93,20 @@ function render(time) {
     requestAnimationFrame(render);
 }
 
+function rotateCamera(axis, angle) {
+    //determines if camera rotates by the pivot or camera itself.
+    //NOTE: CAmera can only rotate on x and y axes.
+    console.log(axis)
+    const y = new THREE.Vector3(0,1,0)
+    const x = new THREE.Vector3(1,0,0)
+    if (axis.y == 1 && (axis.x == 0)) {
+        console.log("rotating y");
+        g_camera_pivot.rotation.y = angle 
+    }
+    else if (axis.x == 1) {
+        g_camera.rotation.x = angle
+    }
+    else{
+        console.log("ERROR! Attempting to rotate on invalid axis.")
+    }
+}
