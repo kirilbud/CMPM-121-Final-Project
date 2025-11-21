@@ -42,6 +42,7 @@ function main(){
     //initially render the scene
     g_renderer.render(scene, camera);
 
+    requestAnimationFrame(render);
 }
 
 
