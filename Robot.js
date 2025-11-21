@@ -44,6 +44,7 @@ export class Robot {
             const clip = this.clips["Run"]; 
             const action = this.mixer.clipAction(clip);
             action.play();
+            //make sure to do action.stop before playing another animation
         });
     }
 
