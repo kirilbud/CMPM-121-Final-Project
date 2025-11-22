@@ -71,13 +71,26 @@ class Actor {
         this.bodyShape = new CANNON.Cylinder(0.5,0.5,1,12);
         this.body = new CANNON.Body({mass: 1, shape: this.bodyShape});
         this.body.angularDamping = 1;
+        
+        //restricts movement to a 2D axis.
+        this.body.linearFactor = new THREE.Vector3(0,1,1)
+
         this.geometry = new THREE.CylinderGeometry(0.5,0.5,1,12);
         this.material = new THREE.MeshBasicMaterial( { color: 0x880808} )
         this.mesh = new THREE.Mesh(this.geometry, this.material);
+        this.mesh.layers.set(0)
+
         this.locationReachedEvent = new Event("locationReached");
-        this.groundCheck = new THREE.Raycaster(this.body.position, new THREE.Vector3(0,-2,0))
+
+        this.groundCheck = new THREE.Raycaster(this.body.position, new THREE.Vector3(0,-.1,0))
         this.groundCheck.layers.set(2)
 
+        //by default, actor moves left.
+        this.dir = -1
+
+        //raycast that reverses direction upon contact.
+        this.wallCheck = new THREE.Raycaster(this.body.position, new THREE.Vector3(0,0,1 * this.dir), 0, 1)
+        this.wallCheck.layers.set(3)
 
         self.addEventListener("physicsStep", () => {
             //console.log(this.mesh.position.y + " - " + this.body.position.y)
@@ -85,14 +98,17 @@ class Actor {
                 this.mesh.position.copy(this.body.position)
                 this.mesh.quaternion.copy(this.body.quaternion)
             }
-            //console.log(this.body.velocity.y)
-            //keep the player moving if on floor. needs to be updated to raycast
-            
+            const groundIntersects = this.groundCheck.intersectObjects(g_scene.children, true);
+            if (groundIntersects.length > 0) {
+                this.body.velocity.z = 1 * this.dir;
+            }
+            const wallIntersects = this.wallCheck.intersectObjects(g_scene.children, true);
+            if (wallIntersects.length > 0) {
+                console.log("hit wall")
+                this.dir *= -1
+                this.body.velocity.z = 1 * this.dir
 
-            const intersects = this.groundCheck.intersectObjects(g_scene.children, true)
-            if (intersects.length > 0) {
-                console.log("fart")
-                this.body.velocity.z = -1;
+                this.wallCheck.set(this.body.position, new THREE.Vector3(0,0, 1 * this.dir), 1)
             }
         })
     }
@@ -102,6 +118,7 @@ class Actor {
         inputWorld.addBody(this.body)
     }
 }
+
 
 function main(){
     //set up Three.js
@@ -135,24 +152,32 @@ function main(){
     g_camera_pivot.position.y = 1
     g_camera_pivot.position.x = 10
 
-    //rotateCamera(new THREE.Vector3(0,1,0), THREE.MathUtils.degToRad(45))
     rotateCamera(new THREE.Vector3(1,0,0), THREE.MathUtils.degToRad(-45))
     rotateCamera(new THREE.Vector3(0,1,0), THREE.MathUtils.degToRad(90))
 
     
     //add Meshes to Scene
-    const shapeCube = new CANNON.Box(new CANNON.Vec3(1,1,1));
-    const geometryCube = new THREE.BoxGeometry(1,1,1);
+    const shapeCube = new CANNON.Box(new CANNON.Vec3(5,10,1));
+    const geometryCube = new THREE.BoxGeometry(5,10,1);
     const cube = new PhysicsObject(geometryCube, shapeCube);
+    cube.mesh.layers.enable(3)
 
     cube.setColor(new THREE.Color(0xffffff))
-    cube.setMass(1);
-    //cube.instantiateAtPos(g_scene, world,new CANNON.Vec3(0,-2,0));
+    cube.setMass(0);
+    //layer 3 for colliding with walls
+    cube.instantiateAtPos(g_scene, world,new CANNON.Vec3(0,0,-5));
+    const secondcube = new PhysicsObject(geometryCube, shapeCube)
+    secondcube.setColor(new THREE.Color(0xffffff))
+    secondcube.instantiateAtPos(g_scene, world,new CANNON.Vec3(0,0,5));
+
+    secondcube.mesh.layers.enable(3)
+
 
     //add ground plane
-    const plane = new PhysicsObject(new THREE.PlaneGeometry(20,20), new CANNON.Box(new CANNON.Vec3(9,9,1)));
+    const plane = new PhysicsObject(new THREE.PlaneGeometry(5,20), new CANNON.Box(new CANNON.Vec3(2.5,9,1)));
     plane.instantiateAtPos(g_scene,world, new CANNON.Vec3(0,-5,0));
     plane.body.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0), THREE.MathUtils.degToRad(-90))
+    //layer 2 for colliding with ground
     plane.mesh.layers.enable(2);
     g_ground = plane.mesh
 
