@@ -15,18 +15,20 @@ let g_camera_pivot;
 let g_scene;
 const g_raycaster = new THREE.Raycaster();
 let g_clock = new THREE.Clock();
+let g_ground
 
 const world = new CANNON.World( {
     gravity: new CANNON.Vec3(0,-9.81,0)
 } );
 
 const physicsStep = new Event("physicsStep");
+
 class PhysicsObject {
     constructor(inputGeometry, inputShape) {
         this.geometry = inputGeometry;
         this.material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
         this.mesh = new THREE.Mesh(this.geometry,this.material);
-
+        this.layers = this.mesh.layers
         this.bodyShape = inputShape;
         this.body = new CANNON.Body({ shape: this.bodyShape })
     }
@@ -40,7 +42,9 @@ class PhysicsObject {
         }
         this.body.updateMassProperties()
     }
-    setType
+    setColor(inputColor) {
+        this.material.color = inputColor
+    }
     instantiate(inputScene, inputWorld) {
         inputScene.add(this.mesh)
         inputWorld.addBody(this.body)
@@ -62,8 +66,42 @@ class PhysicsObject {
     
 }
 
+class Actor {
+    constructor() {
+        this.bodyShape = new CANNON.Cylinder(0.5,0.5,1,12);
+        this.body = new CANNON.Body({mass: 1, shape: this.bodyShape});
+        this.body.angularDamping = 1;
+        this.geometry = new THREE.CylinderGeometry(0.5,0.5,1,12);
+        this.material = new THREE.MeshBasicMaterial( { color: 0x880808} )
+        this.mesh = new THREE.Mesh(this.geometry, this.material);
+        this.locationReachedEvent = new Event("locationReached");
+        this.groundCheck = new THREE.Raycaster(this.body.position, new THREE.Vector3(0,-2,0))
+        this.groundCheck.layers.set(2)
 
 
+        self.addEventListener("physicsStep", () => {
+            //console.log(this.mesh.position.y + " - " + this.body.position.y)
+            if (this.body.position) {
+                this.mesh.position.copy(this.body.position)
+                this.mesh.quaternion.copy(this.body.quaternion)
+            }
+            //console.log(this.body.velocity.y)
+            //keep the player moving if on floor. needs to be updated to raycast
+            
+
+            const intersects = this.groundCheck.intersectObjects(g_scene.children, true)
+            if (intersects.length > 0) {
+                console.log("fart")
+                this.body.velocity.z = -1;
+            }
+        })
+    }
+
+    instantiate(inputScene, inputWorld) {
+        inputScene.add(this.mesh)
+        inputWorld.addBody(this.body)
+    }
+}
 
 function main(){
     //set up Three.js
@@ -78,6 +116,7 @@ function main(){
     const near = 0.1;
     const far = 1000;
     const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+    
     //used for rotating along x axis
     const pivot = new THREE.Object3D();
 
@@ -86,40 +125,40 @@ function main(){
     g_scene = scene;
 
     g_scene.add(pivot)
-    pivot.add(camera)
 
+    //set camera
+    pivot.add(camera)
     g_camera_pivot = pivot;
     g_camera = camera;
 
-    //set camera pos
-
-    g_camera_pivot.position.z = 1
+    g_camera_pivot.position.z = -2
     g_camera_pivot.position.y = 1
-    g_camera_pivot.position.x = 1
+    g_camera_pivot.position.x = 10
 
-    rotateCamera(new THREE.Vector3(0,1,0), THREE.MathUtils.degToRad(45))
+    //rotateCamera(new THREE.Vector3(0,1,0), THREE.MathUtils.degToRad(45))
     rotateCamera(new THREE.Vector3(1,0,0), THREE.MathUtils.degToRad(-45))
+    rotateCamera(new THREE.Vector3(0,1,0), THREE.MathUtils.degToRad(90))
+
     
+    //add Meshes to Scene
     const shapeCube = new CANNON.Box(new CANNON.Vec3(1,1,1));
-
-
-
-    //add Mesh to Scene
     const geometryCube = new THREE.BoxGeometry(1,1,1);
     const cube = new PhysicsObject(geometryCube, shapeCube);
+
+    cube.setColor(new THREE.Color(0xffffff))
     cube.setMass(1);
+    //cube.instantiateAtPos(g_scene, world,new CANNON.Vec3(0,-2,0));
 
-    console.log(cube.body.mass)
+    //add ground plane
+    const plane = new PhysicsObject(new THREE.PlaneGeometry(20,20), new CANNON.Box(new CANNON.Vec3(9,9,1)));
+    plane.instantiateAtPos(g_scene,world, new CANNON.Vec3(0,-5,0));
+    plane.body.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0), THREE.MathUtils.degToRad(-90))
+    plane.mesh.layers.enable(2);
+    g_ground = plane.mesh
 
-    const plane = new PhysicsObject(new THREE.PlaneGeometry(), new CANNON.Box(new CANNON.Vec3(15,15,0.5)));
- 
-    plane.body.type = CANNON.Body.STATIC
-    plane.instantiateAtPos(g_scene,world, new CANNON.Vec3(0,-3,0));
-
-    plane.body.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0), THREE.MathUtils.degToRad(-90)) 
-
-
-    cube.instantiateAtPos(g_scene, world,new CANNON.Vec3(0,0,0))
+    //add player
+    const player = new Actor()
+    player.instantiate(g_scene, world);
 
     //initially render the scene
     g_renderer.render(scene, camera);
