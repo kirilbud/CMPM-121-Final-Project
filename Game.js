@@ -7,6 +7,7 @@ import * as CANNON from './lib/cannon.js'
 window.onload = function() {main()}
 
 //GLOBALS
+
 let g_canvas;
 let g_renderer;
 let g_camera;
@@ -16,8 +17,11 @@ const g_raycaster = new THREE.Raycaster();
 let g_clock = new THREE.Clock();
 
 
-function main(){
+const world = new CANNON.world({
+    gravity: new CANNON.Vec3(0,-9.81,0)
+});
 
+function main(){
     //set up Three.js
     const canvas = document.querySelector('#c');
     g_canvas = canvas;
@@ -76,6 +80,8 @@ function resizeRendererToDisplaySize(renderer) {
     }
     return needResize;
 }
+
+
 
 //function that renders the whole scene and is called with requestAnimationFrame
 function render(time) {
