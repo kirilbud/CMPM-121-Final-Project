@@ -20,15 +20,32 @@ const world = new CANNON.World( {
     gravity: new CANNON.Vec3(0,-9.81,0)
 } );
 
-    // add mesh to scene
-const geometry = new THREE.BoxGeometry(1,1,1);
-const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } )
-const cube = new THREE.Mesh( geometry, material );
+const physicsStep = new Event("physicsStep");
+class PhysicsObject {
+    constructor(inputGeometry, inputShape) {
+        this.geometry = inputGeometry;
+        this.material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+        this.mesh = new THREE.Mesh(this.geometry,this.material);
 
-const cubeBody = new CANNON.Body({
-    shape: new CANNON.Box(new CANNON.Vec3(1,1,1)),
-    mass: 1
-});
+        this.bodyShape = inputShape;
+        this.body = new CANNON.Body({ shape: this.bodyShape, mass: 10})
+    }
+    instantiate(inputScene, inputWorld) {
+        inputScene.add(this.mesh)
+        inputWorld.addBody(this.body)
+
+        self.addEventListener("physicsStep", () => {
+            console.log(this.mesh.position.y + " - " + this.body.position.y)
+            if (this.body.position) {
+                this.mesh.position.copy(this.body.position)
+                this.mesh.quaternion.copy(this.body.quaternion)
+            }
+        })
+    }
+}
+
+
+
 function main(){
     //set up Three.js
     const canvas = document.querySelector('#c');
@@ -63,12 +80,16 @@ function main(){
 
     rotateCamera(new THREE.Vector3(0,1,0), THREE.MathUtils.degToRad(45))
     rotateCamera(new THREE.Vector3(1,0,0), THREE.MathUtils.degToRad(-45))
+    
+    const shape = new CANNON.Box(new CANNON.Vec3(1,1,1));
 
 
-    g_scene.add( cube );
 
+    //add Mesh to Scene
+    const geometry = new THREE.BoxGeometry(1,1,1);
+    const cube = new PhysicsObject(geometry, shape);
 
-    world.addBody(cubeBody)
+    cube.instantiate(g_scene, world)
 
     //initially render the scene
     g_renderer.render(scene, camera);
@@ -92,8 +113,7 @@ function resizeRendererToDisplaySize(renderer) {
 function step() {
     //steps the physics world forward
     world.step(1/60);
-    cube.position.copy(cubeBody.position);
-    cube.quaternion.copy(cubeBody.quaternion);
+    dispatchEvent(physicsStep);
     requestAnimationFrame(step)
 }
 
