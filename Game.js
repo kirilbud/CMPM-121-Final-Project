@@ -20,6 +20,15 @@ const world = new CANNON.World( {
     gravity: new CANNON.Vec3(0,-9.81,0)
 } );
 
+    // add mesh to scene
+const geometry = new THREE.BoxGeometry(1,1,1);
+const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } )
+const cube = new THREE.Mesh( geometry, material );
+
+const cubeBody = new CANNON.Body({
+    shape: new CANNON.Box(new CANNON.Vec3(1,1,1)),
+    mass: 1
+});
 function main(){
     //set up Three.js
     const canvas = document.querySelector('#c');
@@ -55,18 +64,18 @@ function main(){
     rotateCamera(new THREE.Vector3(0,1,0), THREE.MathUtils.degToRad(45))
     rotateCamera(new THREE.Vector3(1,0,0), THREE.MathUtils.degToRad(-45))
 
-    // add mesh to scene
-    const geometry = new THREE.BoxGeometry(1,1,1);
-    const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } )
-    const cube = new THREE.Mesh( geometry, material );
+
     g_scene.add( cube );
+
+
+    world.addBody(cubeBody)
 
     //initially render the scene
     g_renderer.render(scene, camera);
 
     requestAnimationFrame(render);
+    step();
 }
-
 
 // returns true if the canvas needs to be resized due to the browser being resized
 function resizeRendererToDisplaySize(renderer) {
@@ -80,7 +89,13 @@ function resizeRendererToDisplaySize(renderer) {
     return needResize;
 }
 
-
+function step() {
+    //steps the physics world forward
+    world.step(1/60);
+    cube.position.copy(cubeBody.position);
+    cube.quaternion.copy(cubeBody.quaternion);
+    requestAnimationFrame(step)
+}
 
 //function that renders the whole scene and is called with requestAnimationFrame
 function render(time) {
@@ -91,9 +106,8 @@ function render(time) {
         g_camera.aspect = canvas.clientWidth / canvas.clientHeight;
         g_camera.updateProjectionMatrix();
     }
-
     g_renderer.render(g_scene, g_camera);//render the next frame
-   
+
     requestAnimationFrame(render);
 }
 
