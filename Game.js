@@ -71,7 +71,7 @@ class Actor {
         this.bodyShape = new CANNON.Cylinder(0.5,0.5,1,12);
         this.body = new CANNON.Body({mass: 1, shape: this.bodyShape});
         this.body.angularDamping = 1;
-        
+
         //restricts movement to a 2D axis.
         this.body.linearFactor = new THREE.Vector3(0,1,1)
 
@@ -117,8 +117,47 @@ class Actor {
         inputScene.add(this.mesh)
         inputWorld.addBody(this.body)
     }
+    instantiateAtPos(inputScene, inputWorld, position) {
+        if (typeof(position == CANNON.Vec3)) {
+            this.instantiate(inputScene,inputWorld)
+            this.body.position.copy(position)
+        }
+    }
 }
 
+class Wall  {
+    constructor() {
+        this.shape = new CANNON.Box(new CANNON.Vec3(5,10,1)),
+        this.geometry = new THREE.BoxGeometry(5,10,1),
+        this.obj = new PhysicsObject(this.geometry, this.shape),
+        this.obj.mesh.layers.enable(3)
+        this.obj.setColor(new THREE.Color(0xffffff))
+        this.obj.setMass(0)
+    }
+    instantiate(inputScene, inputWorld) {
+        inputScene.add(this.obj.mesh)
+        inputWorld.addBody(this.obj.body)
+    }
+    instantiateAtPos(inputScene, inputWorld, position) {
+        if (typeof(position == CANNON.Vec3)) {
+            this.instantiate(inputScene,inputWorld)
+            this.obj.body.position.copy(position)
+            this.obj.mesh.position.copy(position)
+        }
+    }
+}
+
+class mouseVector {
+    constructor() {
+        this.x = 0,
+        this.y = 0
+    }
+    set(x,y) {
+        this.x = x
+        this.y = y
+    }
+
+}
 
 function main(){
     //set up Three.js
@@ -148,29 +187,22 @@ function main(){
     g_camera_pivot = pivot;
     g_camera = camera;
 
-    g_camera_pivot.position.z = -2
+    g_camera_pivot.position.z = -0.5
     g_camera_pivot.position.y = 1
     g_camera_pivot.position.x = 10
 
-    rotateCamera(new THREE.Vector3(1,0,0), THREE.MathUtils.degToRad(-45))
+    rotateCamera(new THREE.Vector3(1,0,0), THREE.MathUtils.degToRad(-10))
     rotateCamera(new THREE.Vector3(0,1,0), THREE.MathUtils.degToRad(90))
 
     
     //add Meshes to Scene
-    const shapeCube = new CANNON.Box(new CANNON.Vec3(5,10,1));
-    const geometryCube = new THREE.BoxGeometry(5,10,1);
-    const cube = new PhysicsObject(geometryCube, shapeCube);
-    cube.mesh.layers.enable(3)
+    const cube= new Wall();
 
-    cube.setColor(new THREE.Color(0xffffff))
-    cube.setMass(0);
+
     //layer 3 for colliding with walls
     cube.instantiateAtPos(g_scene, world,new CANNON.Vec3(0,0,-5));
-    const secondcube = new PhysicsObject(geometryCube, shapeCube)
-    secondcube.setColor(new THREE.Color(0xffffff))
+    const secondcube = new Wall();
     secondcube.instantiateAtPos(g_scene, world,new CANNON.Vec3(0,0,5));
-
-    secondcube.mesh.layers.enable(3)
 
 
     //add ground plane
@@ -183,7 +215,7 @@ function main(){
 
     //add player
     const player = new Actor()
-    player.instantiate(g_scene, world);
+    player.instantiateAtPos(g_scene, world, new CANNON.Vec3(1, 0,0));
 
     //initially render the scene
     g_renderer.render(scene, camera);
@@ -247,3 +279,35 @@ function rotateCamera(axis, angle) {
         console.log("ERROR! Attempting to rotate on invalid axis.")
     }
 }
+
+let canPlace = false;
+let buildPoint = new CANNON.Vec3(0,0,0);
+
+addEventListener("pointermove", (e) => {
+    const mouse = new THREE.Vector2();
+    mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    g_raycaster.setFromCamera(mouse, g_camera);
+
+    const intersects = g_raycaster.intersectObjects(g_scene.children, true)
+    if (intersects.length > 0) {
+        const front = intersects[0].object;
+        if (front.layers.mask == 5) {
+            canPlace = true
+            console.log("intersection point: ", intersects[0].point)
+            const point = intersects[0].point
+            buildPoint = new CANNON.Vec3(0, point.y + 5, point.z)
+        }
+        else {
+        canPlace = false
+        buildPoint = new CANNON.Vec3(0,0,0);
+    }
+    }
+});
+
+addEventListener("mousedown", () => {
+    const newWall = new Wall();
+    if (canPlace) {
+        newWall.instantiateAtPos(g_scene, world, buildPoint);
+    }
+})
