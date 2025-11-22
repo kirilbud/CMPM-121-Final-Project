@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import {GLTFLoader} from './lib/addons/GLTFLoader.js';
+import * as CANNON from './lib/cannon.js'
 //import {Robot} from './Robot.js';
 
 //wack ass onload work around
@@ -86,8 +87,6 @@ function render(time) {
         g_camera.updateProjectionMatrix();
     }
 
-
-   
     g_renderer.render(g_scene, g_camera);//render the next frame
    
     requestAnimationFrame(render);
@@ -95,7 +94,7 @@ function render(time) {
 
 function rotateCamera(axis, angle) {
     //determines if camera rotates by the pivot or camera itself.
-    //NOTE: CAmera can only rotate on x and y axes.
+    //NOTE: Camera can only rotate on x and y axes.
     console.log(axis)
     const y = new THREE.Vector3(0,1,0)
     const x = new THREE.Vector3(1,0,0)
