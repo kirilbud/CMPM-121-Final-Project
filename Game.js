@@ -28,21 +28,40 @@ class PhysicsObject {
         this.mesh = new THREE.Mesh(this.geometry,this.material);
 
         this.bodyShape = inputShape;
-        this.body = new CANNON.Body({ shape: this.bodyShape, mass: 10})
+        this.body = new CANNON.Body({ shape: this.bodyShape })
     }
+    setMass(massInput) {
+        this.body.mass = massInput
+        if (massInput <= 0) {
+            this.body.type = CANNON.Body.STATIC
+        }
+        else {
+            this.body.type = CANNON.Body.DYNAMIC
+        }
+        this.body.updateMassProperties()
+    }
+    setType
     instantiate(inputScene, inputWorld) {
         inputScene.add(this.mesh)
         inputWorld.addBody(this.body)
 
         self.addEventListener("physicsStep", () => {
-            console.log(this.mesh.position.y + " - " + this.body.position.y)
+            //console.log(this.mesh.position.y + " - " + this.body.position.y)
             if (this.body.position) {
                 this.mesh.position.copy(this.body.position)
                 this.mesh.quaternion.copy(this.body.quaternion)
             }
         })
     }
+    instantiateAtPos(inputScene, inputWorld, position) {
+        if (typeof(position == CANNON.Vec3)) {
+            this.instantiate(inputScene,inputWorld)
+            this.body.position.copy(position)
+        }
+    }
+    
 }
+
 
 
 
@@ -81,15 +100,26 @@ function main(){
     rotateCamera(new THREE.Vector3(0,1,0), THREE.MathUtils.degToRad(45))
     rotateCamera(new THREE.Vector3(1,0,0), THREE.MathUtils.degToRad(-45))
     
-    const shape = new CANNON.Box(new CANNON.Vec3(1,1,1));
+    const shapeCube = new CANNON.Box(new CANNON.Vec3(1,1,1));
 
 
 
     //add Mesh to Scene
-    const geometry = new THREE.BoxGeometry(1,1,1);
-    const cube = new PhysicsObject(geometry, shape);
+    const geometryCube = new THREE.BoxGeometry(1,1,1);
+    const cube = new PhysicsObject(geometryCube, shapeCube);
+    cube.setMass(1);
 
-    cube.instantiate(g_scene, world)
+    console.log(cube.body.mass)
+
+    const plane = new PhysicsObject(new THREE.PlaneGeometry(), new CANNON.Box(new CANNON.Vec3(15,15,0.5)));
+ 
+    plane.body.type = CANNON.Body.STATIC
+    plane.instantiateAtPos(g_scene,world, new CANNON.Vec3(0,-3,0));
+
+    plane.body.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0), THREE.MathUtils.degToRad(-90)) 
+
+
+    cube.instantiateAtPos(g_scene, world,new CANNON.Vec3(0,0,0))
 
     //initially render the scene
     g_renderer.render(scene, camera);
@@ -110,9 +140,14 @@ function resizeRendererToDisplaySize(renderer) {
     return needResize;
 }
 
+let lastTime = performance.now();
+
 function step() {
     //steps the physics world forward
-    world.step(1/60);
+    const time = performance.now() / 1000;
+    const dt= time - lastTime;
+    lastTime = time
+    world.step(1/120, dt, 10);
     dispatchEvent(physicsStep);
     requestAnimationFrame(step)
 }
