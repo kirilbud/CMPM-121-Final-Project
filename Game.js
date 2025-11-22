@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import {GLTFLoader} from './lib/addons/GLTFLoader.js';
-import * as CANNON from './lib/cannon.js'
+import * as CANNON from 'https://unpkg.com/cannon-es@0.19.0/dist/cannon-es.js';
 //import {Robot} from './Robot.js';
 
 //wack ass onload work around
@@ -16,10 +16,9 @@ let g_scene;
 const g_raycaster = new THREE.Raycaster();
 let g_clock = new THREE.Clock();
 
-
-const world = new CANNON.world({
+const world = new CANNON.World( {
     gravity: new CANNON.Vec3(0,-9.81,0)
-});
+} );
 
 function main(){
     //set up Three.js
