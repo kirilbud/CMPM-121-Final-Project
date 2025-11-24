@@ -7,7 +7,7 @@ import * as CANNON from 'https://unpkg.com/cannon-es@0.19.0/dist/cannon-es.js';
 window.onload = function() {main()}
 
 //GLOBALS
-
+//g_ stands for this variable being a global variable
 let g_canvas;
 let g_renderer;
 let g_camera;
@@ -17,7 +17,9 @@ const g_raycaster = new THREE.Raycaster();
 let g_clock = new THREE.Clock();
 let g_ground
 
-const world = new CANNON.World( {
+
+
+const g_cannon_world = new CANNON.World( {
     gravity: new CANNON.Vec3(0,-9.81,0)
 } );
 
@@ -200,14 +202,14 @@ function main(){
 
 
     //layer 3 for colliding with walls
-    cube.instantiateAtPos(g_scene, world,new CANNON.Vec3(0,0,-5));
+    cube.instantiateAtPos(g_scene, g_cannon_world,new CANNON.Vec3(0,0,-5));
     const secondcube = new Wall();
-    secondcube.instantiateAtPos(g_scene, world,new CANNON.Vec3(0,0,5));
+    secondcube.instantiateAtPos(g_scene, g_cannon_world,new CANNON.Vec3(0,0,5));
 
 
     //add ground plane
     const plane = new PhysicsObject(new THREE.PlaneGeometry(5,20), new CANNON.Box(new CANNON.Vec3(2.5,9,1)));
-    plane.instantiateAtPos(g_scene,world, new CANNON.Vec3(0,-5,0));
+    plane.instantiateAtPos(g_scene,g_cannon_world, new CANNON.Vec3(0,-5,0));
     plane.body.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0), THREE.MathUtils.degToRad(-90))
     //layer 2 for colliding with ground
     plane.mesh.layers.enable(2);
@@ -215,7 +217,7 @@ function main(){
 
     //add player
     const player = new Actor()
-    player.instantiateAtPos(g_scene, world, new CANNON.Vec3(1, 0,0));
+    player.instantiateAtPos(g_scene, g_cannon_world, new CANNON.Vec3(1, 0,0));
 
     //initially render the scene
     g_renderer.render(scene, camera);
@@ -243,7 +245,7 @@ function step() {
     const time = performance.now() / 1000;
     const dt= time - lastTime;
     lastTime = time
-    world.step(1/120, dt, 10);
+    g_cannon_world.step(1/120, dt, 10);
     dispatchEvent(physicsStep);
     requestAnimationFrame(step)
 }
@@ -308,6 +310,6 @@ addEventListener("pointermove", (e) => {
 addEventListener("mousedown", () => {
     const newWall = new Wall();
     if (canPlace) {
-        newWall.instantiateAtPos(g_scene, world, buildPoint);
+        newWall.instantiateAtPos(g_scene, g_cannon_world, buildPoint);
     }
 })

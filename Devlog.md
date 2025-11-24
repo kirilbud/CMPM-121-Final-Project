@@ -7,3 +7,7 @@ Created a repository with both a filled-out README and a devlog file. We also di
 
 11:30 AM
 After scratching our heads for a bit, we found that we needed a util to get the three.js scene rendering properly. 
+
+# Devlog Entry 11/24/2025
+
+small amount of refactoring...
