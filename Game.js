@@ -14,21 +14,19 @@ let g_camera;
 let g_camera_pivot;
 let g_scene;
 const g_raycaster = new THREE.Raycaster();
-let g_clock = new THREE.Clock();
+let g_clock = new THREE.Clock(); // use this for delta time
 let g_ground
-
-
 
 const g_cannon_world = new CANNON.World( {
     gravity: new CANNON.Vec3(0,-9.81,0)
 } );
 
-const physicsStep = new Event("physicsStep");
+const g_physicsStep = new Event("physicsStep");
 
 class PhysicsObject {
     constructor(inputGeometry, inputShape) {
         this.geometry = inputGeometry;
-        this.material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+        this.material = new THREE.MeshPhongMaterial( { color: 0x00ff00 } );
         this.mesh = new THREE.Mesh(this.geometry,this.material);
         this.layers = this.mesh.layers
         this.bodyShape = inputShape;
@@ -78,7 +76,7 @@ class Actor {
         this.body.linearFactor = new THREE.Vector3(0,1,1)
 
         this.geometry = new THREE.CylinderGeometry(0.5,0.5,1,12);
-        this.material = new THREE.MeshBasicMaterial( { color: 0x880808} )
+        this.material = new THREE.MeshPhongMaterial( { color: 0x880808} )
         this.mesh = new THREE.Mesh(this.geometry, this.material);
         this.mesh.layers.set(0)
 
@@ -127,7 +125,7 @@ class Actor {
     }
 }
 
-class Wall  {
+class Wall {
     constructor() {
         this.shape = new CANNON.Box(new CANNON.Vec3(5,10,1)),
         this.geometry = new THREE.BoxGeometry(5,10,1),
@@ -200,6 +198,15 @@ function main(){
     //add Meshes to Scene
     const cube= new Wall();
 
+    //Lighting
+    //add ambient light aka what colors are the shadows
+    var ambient_light = new THREE.AmbientLight(0xffffff, .3)
+    g_scene.add(ambient_light)
+
+    const directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
+    directionalLight.position.set(1, 1, 1)
+    directionalLight.target.position.set(0, 0, 0)
+    g_scene.add( directionalLight );
 
     //layer 3 for colliding with walls
     cube.instantiateAtPos(g_scene, g_cannon_world,new CANNON.Vec3(0,0,-5));
@@ -242,11 +249,10 @@ let lastTime = performance.now();
 
 function step() {
     //steps the physics world forward
-    const time = performance.now() / 1000;
-    const dt= time - lastTime;
-    lastTime = time
+    const dt = g_clock.getDelta();
+
     g_cannon_world.step(1/120, dt, 10);
-    dispatchEvent(physicsStep);
+    dispatchEvent(g_physicsStep);
     requestAnimationFrame(step)
 }
 
