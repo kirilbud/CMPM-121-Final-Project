@@ -10,4 +10,8 @@ After scratching our heads for a bit, we found that we needed a util to get the 
 
 # Devlog Entry 11/24/2025
 
-small amount of refactoring...
+small amount of refactoring. moved things into seperate files
+
+# Devlog Entry 11/25/2025
+
+More refactoring. Updating the Robot class.

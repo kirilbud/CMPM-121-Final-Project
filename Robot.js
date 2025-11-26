@@ -1,10 +1,11 @@
 import * as THREE from 'three';
 import { GLTFLoader } from './lib/addons/GLTFLoader.js';
 import * as CANNON from 'https://unpkg.com/cannon-es@0.19.0/dist/cannon-es.js';
+//import {g_clock} from './Game.js';
 
-export class Robot {
-    constructor(scene, position){
-        const scale = .6;
+export class Robot { //using code I stole from the actor class
+    constructor(scene, cannon_world,  position){
+        const scale = .3;
 
         //robot variables
         this.up = new THREE.Vector3(0,1,0);
@@ -13,10 +14,26 @@ export class Robot {
         this.animations = null; //this holds the animations of the bot
         this.mixer; //animation mixer for the bot
         this.bot; //the robots mesh
-
+        this.scene = scene
         this.actions = {}; //dictionary for actions for easy stop start
 
+        //physics variables
+        this.bodyShape = new CANNON.Cylinder(0.1,0.1,1,12);
+        this.body = new CANNON.Body({mass: 1, shape: this.bodyShape});
+        this.body.angularDamping = 1;
+        
+        //restricts movement to a 2D axis.
+        this.body.linearFactor = new THREE.Vector3(0,1,1)
 
+        //by default, actor moves left.
+        this.dir = -1
+        
+        //raycast that reverses direction upon contact.
+        this.wallCheck = new THREE.Raycaster(this.body.position, new THREE.Vector3(0,0,1 * this.dir), 0, 1)
+        this.wallCheck.layers.set(3)
+
+        this.groundCheck = new THREE.Raycaster(this.body.position, new THREE.Vector3(0,-.1,0))
+        this.groundCheck.layers.set(2)
 
         const gltfLoader = new GLTFLoader();
         let url = "./glb/UV_the_robot.glb";
@@ -33,23 +50,58 @@ export class Robot {
 
             console.log(this.bot)
             const clips = gltf.animations;
+            console.log(clips)
+            console.log(THREE.AnimationClip.findByName(clips, 'Run'))
 
             //add all animations to a dictionary
             this.animations = clips;
 
-            this.clips["Run"] = THREE.AnimationClip.findByName(clips, 'Run');//find the run animation
-            this.clips["Fall"] = THREE.AnimationClip.findByName(clips, 'Fall');//find the fall animation
-            this.clips["Idle"] = THREE.AnimationClip.findByName(clips, 'Idle');//find the fall animation
+            this.actions["Run"] = THREE.AnimationClip.findByName(clips, 'Run');//find the run animation
+            this.actions["Fall"] = THREE.AnimationClip.findByName(clips, 'Fall');//find the fall animation
+            this.actions["Idle"] = THREE.AnimationClip.findByName(clips, 'Idle');//find the fall animation
 
 
-            const clip = this.clips["Run"]; 
+            const clip = this.actions["Run"]; 
             const action = this.mixer.clipAction(clip);
             action.play();
             //make sure to do action.stop before playing another animation
+
+            
         });
+
+
+        //add physics event
+        self.addEventListener("physicsStep", () => {
+            
+            if (this.body.position) {
+                this.bot.position.copy(this.body.position)
+                this.bot.position.y = this.bot.position.y -.5
+                this.bot.rotation.y =  Math.PI * ((this.dir*.5)-.5) 
+            }
+            const groundIntersects = this.groundCheck.intersectObjects(this.scene.children, true);
+            if (groundIntersects.length > 0) {
+                this.body.velocity.z = 1 * this.dir;
+            }
+            const wallIntersects = this.wallCheck.intersectObjects(this.scene.children, true);
+            if (wallIntersects.length > 0) {
+                console.log("hit wall")
+                this.dir *= -1
+                this.body.velocity.z = 1 * this.dir
+                
+
+                this.wallCheck.set(this.body.position, new THREE.Vector3(0,0, 1 * this.dir), 1)
+            }
+        })
+
+        //add to physics world
+        this.body.position.copy(position)
+        cannon_world.addBody(this.body)
     }
 
-    Update() {
-
+    
+    //called every frame compaired to each phyisics frame
+    update(delta) {
+        //update the animations
+        if (this.mixer) this.mixer.update(delta);
     }
 }

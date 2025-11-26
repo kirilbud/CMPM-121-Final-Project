@@ -1,7 +1,10 @@
 import * as THREE from 'three';
 import {GLTFLoader} from './lib/addons/GLTFLoader.js';
 import * as CANNON from 'https://unpkg.com/cannon-es@0.19.0/dist/cannon-es.js';
-//import {Robot} from './Robot.js';
+//our classes
+import {Robot} from './Robot.js';
+import {PhysicsObject} from './PhysicsObject.js';
+//import {WorldObject} from './WorldObject.js';
 
 //wack ass onload work around
 window.onload = function() {main()}
@@ -17,53 +20,28 @@ const g_raycaster = new THREE.Raycaster();
 let g_clock = new THREE.Clock(); // use this for delta time
 let g_ground
 
+let g_dragging = false
+
+//this array holds all of the robots
+let g_robots = []
+
 const g_cannon_world = new CANNON.World( {
     gravity: new CANNON.Vec3(0,-9.81,0)
 } );
 
+
 const g_physicsStep = new Event("physicsStep");
 
-class PhysicsObject {
-    constructor(inputGeometry, inputShape) {
-        this.geometry = inputGeometry;
-        this.material = new THREE.MeshPhongMaterial( { color: 0x00ff00 } );
-        this.mesh = new THREE.Mesh(this.geometry,this.material);
-        this.layers = this.mesh.layers
-        this.bodyShape = inputShape;
-        this.body = new CANNON.Body({ shape: this.bodyShape })
-    }
-    setMass(massInput) {
-        this.body.mass = massInput
-        if (massInput <= 0) {
-            this.body.type = CANNON.Body.STATIC
-        }
-        else {
-            this.body.type = CANNON.Body.DYNAMIC
-        }
-        this.body.updateMassProperties()
-    }
-    setColor(inputColor) {
-        this.material.color = inputColor
-    }
-    instantiate(inputScene, inputWorld) {
-        inputScene.add(this.mesh)
-        inputWorld.addBody(this.body)
 
-        self.addEventListener("physicsStep", () => {
-            //console.log(this.mesh.position.y + " - " + this.body.position.y)
-            if (this.body.position) {
-                this.mesh.position.copy(this.body.position)
-                this.mesh.quaternion.copy(this.body.quaternion)
-            }
-        })
+class mouseVector {
+    constructor() {
+        this.x = 0,
+        this.y = 0
     }
-    instantiateAtPos(inputScene, inputWorld, position) {
-        if (typeof(position == CANNON.Vec3)) {
-            this.instantiate(inputScene,inputWorld)
-            this.body.position.copy(position)
-        }
+    set(x,y) {
+        this.x = x
+        this.y = y
     }
-    
 }
 
 class Actor {
@@ -131,6 +109,7 @@ class Wall {
         this.geometry = new THREE.BoxGeometry(5,10,1),
         this.obj = new PhysicsObject(this.geometry, this.shape),
         this.obj.mesh.layers.enable(3)
+        this.material = new THREE.MeshPhongMaterial( { color: 0x880808} )
         this.obj.setColor(new THREE.Color(0xffffff))
         this.obj.setMass(0)
     }
@@ -147,17 +126,7 @@ class Wall {
     }
 }
 
-class mouseVector {
-    constructor() {
-        this.x = 0,
-        this.y = 0
-    }
-    set(x,y) {
-        this.x = x
-        this.y = y
-    }
 
-}
 
 function main(){
     //set up Three.js
@@ -193,21 +162,19 @@ function main(){
 
     rotateCamera(new THREE.Vector3(1,0,0), THREE.MathUtils.degToRad(-10))
     rotateCamera(new THREE.Vector3(0,1,0), THREE.MathUtils.degToRad(90))
-
-    
-    //add Meshes to Scene
-    const cube= new Wall();
-
+     
     //Lighting
     //add ambient light aka what colors are the shadows
     var ambient_light = new THREE.AmbientLight(0xffffff, .3)
     g_scene.add(ambient_light)
 
-    const directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
-    directionalLight.position.set(1, 1, 1)
+    const directionalLight = new THREE.DirectionalLight( 0xffffff, 1 );
+    directionalLight.position.set(-1, 1, -1)
     directionalLight.target.position.set(0, 0, 0)
     g_scene.add( directionalLight );
-
+    
+    //add Meshes to Scene
+    const cube= new Wall();
     //layer 3 for colliding with walls
     cube.instantiateAtPos(g_scene, g_cannon_world,new CANNON.Vec3(0,0,-5));
     const secondcube = new Wall();
@@ -225,6 +192,9 @@ function main(){
     //add player
     const player = new Actor()
     player.instantiateAtPos(g_scene, g_cannon_world, new CANNON.Vec3(1, 0,0));
+
+    const robot = new Robot(g_scene,g_cannon_world, new CANNON.Vec3(0, 31,0) );
+    g_robots.push(robot);
 
     //initially render the scene
     g_renderer.render(scene, camera);
@@ -252,6 +222,14 @@ function step() {
     const dt = g_clock.getDelta();
 
     g_cannon_world.step(1/120, dt, 10);
+
+    //update all robots
+    for (let index = 0; index < g_robots.length; index++) {
+        const robot = g_robots[index];
+        robot.update(dt);
+    }
+
+
     dispatchEvent(g_physicsStep);
     requestAnimationFrame(step)
 }
@@ -302,7 +280,6 @@ addEventListener("pointermove", (e) => {
         const front = intersects[0].object;
         if (front.layers.mask == 5) {
             canPlace = true
-            console.log("intersection point: ", intersects[0].point)
             const point = intersects[0].point
             buildPoint = new CANNON.Vec3(0, point.y + 5, point.z)
         }
@@ -313,9 +290,35 @@ addEventListener("pointermove", (e) => {
     }
 });
 
-addEventListener("mousedown", () => {
+addEventListener("mousedown", (event) => {
     const newWall = new Wall();
     if (canPlace) {
         newWall.instantiateAtPos(g_scene, g_cannon_world, buildPoint);
     }
+
+    //check what button the player is clicking
+    //0 for left click
+    //2 for right click
+    if (event.button == 0) {
+        console.log("left click")
+    }else if (event.button == 2) {
+        g_dragging = true;
+    }
 })
+
+addEventListener("mouseup", (event) => {
+    const newWall = new Wall();
+    if (canPlace) {
+        newWall.instantiateAtPos(g_scene, g_cannon_world, buildPoint);
+    }
+
+    //check if player let go of the camera
+    if (event.button == 2) {
+        g_dragging = false;
+    }
+})
+
+//removes the right click popup
+document.addEventListener('contextmenu', function(event) {
+    event.preventDefault();
+});
