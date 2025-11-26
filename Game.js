@@ -44,64 +44,6 @@ class mouseVector {
     }
 }
 
-class Actor {
-    constructor() {
-        this.bodyShape = new CANNON.Cylinder(0.5,0.5,1,12);
-        this.body = new CANNON.Body({mass: 1, shape: this.bodyShape});
-        this.body.angularDamping = 1;
-
-        //restricts movement to a 2D axis.
-        this.body.linearFactor = new THREE.Vector3(0,1,1)
-
-        this.geometry = new THREE.CylinderGeometry(0.5,0.5,1,12);
-        this.material = new THREE.MeshPhongMaterial( { color: 0x880808} )
-        this.mesh = new THREE.Mesh(this.geometry, this.material);
-        this.mesh.layers.set(0)
-
-        this.locationReachedEvent = new Event("locationReached");
-
-        this.groundCheck = new THREE.Raycaster(this.body.position, new THREE.Vector3(0,-.1,0))
-        this.groundCheck.layers.set(2)
-
-        //by default, actor moves left.
-        this.dir = -1
-
-        //raycast that reverses direction upon contact.
-        this.wallCheck = new THREE.Raycaster(this.body.position, new THREE.Vector3(0,0,1 * this.dir), 0, 1)
-        this.wallCheck.layers.set(3)
-
-        self.addEventListener("physicsStep", () => {
-            //console.log(this.mesh.position.y + " - " + this.body.position.y)
-            if (this.body.position) {
-                this.mesh.position.copy(this.body.position)
-                this.mesh.quaternion.copy(this.body.quaternion)
-            }
-            const groundIntersects = this.groundCheck.intersectObjects(g_scene.children, true);
-            if (groundIntersects.length > 0) {
-                this.body.velocity.z = 1 * this.dir;
-            }
-            const wallIntersects = this.wallCheck.intersectObjects(g_scene.children, true);
-            if (wallIntersects.length > 0) {
-                console.log("hit wall")
-                this.dir *= -1
-                this.body.velocity.z = 1 * this.dir
-
-                this.wallCheck.set(this.body.position, new THREE.Vector3(0,0, 1 * this.dir), 1)
-            }
-        })
-    }
-
-    instantiate(inputScene, inputWorld) {
-        inputScene.add(this.mesh)
-        inputWorld.addBody(this.body)
-    }
-    instantiateAtPos(inputScene, inputWorld, position) {
-        if (typeof(position == CANNON.Vec3)) {
-            this.instantiate(inputScene,inputWorld)
-            this.body.position.copy(position)
-        }
-    }
-}
 
 class Wall {
     constructor() {
@@ -189,18 +131,14 @@ function main(){
     plane.mesh.layers.enable(2);
     g_ground = plane.mesh
 
-    //add player
-    const player = new Actor()
-    player.instantiateAtPos(g_scene, g_cannon_world, new CANNON.Vec3(1, 0,0));
-
-    const robot = new Robot(g_scene,g_cannon_world, new CANNON.Vec3(0, 31,0) );
+    //add robots
+    const robot = new Robot(g_scene,g_cannon_world, new CANNON.Vec3(0, 1,0) );
     g_robots.push(robot);
 
     //initially render the scene
     g_renderer.render(scene, camera);
 
     requestAnimationFrame(render);
-    step();
 }
 
 // returns true if the canvas needs to be resized due to the browser being resized
@@ -217,26 +155,20 @@ function resizeRendererToDisplaySize(renderer) {
 
 let lastTime = performance.now();
 
-function step() {
-    //steps the physics world forward
+
+
+//function that renders the whole scene and is called with requestAnimationFrame
+function render(time) {
     const dt = g_clock.getDelta();
 
     g_cannon_world.step(1/120, dt, 10);
-
+    
     //update all robots
     for (let index = 0; index < g_robots.length; index++) {
         const robot = g_robots[index];
         robot.update(dt);
     }
 
-
-    dispatchEvent(g_physicsStep);
-    requestAnimationFrame(step)
-}
-
-//function that renders the whole scene and is called with requestAnimationFrame
-function render(time) {
-   
     //fix stretch
     if (resizeRendererToDisplaySize(g_renderer)) {//check if the display needs to be updated
         const canvas = g_renderer.domElement;
@@ -245,6 +177,9 @@ function render(time) {
     }
     g_renderer.render(g_scene, g_camera);//render the next frame
 
+
+
+    dispatchEvent(g_physicsStep);
     requestAnimationFrame(render);
 }
 

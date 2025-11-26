@@ -48,17 +48,16 @@ export class Robot { //using code I stole from the actor class
             this.mixer = new THREE.AnimationMixer(root);
             this.bot = root;
 
-            console.log(this.bot)
+
             const clips = gltf.animations;
-            console.log(clips)
-            console.log(THREE.AnimationClip.findByName(clips, 'Run'))
+
 
             //add all animations to a dictionary
             this.animations = clips;
 
             this.actions["Run"] = THREE.AnimationClip.findByName(clips, 'Run');//find the run animation
             this.actions["Fall"] = THREE.AnimationClip.findByName(clips, 'Fall');//find the fall animation
-            this.actions["Idle"] = THREE.AnimationClip.findByName(clips, 'Idle');//find the fall animation
+            this.actions["Idle"] = THREE.AnimationClip.findByName(clips, 'Idle');//find the idle animation
 
 
             const clip = this.actions["Run"]; 
@@ -76,6 +75,7 @@ export class Robot { //using code I stole from the actor class
             if (this.body.position) {
                 this.bot.position.copy(this.body.position)
                 this.bot.position.y = this.bot.position.y -.5
+                //ignore the wierd math its just to get this.dir to go from -1 and 1 to 0 and -1
                 this.bot.rotation.y =  Math.PI * ((this.dir*.5)-.5) 
             }
             const groundIntersects = this.groundCheck.intersectObjects(this.scene.children, true);
