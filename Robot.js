@@ -15,10 +15,10 @@ export class Robot { //using code I stole from the actor class
         this.mixer; //animation mixer for the bot
         this.bot; //the robots mesh
         this.scene = scene
-        this.actions = {}; //dictionary for actions for easy stop start
+        this.clips = {}; //dictionary for actions for easy stop start
 
         //physics variables
-        this.bodyShape = new CANNON.Cylinder(0.1,0.1,1,12);
+        this.bodyShape = new CANNON.Cylinder(0.3,0.3,.5,12);
         this.body = new CANNON.Body({mass: 1, shape: this.bodyShape});
         this.body.angularDamping = 1;
         
@@ -55,12 +55,12 @@ export class Robot { //using code I stole from the actor class
             //add all animations to a dictionary
             this.animations = clips;
 
-            this.actions["Run"] = THREE.AnimationClip.findByName(clips, 'Run');//find the run animation
-            this.actions["Fall"] = THREE.AnimationClip.findByName(clips, 'Fall');//find the fall animation
-            this.actions["Idle"] = THREE.AnimationClip.findByName(clips, 'Idle');//find the idle animation
+            this.clips["Run"] = THREE.AnimationClip.findByName(clips, 'Run');//find the run animation
+            this.clips["Fall"] = THREE.AnimationClip.findByName(clips, 'Fall');//find the fall animation
+            this.clips["Idle"] = THREE.AnimationClip.findByName(clips, 'Idle');//find the idle animation
 
 
-            const clip = this.actions["Run"]; 
+            const clip = this.clips["Run"]; 
             const action = this.mixer.clipAction(clip);
             action.play();
             //make sure to do action.stop before playing another animation
@@ -74,7 +74,7 @@ export class Robot { //using code I stole from the actor class
             
             if (this.body.position) {
                 this.bot.position.copy(this.body.position)
-                this.bot.position.y = this.bot.position.y -1.5
+                this.bot.position.y = this.bot.position.y -1.25
                 //ignore the wierd math its just to get this.dir to go from -1 and 1 to 0 and -1
                 this.bot.rotation.y =  Math.PI * ((this.dir*.5)-.5) 
             }
@@ -104,4 +104,6 @@ export class Robot { //using code I stole from the actor class
         //update the animations
         if (this.mixer) this.mixer.update(delta);
     }
+
+    //need to put a state machine up in this to make it work well
 }

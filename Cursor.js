@@ -1,14 +1,11 @@
 import * as THREE from 'three';
-import {GLTFLoader} from './lib/addons/GLTFLoader.js';
-import * as CANNON from 'https://unpkg.com/cannon-es@0.19.0/dist/cannon-es.js';
+import { GLTFLoader } from './lib/addons/GLTFLoader.js';
 
-//to be implemented
-export class WorldObject {
-    constructor(scene, cannon, position){
-        this.shape = new CANNON.Box(new CANNON.Vec3(1,1,1))
-        this.geometry = new THREE.BoxGeometry(1,1,1)
-    }
-    setgltf(url){
+//planning on making like a little drone that the player controlls as the mouse cursor
+export class Cursor { //using code I stole from the actor class
+    constructor(scene, cannon_world,  position){
+
+
         gltfLoader.load(url, (gltf) => {
 
             const root = gltf.scene;
@@ -28,15 +25,16 @@ export class WorldObject {
             this.animations = clips;
 
 
-            const clip = this.actions["idle"]; 
+            const clip = THREE.AnimationClip.findByName(clips, 'Idle');; 
             const action = this.mixer.clipAction(clip);
             action.play();
             //make sure to do action.stop before playing another animation
+
             
         });
     }
 
-    update(delta) {
-        
+    update(delta){
+
     }
 }

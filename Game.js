@@ -10,7 +10,7 @@ import {PhysicsObject} from './PhysicsObject.js';
 window.onload = function() {main()}
 
 //constants
-const CAMERA_FOV = 75;
+const CAMERA_FOV = 50;
 const MOUSE_SENSITIVITY = .03;
 
 //GLOBALS
@@ -114,14 +114,11 @@ function main(){
     
     camera.position.z = 0
     camera.position.y = 0
-    camera.position.x = 10
+    camera.position.x = 20
 
     g_camera_pivot.position.z = 0
     g_camera_pivot.position.y = 0
     g_camera_pivot.position.x = 0
-
-    //rotateCamera(new THREE.Vector3(1,0,0), THREE.MathUtils.degToRad(-10))
-    //rotateCamera(new THREE.Vector3(0,1,0), THREE.MathUtils.degToRad(90))
      
     //Lighting
     //add ambient light aka what colors are the shadows
