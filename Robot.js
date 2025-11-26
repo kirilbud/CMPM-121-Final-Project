@@ -74,7 +74,7 @@ export class Robot { //using code I stole from the actor class
             
             if (this.body.position) {
                 this.bot.position.copy(this.body.position)
-                this.bot.position.y = this.bot.position.y -.5
+                this.bot.position.y = this.bot.position.y -1.5
                 //ignore the wierd math its just to get this.dir to go from -1 and 1 to 0 and -1
                 this.bot.rotation.y =  Math.PI * ((this.dir*.5)-.5) 
             }

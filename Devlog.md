@@ -14,4 +14,4 @@ small amount of refactoring. moved things into seperate files
 
 # Devlog Entry 11/25/2025
 
-More refactoring. Updating the Robot class.
+More refactoring. Updating the Robot class. added camera movement.

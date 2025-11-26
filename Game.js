@@ -9,6 +9,10 @@ import {PhysicsObject} from './PhysicsObject.js';
 //wack ass onload work around
 window.onload = function() {main()}
 
+//constants
+const CAMERA_FOV = 75;
+const MOUSE_SENSITIVITY = .03;
+
 //GLOBALS
 //g_ stands for this variable being a global variable
 let g_canvas;
@@ -25,12 +29,18 @@ let g_dragging = false
 //this array holds all of the robots
 let g_robots = []
 
+//what the camera will be looking at and following
+let g_focus;
+
+let g_mouse_last_pos
+
 const g_cannon_world = new CANNON.World( {
     gravity: new CANNON.Vec3(0,-9.81,0)
 } );
 
 
 const g_physicsStep = new Event("physicsStep");
+
 
 
 class mouseVector {
@@ -78,32 +88,40 @@ function main(){
     g_renderer = renderer;
     
     //create cammera
-    const fov = 75;
+    const fov = CAMERA_FOV;
     const aspect = 2;  // the canvas default
     const near = 0.1;
     const far = 1000;
     const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
     
     //used for rotating along x axis
-    const pivot = new THREE.Object3D();
+    g_focus = new THREE.Object3D();
 
     //create scene
     const scene = new THREE.Scene();
     g_scene = scene;
 
-    g_scene.add(pivot)
+    g_scene.add(g_focus)
 
     //set camera
-    pivot.add(camera)
-    g_camera_pivot = pivot;
+    g_focus.add(camera)
+    g_camera_pivot = g_focus;
     g_camera = camera;
 
-    g_camera_pivot.position.z = -0.5
-    g_camera_pivot.position.y = 1
-    g_camera_pivot.position.x = 10
+    camera.rotation.y = Math.PI/2
 
-    rotateCamera(new THREE.Vector3(1,0,0), THREE.MathUtils.degToRad(-10))
-    rotateCamera(new THREE.Vector3(0,1,0), THREE.MathUtils.degToRad(90))
+
+    
+    camera.position.z = 0
+    camera.position.y = 0
+    camera.position.x = 10
+
+    g_camera_pivot.position.z = 0
+    g_camera_pivot.position.y = 0
+    g_camera_pivot.position.x = 0
+
+    //rotateCamera(new THREE.Vector3(1,0,0), THREE.MathUtils.degToRad(-10))
+    //rotateCamera(new THREE.Vector3(0,1,0), THREE.MathUtils.degToRad(90))
      
     //Lighting
     //add ambient light aka what colors are the shadows
@@ -226,32 +244,43 @@ addEventListener("pointermove", (e) => {
 });
 
 addEventListener("mousedown", (event) => {
-    const newWall = new Wall();
-    if (canPlace) {
-        newWall.instantiateAtPos(g_scene, g_cannon_world, buildPoint);
-    }
+
 
     //check what button the player is clicking
     //0 for left click
     //2 for right click
     if (event.button == 0) {
-        console.log("left click")
+        const newWall = new Wall();
+        if (canPlace) {
+            newWall.instantiateAtPos(g_scene, g_cannon_world, buildPoint);
+        }
     }else if (event.button == 2) {
         g_dragging = true;
+        g_mouse_last_pos = new mouseVector()
+        g_mouse_last_pos.set(event.x, event.y)
     }
 })
 
 addEventListener("mouseup", (event) => {
-    const newWall = new Wall();
-    if (canPlace) {
-        newWall.instantiateAtPos(g_scene, g_cannon_world, buildPoint);
-    }
+
 
     //check if player let go of the camera
     if (event.button == 2) {
         g_dragging = false;
+        g_mouse_last_pos = null
     }
 })
+
+document.addEventListener('mousemove', (event) => {
+    if (g_dragging) {
+        let start_vector = new THREE.Vector2(g_mouse_last_pos.x, g_mouse_last_pos.y)
+        let end_vector = new THREE.Vector2(event.x, event.y)
+        let move_vector = start_vector.sub(end_vector)
+        g_focus.position.z = g_focus.position.z - (move_vector.x* MOUSE_SENSITIVITY)
+        g_focus.position.y = g_focus.position.y - (move_vector.y* MOUSE_SENSITIVITY)
+        g_mouse_last_pos.set(event.x, event.y)
+    }
+});
 
 //removes the right click popup
 document.addEventListener('contextmenu', function(event) {
