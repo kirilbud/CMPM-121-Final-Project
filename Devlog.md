@@ -15,3 +15,7 @@ small amount of refactoring. moved things into seperate files
 # Devlog Entry 11/25/2025
 
 More refactoring. Updating the Robot class. added camera movement. added cursor object and the start of a blend file.
+
+# Devlog Entry 11/30/2025
+
+started working on more work in progress blender files
