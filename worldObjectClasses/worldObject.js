@@ -17,6 +17,7 @@ export class WorldObject {
 
         this.physicsObject = null
         if (this.scene && this.mesh) {
+            //console.log(this.mesh.material)
             this.scene.add(this.mesh)
         }
     }
@@ -50,7 +51,7 @@ export class WorldObject {
 
     setColor(inputColor) {
         console.assert('setting color')
-        this.material.color = new THREE.MeshPhongMaterial({ color: inputColor })
+        this.material = new THREE.MeshPhongMaterial({ color: inputColor })
     }
 
     remove() {

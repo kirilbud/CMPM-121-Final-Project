@@ -35,7 +35,7 @@ export class Level {
             for (let j = 0; j < row.length; j++) {
                 const object_id = row[j]
                 //read then create new object depending on level data
-                const object_position = new THREE.Vector3(0, i, j)
+                const object_position = new THREE.Vector3(0, i, -j)
                 let world_object = this.getNewObject(object_id, object_position)
 
                 object_row.push(world_object)
@@ -44,7 +44,7 @@ export class Level {
             this.level_objects.push(object_row)
         }
         //this.g_scene.add(this.scene)
-        console.log(this.g_scene)
+        //console.log(this.g_scene)
     }
 
     unloadLevel() {

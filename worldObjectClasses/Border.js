@@ -8,7 +8,10 @@ import { PhysicsObject } from './PhysicsObject.js'
 export class Border extends WorldObject {
     constructor(scene, cannon, position) {
         super(scene, cannon, position)
-        this.setPhysics()
+        super.setPhysics()
         this.setColor(0xf5a9b8)
+    }
+    setColor(inputColor) {
+        super.setColor(inputColor)
     }
 }
