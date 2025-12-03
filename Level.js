@@ -9,10 +9,16 @@ import { Crusher } from './worldObjectClasses/Crusher.js'
 import { Finish } from './worldObjectClasses/Finish.js'
 import { Platform } from './worldObjectClasses/Platform.js'
 import { RobotSpawner } from './worldObjectClasses/RobotSpawner.js'
+import { Spring } from './worldObjectClasses/Spring.js'
+
+import { Robot } from './Robot.js'
+import { Level_1 } from './WorldData.js'
 
 export class Level {
     //using code I stole from the actor class
     constructor(g_scene, cannon_world, level_data) {
+        this.robots = []
+
         this.g_scene = g_scene
         this.cannon_world = cannon_world
         this.scene = new THREE.Scene()
@@ -35,7 +41,7 @@ export class Level {
             for (let j = 0; j < row.length; j++) {
                 const object_id = row[j]
                 //read then create new object depending on level data
-                const object_position = new THREE.Vector3(0, i, -j)
+                const object_position = new THREE.Vector3(0, -i, j)
                 let world_object = this.getNewObject(object_id, object_position)
 
                 object_row.push(world_object)
@@ -79,13 +85,17 @@ export class Level {
                 world_object = null
                 break
             case 10: // robotSpawner (5 robots)
-                world_object = null
+                world_object = new RobotSpawner(
+                    this.scene,
+                    this.cannon_world,
+                    position,
+                    this.robots
+                )
                 break
             case 20: // platform
                 world_object = null
                 break
             case 30: // border
-                //console.log(`placing border at ${position.y}, ${position.z}`)
                 world_object = new Border(
                     this.scene,
                     this.cannon_world,
@@ -99,8 +109,12 @@ export class Level {
                 world_object = null
             case 50: // finish object
                 world_object = null
-            case 60: // 60 spring object
-                world_object = null
+            case 60:
+                world_object = new Spring(
+                    this.scene,
+                    this.cannon_world,
+                    position
+                )
                 break
         }
 
@@ -119,5 +133,7 @@ export class Level {
                 }
             }
         }
+
+        //iterate through level
     }
 }

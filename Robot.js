@@ -6,8 +6,8 @@ import * as CANNON from 'https://unpkg.com/cannon-es@0.19.0/dist/cannon-es.js'
 export class Robot {
     //using code I stole from the actor class
     constructor(scene, cannon_world, position) {
-        const scale = 0.3
-
+        const scale = 0.18
+        const RAYCAST_LEN = 0.8
         //robot variables
         this.up = new THREE.Vector3(0, 1, 0)
         this.forward = new THREE.Vector3(1, 0, 0) //the direction the bot is walking
@@ -19,7 +19,7 @@ export class Robot {
         this.clips = {} //dictionary for actions for easy stop start
 
         //physics variables
-        this.bodyShape = new CANNON.Cylinder(0.3, 0.3, 0.5, 12)
+        this.bodyShape = new CANNON.Box(new CANNON.Vec3(0.2, 0.5, 0.1))
         this.body = new CANNON.Body({ mass: 1, shape: this.bodyShape })
         this.body.angularDamping = 1
 
@@ -32,7 +32,7 @@ export class Robot {
         //raycast that reverses direction upon contact.
         this.wallCheck = new THREE.Raycaster(
             this.body.position,
-            new THREE.Vector3(0, 0, 1 * this.dir),
+            new THREE.Vector3(0, 0, RAYCAST_LEN * this.dir),
             0,
             1
         )
@@ -74,7 +74,7 @@ export class Robot {
         self.addEventListener('physicsStep', () => {
             if (this.bot !== undefined) {
                 this.bot.position.copy(this.body.position)
-                this.bot.position.y = this.bot.position.y - 1.25
+                this.bot.position.y = this.bot.position.y - 1
                 //ignore the wierd math its just to get this.dir to go from -1 and 1 to 0 and -1
                 this.bot.rotation.y = Math.PI * (this.dir * 0.5 - 0.5)
             }
@@ -96,7 +96,7 @@ export class Robot {
 
                 this.wallCheck.set(
                     this.body.position,
-                    new THREE.Vector3(0, 0, 1 * this.dir),
+                    new THREE.Vector3(0, 0, RAYCAST_LEN * this.dir),
                     1
                 )
             }

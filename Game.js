@@ -18,7 +18,7 @@ window.onload = function () {
 }
 
 //constants
-const CAMERA_FOV = 50
+const CAMERA_FOV = 60
 const MOUSE_SENSITIVITY = 0.03
 
 const mainDiv = document.querySelector('#mainDiv')
@@ -116,7 +116,6 @@ class Wall {
 
 let inventory = [new Item('platform', 3, new Platform(g_scene, 20))]
 
-
 function main() {
     //set up Three.js
     const canvas = document.querySelector('#c')
@@ -177,11 +176,16 @@ function main() {
             let end_vector = new THREE.Vector2(event.x, event.y)
             let move_vector = start_vector.sub(end_vector)
             g_focus.position.z =
-                g_focus.position.z - move_vector.x * MOUSE_SENSITIVITY
+                g_focus.position.z + move_vector.x * MOUSE_SENSITIVITY
             g_focus.position.y =
                 g_focus.position.y - move_vector.y * MOUSE_SENSITIVITY
             g_mouse_last_pos.set(event.x, event.y)
         }
+    })
+
+    //removes the right click popup
+    document.addEventListener('contextmenu', function (event) {
+        event.preventDefault()
     })
     g_canvas = canvas
     const renderer = new THREE.WebGLRenderer({ antialias: true, canvas })
@@ -208,14 +212,14 @@ function main() {
     g_camera_pivot = g_focus
     g_camera = camera
 
-    camera.rotation.y = Math.PI / 2
+    camera.rotation.y = -Math.PI / 2
 
     camera.position.z = 0
     camera.position.y = 0
-    camera.position.x = 20
+    camera.position.x = -12
 
-    g_camera_pivot.position.z = 0
-    g_camera_pivot.position.y = 0
+    g_camera_pivot.position.z = 5
+    g_camera_pivot.position.y = -5
     g_camera_pivot.position.x = 0
 
     //Lighting
@@ -228,33 +232,8 @@ function main() {
     directionalLight.target.position.set(0, 0, 0)
     g_scene.add(directionalLight)
 
-    //add Meshes to Scene
-    const cube = new Wall()
-    //layer 3 for colliding with walls
-    cube.instantiateAtPos(g_scene, g_cannon_world, new CANNON.Vec3(0, 0, -5))
-    const secondcube = new Wall()
-    secondcube.instantiateAtPos(
-        g_scene,
-        g_cannon_world,
-        new CANNON.Vec3(0, 0, 5)
-    )
-
-    //add ground plane
-    const ground = new PhysicsObject(
-        new THREE.PlaneGeometry(5, 20),
-        new CANNON.Box(new CANNON.Vec3(2.5, 9, 1))
-    )
-    ground.instantiateAtPos(g_scene, g_cannon_world, new CANNON.Vec3(0, -5, 0))
-    ground.body.quaternion.setFromAxisAngle(
-        new CANNON.Vec3(1, 0, 0),
-        THREE.MathUtils.degToRad(-90)
-    )
-    //layer 2 for colliding with ground
-    ground.mesh.layers.enable(2)
-    g_ground = ground.mesh
-
     //add robots
-    const robot = new Robot(g_scene, g_cannon_world, new CANNON.Vec3(0, 1, 0))
+    const robot = new Robot(g_scene, g_cannon_world, new CANNON.Vec3(0, 3, -3))
     g_robots.push(robot)
 
     //initially render the scene
@@ -301,43 +280,23 @@ function render(time) {
     }
     g_renderer.render(g_scene, g_camera) //render the next frame
 
+    //render level
+    g_level.update(dt)
+
     dispatchEvent(g_physicsStep)
     requestAnimationFrame(render)
 }
 
-function rotateCamera(axis, angle) {
-    //determines if camera rotates by the pivot or camera itself.
-    //NOTE: Camera can only rotate on x and y axes.
-    console.log(axis)
-    const y = new THREE.Vector3(0, 1, 0)
-    const x = new THREE.Vector3(1, 0, 0)
-    if (axis.y == 1 && axis.x == 0) {
-        console.log('rotating y')
-        g_camera_pivot.rotation.y = angle
-    } else if (axis.x == 1) {
-        g_camera.rotation.x = angle
-    } else {
-        console.log('ERROR! Attempting to rotate on invalid axis.')
-    }
-}
-
 function setupInventoryUI() {
-    console.log("adding buttons!")
+    console.log('adding buttons!')
     const buttonsDiv = document.createElement('div')
     uiDiv.appendChild(buttonsDiv)
     buttonsDiv.id = 'buttonsDiv'
     for (const i of inventory) {
-        console.log("added button!")
+        console.log('added button!')
         const newButton = document.createElement('button')
         newButton.innerText = i.name + ' x' + i.count
         buttonsDiv.appendChild(newButton)
     }
 }
 setupInventoryUI()
-
-
-
-//removes the right click popup
-document.addEventListener('contextmenu', function (event) {
-    event.preventDefault()
-})

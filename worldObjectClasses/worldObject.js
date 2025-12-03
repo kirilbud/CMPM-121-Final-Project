@@ -47,11 +47,16 @@ export class WorldObject {
     setPhysics() {
         this.physicsObject = new PhysicsObject(this.geometry, this.shape)
         this.physicsObject.setmesh(this.mesh)
+        this.physicsObject.instantiateAtPos(
+            this.scene,
+            this.cannon,
+            this.position
+        )
+        this.mesh.layers.enable(3)
     }
 
     setColor(inputColor) {
-        console.assert('setting color')
-        this.material = new THREE.MeshPhongMaterial({ color: inputColor })
+        this.mesh.material = new THREE.MeshPhongMaterial({ color: inputColor })
     }
 
     remove() {
@@ -64,4 +69,6 @@ export class WorldObject {
     update(delta) {
         if (this.mixer) this.mixer.update(delta)
     }
+
+    interact(robot) {}
 }

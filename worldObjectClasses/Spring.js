@@ -5,10 +5,9 @@ import * as CANNON from 'https://unpkg.com/cannon-es@0.19.0/dist/cannon-es.js'
 import { PhysicsObject } from './PhysicsObject.js'
 
 //to be implemented
-export class Border extends WorldObject {
+export class Spring extends WorldObject {
     constructor(scene, cannon, position) {
         super(scene, cannon, position)
-        super.setPhysics()
-        this.setColor(0xf5a9b8)
+        this.setColor(0x5bcefa)
     }
 }
