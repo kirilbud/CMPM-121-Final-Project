@@ -129,7 +129,6 @@ function main() {
         const yCoord = event.clientY - rect.top
         if (event.button == 0) {
             const newWall = new Wall()
-            console.log('leftclick')
             if (canPlace) {
                 newWall.instantiateAtPos(g_scene, g_cannon_world, buildPoint)
             }
@@ -154,11 +153,9 @@ function main() {
         mouse.y = -(e.clientY / canvas.height) * 2 + 1
 
         g_raycaster.setFromCamera(mouse, g_camera)
-        console.log("mouse: " + mouse.x + " - " + mouse.y)
 
         const intersects = g_raycaster.intersectObjects(g_scene.children, true)
         if (intersects.length > 0) {
-            console.log("hit!")
             const front = intersects[0].object
             if (front.layers.mask == 5) {
                 canPlace = true
