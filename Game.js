@@ -116,6 +116,30 @@ let inventory = [new Item('platform', 3, new Platform(g_scene, 20))]
 function main() {
     //set up Three.js
     const canvas = document.querySelector('#c')
+    canvas.addEventListener('mousedown', (event) => {
+        //check what button the player is clicking
+        //0 for left click
+        //2 for right click
+        if (event.button == 0) {
+            const newWall = new Wall()
+            if (canPlace) {
+                newWall.instantiateAtPos(g_scene, g_cannon_world, buildPoint)
+            }
+        } else if (event.button == 2) {
+            g_dragging = true
+            g_mouse_last_pos = new mouseVector()
+            g_mouse_last_pos.set(event.x, event.y)
+        }
+        console.log(event.x + " - " + event.y)
+    })
+
+    canvas.addEventListener('mouseup', (event) => {
+        //check if player let go of the camera
+        if (event.button == 2) {
+            g_dragging = false
+            g_mouse_last_pos = null
+        }
+    })
     g_canvas = canvas
     const renderer = new THREE.WebGLRenderer({ antialias: true, canvas })
     g_renderer = renderer
@@ -289,30 +313,7 @@ addEventListener('pointermove', (e) => {
     }
 })
 
-addEventListener('mousedown', (event) => {
-    //check what button the player is clicking
-    //0 for left click
-    //2 for right click
-    if (event.button == 0) {
-        const newWall = new Wall()
-        if (canPlace) {
-            newWall.instantiateAtPos(g_scene, g_cannon_world, buildPoint)
-        }
-    } else if (event.button == 2) {
-        g_dragging = true
-        g_mouse_last_pos = new mouseVector()
-        g_mouse_last_pos.set(event.x, event.y)
-    }
-    console.log(event.x + " - " + event.y)
-})
 
-addEventListener('mouseup', (event) => {
-    //check if player let go of the camera
-    if (event.button == 2) {
-        g_dragging = false
-        g_mouse_last_pos = null
-    }
-})
 
 document.addEventListener('mousemove', (event) => {
     if (g_dragging) {
