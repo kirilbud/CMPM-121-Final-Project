@@ -14,6 +14,15 @@ window.onload = function () {
 const CAMERA_FOV = 50
 const MOUSE_SENSITIVITY = 0.03
 
+const mainDiv = document.querySelector('#mainDiv')
+
+const testDiv = document.createElement('div')
+testDiv.innerText = "hellaur"
+testDiv.style.backgroundColor = "black"
+testDiv.style.color = "white"
+testDiv.style.fontSize = "200%"
+
+mainDiv.appendChild(testDiv)
 
 //GLOBALS
 //g_ stands for this variable being a global variable
