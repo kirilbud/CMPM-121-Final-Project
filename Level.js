@@ -66,6 +66,7 @@ export class Level {
     // 40 crusher up/down
     // 41 crusher left/right
     // 50 finish object
+    // 60 spring object
     // to be filled out
 
     getNewObject(object_id, position) {
@@ -94,6 +95,8 @@ export class Level {
             case 41: // crusher left / right
                 world_object = null
             case 50: // finish object
+                world_object = null
+            case 60: // 60 spring object
                 world_object = null
                 break
         }
