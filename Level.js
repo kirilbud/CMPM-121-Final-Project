@@ -2,13 +2,25 @@ import * as THREE from 'three'
 import { GLTFLoader } from './lib/addons/GLTFLoader.js'
 import * as CANNON from 'https://unpkg.com/cannon-es@0.19.0/dist/cannon-es.js'
 
+import { WorldObject } from './worldObjectClasses/worldObject.js'
 
-import {WorldObject} from `./worldObjectClasses/worldObject.js`
-
-export class Cursor {
+export class Level {
     //using code I stole from the actor class
-    constructor(scene, cannon_world, level_data) {
+    constructor(g_scene, cannon_world, level_data) {
+        this.g_scene = g_scene
+        this.cannon_world = cannon_world
+        this.scene = new THREE.Scene()
+
+        this.g_scene.add(this.scene)
         //iterate through the selected levels data
+        this.level_objects = []
+        loadNewLevel(level_data)
+    }
+
+    loadNewLevel(level_data) {
+        //clear level information
+        this.unloadLevel()
+
         this.level_objects = []
         for (let i = 0; i < level_data.length; i++) {
             const row = level_data[i]
@@ -26,6 +38,19 @@ export class Cursor {
         }
     }
 
+    unloadLevel() {
+        for (let i = 0; i < this.level_objects.length; i++) {
+            const row = this.level_objects[i]
+
+            for (let j = 0; j < row.length; j++) {
+                const object = row[j]
+                if (object) {
+                    object.remove()
+                }
+            }
+        }
+    }
+
     // OBJECT ID NUMBERS
     // 0 = empty space
     // 10 robotSpawner (5 robots)
@@ -40,22 +65,24 @@ export class Cursor {
         //returns a new object of the corisponding id
         let world_object = null
         switch (object_id) {
-            case 0: //air
+            case 0: // air
                 world_object = null
                 break
-            case 10: //robotSpawner (5 robots)
+            case 10: // robotSpawner (5 robots)
                 world_object = null
                 break
-            case 20: //platform
+            case 20: // platform
                 world_object = null
                 break
-            case 30: //border
+            case 30: // border
                 world_object = null
                 break
-            case 40: //crusher up/down
+            case 40: // crusher up / down
                 world_object = null
                 break
-            case 41: //crusher left/right
+            case 41: // crusher left / right
+                world_object = null
+            case 50: // finish object
                 world_object = null
                 break
         }
@@ -63,5 +90,17 @@ export class Cursor {
         return world_object
     }
 
-    update(delta) {}
+    update(delta) {
+        //iterate through level objects and call update if it exists
+        for (let i = 0; i < this.level_objects.length; i++) {
+            const row = this.level_objects[i]
+
+            for (let j = 0; j < row.length; j++) {
+                const object = row[j]
+                if (object) {
+                    object.update(delta)
+                }
+            }
+        }
+    }
 }

@@ -13,7 +13,7 @@ export class WorldObject {
         this.position = position
         this.mesh = new THREE.Mesh(this.geometry, this.material)
 
-        this.physicsObject = new PhysicsObject()
+        //this.physicsObject = new PhysicsObject()
     }
 
     setgltf(url) {
@@ -38,5 +38,14 @@ export class WorldObject {
         })
     }
 
-    update(delta) {}
+    remove() {
+        this.scene.remove()
+        if (this.physicsObject) {
+            this.physicsObject.remove()
+        }
+    }
+
+    update(delta) {
+        if (this.mixer) this.mixer.update(delta)
+    }
 }
