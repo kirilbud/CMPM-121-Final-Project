@@ -72,7 +72,7 @@ export class Robot {
 
         //add physics event
         self.addEventListener('physicsStep', () => {
-            if (this.body.position !== undefined) {
+            if (this.bot !== undefined) {
                 this.bot.position.copy(this.body.position)
                 this.bot.position.y = this.bot.position.y - 1.25
                 //ignore the wierd math its just to get this.dir to go from -1 and 1 to 0 and -1
