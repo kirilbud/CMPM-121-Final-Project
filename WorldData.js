@@ -3,7 +3,7 @@
 // to be filled out
 
 // currently a 10x10 grid but can be expanded if needed
-export const world_data = [
+export const Level_1 = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
