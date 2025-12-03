@@ -120,6 +120,9 @@ function main() {
         //check what button the player is clicking
         //0 for left click
         //2 for right click
+        const rect = canvas.getBoundingClientRect()
+        const xCoord = event.clientX - rect.left
+        const yCoord = event.clientY - rect.top
         if (event.button == 0) {
             const newWall = new Wall()
             console.log('leftclick')
@@ -129,9 +132,8 @@ function main() {
         } else if (event.button == 2) {
             g_dragging = true
             g_mouse_last_pos = new mouseVector()
-            g_mouse_last_pos.set(event.x, event.y)
+            g_mouse_last_pos.set(xCoord, yCoord)
         }
-        console.log(event.x + " - " + event.y)
     })
 
     canvas.addEventListener('mouseup', (event) => {
@@ -143,23 +145,27 @@ function main() {
     })
 
     canvas.addEventListener('pointermove', (e) => {
-    const mouse = new THREE.Vector2()
-    mouse.x = (e.clientX / window.innerWidth) * 2 - 1
-    mouse.y = -(e.clientY / window.innerHeight) * 2 + 1
-    g_raycaster.setFromCamera(mouse, g_camera)
+        const mouse = new THREE.Vector2()
+        mouse.x = (e.clientX / canvas.width) * 2 - 1
+        mouse.y = -(e.clientY / canvas.height) * 2 + 1
 
-    const intersects = g_raycaster.intersectObjects(g_scene.children, true)
-    if (intersects.length > 0) {
-        const front = intersects[0].object
-        if (front.layers.mask == 5) {
-            canPlace = true
-            const point = intersects[0].point
-            buildPoint = new CANNON.Vec3(0, point.y + 5, point.z)
-        } else {
-            canPlace = false
-            buildPoint = new CANNON.Vec3(0, 0, 0)
+        g_raycaster.setFromCamera(mouse, g_camera)
+        console.log("mouse: " + mouse.x + " - " + mouse.y)
+        console.log("vect: " + finalVect.x + " - " + finalVect.y)
+
+        const intersects = g_raycaster.intersectObjects(g_scene.children, true)
+        if (intersects.length > 0) {
+            console.log("hit!")
+            const front = intersects[0].object
+            if (front.layers.mask == 5) {
+                canPlace = true
+                const point = intersects[0].point
+                buildPoint = new CANNON.Vec3(0, point.y + 5, point.z)
+            } else {
+                canPlace = false
+                buildPoint = new CANNON.Vec3(0, 0, 0)
+            }
         }
-    }
     })
 
     canvas.addEventListener('mousemove', (event) => {
