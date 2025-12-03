@@ -13,8 +13,12 @@ export class WorldObject {
         this.cannon = cannon
         this.position = position
         this.mesh = new THREE.Mesh(this.geometry, this.material)
+        this.mesh.position.copy(this.position)
 
         this.physicsObject = null
+        if (this.scene && this.mesh) {
+            this.scene.add(this.mesh)
+        }
     }
 
     setgltf(url) {
@@ -45,7 +49,8 @@ export class WorldObject {
     }
 
     setColor(inputColor) {
-        this.material.color = inputColor
+        console.assert('setting color')
+        this.material.color = new THREE.MeshPhongMaterial({ color: inputColor })
     }
 
     remove() {

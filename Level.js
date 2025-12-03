@@ -43,6 +43,8 @@ export class Level {
             //place into level objects
             this.level_objects.push(object_row)
         }
+        //this.g_scene.add(this.scene)
+        console.log(this.g_scene)
     }
 
     unloadLevel() {
@@ -83,6 +85,7 @@ export class Level {
                 world_object = null
                 break
             case 30: // border
+                //console.log(`placing border at ${position.y}, ${position.z}`)
                 world_object = new Border(
                     this.scene,
                     this.cannon_world,
