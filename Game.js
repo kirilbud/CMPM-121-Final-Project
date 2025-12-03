@@ -4,6 +4,7 @@ import * as CANNON from 'https://unpkg.com/cannon-es@0.19.0/dist/cannon-es.js'
 //our classes
 import { Robot } from './Robot.js'
 import { PhysicsObject } from './PhysicsObject.js'
+import { WorldObject } from './worldObjectClasses/worldObject.js'
 
 //wack ass onload work around
 window.onload = function () {
@@ -51,6 +52,11 @@ const g_cannon_world = new CANNON.World({
 
 const g_physicsStep = new Event('physicsStep')
 
+let itemsMap = new Map([
+    [new Item(Wall, 2, ), 1]
+])
+
+
 class mouseVector {
     constructor() {
         ;(this.x = 0), (this.y = 0)
@@ -58,6 +64,23 @@ class mouseVector {
     set(x, y) {
         this.x = x
         this.y = y
+    }
+}
+
+class Item {
+    constructor(nameInput, countInput, objInput) {
+        this.name = nameInput
+        this.count = countInput
+        this.worldObject = objInput
+    }
+    getName() {
+        return this.name
+    }
+    getCount() {
+        return this.count
+    }
+    setCount(input) {
+        this.count = input
     }
 }
 
@@ -224,6 +247,14 @@ function rotateCamera(axis, angle) {
 
 let canPlace = false
 let buildPoint = new CANNON.Vec3(0, 0, 0)
+
+function setupInventory() {
+    /*for (i of itemsMap) {
+        const newButton = document.createElement('button')
+        newButton.innerText = 
+    }*/
+   return
+}
 
 addEventListener('pointermove', (e) => {
     const mouse = new THREE.Vector2()
