@@ -122,6 +122,7 @@ function main() {
         //2 for right click
         if (event.button == 0) {
             const newWall = new Wall()
+            console.log('leftclick')
             if (canPlace) {
                 newWall.instantiateAtPos(g_scene, g_cannon_world, buildPoint)
             }
@@ -138,6 +139,42 @@ function main() {
         if (event.button == 2) {
             g_dragging = false
             g_mouse_last_pos = null
+        }
+    })
+
+    canvas.addEventListener('pointermove', (e) => {
+    const mouse = new THREE.Vector2()
+    mouse.x = (e.clientX / window.innerWidth) * 2 - 1
+    mouse.y = -(e.clientY / window.innerHeight) * 2 + 1
+    g_raycaster.setFromCamera(mouse, g_camera)
+
+    const intersects = g_raycaster.intersectObjects(g_scene.children, true)
+    if (intersects.length > 0) {
+        const front = intersects[0].object
+        if (front.layers.mask == 5) {
+            canPlace = true
+            const point = intersects[0].point
+            buildPoint = new CANNON.Vec3(0, point.y + 5, point.z)
+        } else {
+            canPlace = false
+            buildPoint = new CANNON.Vec3(0, 0, 0)
+        }
+    }
+    })
+
+    canvas.addEventListener('mousemove', (event) => {
+        if (g_dragging) {
+            let start_vector = new THREE.Vector2(
+                g_mouse_last_pos.x,
+                g_mouse_last_pos.y
+            )
+            let end_vector = new THREE.Vector2(event.x, event.y)
+            let move_vector = start_vector.sub(end_vector)
+            g_focus.position.z =
+                g_focus.position.z - move_vector.x * MOUSE_SENSITIVITY
+            g_focus.position.y =
+                g_focus.position.y - move_vector.y * MOUSE_SENSITIVITY
+            g_mouse_last_pos.set(event.x, event.y)
         }
     })
     g_canvas = canvas
@@ -293,43 +330,7 @@ function setupInventory() {
 }
 setupInventory()
 
-addEventListener('pointermove', (e) => {
-    const mouse = new THREE.Vector2()
-    mouse.x = (e.clientX / window.innerWidth) * 2 - 1
-    mouse.y = -(e.clientY / window.innerHeight) * 2 + 1
-    g_raycaster.setFromCamera(mouse, g_camera)
 
-    const intersects = g_raycaster.intersectObjects(g_scene.children, true)
-    if (intersects.length > 0) {
-        const front = intersects[0].object
-        if (front.layers.mask == 5) {
-            canPlace = true
-            const point = intersects[0].point
-            buildPoint = new CANNON.Vec3(0, point.y + 5, point.z)
-        } else {
-            canPlace = false
-            buildPoint = new CANNON.Vec3(0, 0, 0)
-        }
-    }
-})
-
-
-
-document.addEventListener('mousemove', (event) => {
-    if (g_dragging) {
-        let start_vector = new THREE.Vector2(
-            g_mouse_last_pos.x,
-            g_mouse_last_pos.y
-        )
-        let end_vector = new THREE.Vector2(event.x, event.y)
-        let move_vector = start_vector.sub(end_vector)
-        g_focus.position.z =
-            g_focus.position.z - move_vector.x * MOUSE_SENSITIVITY
-        g_focus.position.y =
-            g_focus.position.y - move_vector.y * MOUSE_SENSITIVITY
-        g_mouse_last_pos.set(event.x, event.y)
-    }
-})
 
 //removes the right click popup
 document.addEventListener('contextmenu', function (event) {
