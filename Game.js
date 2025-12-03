@@ -7,6 +7,7 @@ import { PhysicsObject } from './worldObjectClasses/PhysicsObject.js'
 import { WorldObject } from './worldObjectClasses/worldObject.js'
 import { Level } from './Level.js'
 import { Platform } from './worldObjectClasses/Platform.js'
+import { Level_1 } from './WorldData.js'
 
 //wack ass onload work around
 window.onload = function () {
@@ -20,10 +21,10 @@ const MOUSE_SENSITIVITY = 0.03
 const mainDiv = document.querySelector('#mainDiv')
 
 const testDiv = document.createElement('div')
-testDiv.innerText = "hellaur"
-testDiv.style.backgroundColor = "white"
-testDiv.style.color = "black"
-testDiv.style.fontSize = "200%"
+testDiv.innerText = 'hellaur'
+testDiv.style.backgroundColor = 'white'
+testDiv.style.color = 'black'
+testDiv.style.fontSize = '200%'
 
 mainDiv.appendChild(testDiv)
 
@@ -37,6 +38,7 @@ let g_scene
 const g_raycaster = new THREE.Raycaster()
 let g_clock = new THREE.Clock() // use this for delta time
 let g_ground
+let g_level
 
 let g_dragging = false
 
@@ -109,7 +111,7 @@ class Wall {
 
 //variables :3
 
-let inventory = [ (new Item("platform", 3, new Platform(g_scene, 20))) ]
+let inventory = [new Item('platform', 3, new Platform(g_scene, 20))]
 
 function main() {
     //set up Three.js
@@ -191,6 +193,9 @@ function main() {
     //initially render the scene
     g_renderer.render(scene, camera)
 
+    //load level
+    g_level = new Level(g_scene, g_cannon_world, Level_1)
+
     requestAnimationFrame(render)
 }
 
@@ -258,10 +263,9 @@ function setupInventory() {
     buttonsDiv.id = 'buttonsDiv'
     for (const i of inventory) {
         const newButton = document.createElement('button')
-        newButton.innerText = i.name + " x" + i.count
+        newButton.innerText = i.name + ' x' + i.count
         buttonsDiv.appendChild(newButton)
     }
-   
 }
 setupInventory()
 
