@@ -120,5 +120,11 @@ export class Robot {
         if (this.mixer) this.mixer.update(delta)
     }
 
+    getbody() {
+        return this.body
+    }
+
+    remove() {}
+
     //need to put a state machine up in this to make it work well
 }

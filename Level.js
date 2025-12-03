@@ -108,7 +108,11 @@ export class Level {
             case 41: // crusher left / right
                 world_object = null
             case 50: // finish object
-                world_object = null
+                world_object = new Finish(
+                    his.scene,
+                    this.cannon_world,
+                    position
+                )
             case 60:
                 world_object = new Spring(
                     this.scene,
