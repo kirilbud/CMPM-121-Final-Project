@@ -6,5 +6,9 @@ import { PhysicsObject } from './PhysicsObject.js'
 
 //to be implemented
 export class Border extends WorldObject {
-    constructor(scene, cannon, position) {}
+    constructor(scene, cannon, position) {
+        super(scene, cannon, position)
+        this.setPhysics()
+        this.setColor(0xf5a9b8)
+    }
 }

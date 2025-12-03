@@ -7,13 +7,14 @@ import { PhysicsObject } from './PhysicsObject.js'
 export class WorldObject {
     constructor(scene, cannon, position) {
         this.geometry = new THREE.BoxGeometry(1, 1, 1)
+        this.shape = new CANNON.Box(new CANNON.Vec3(1, 1, 1))
         this.material = new THREE.MeshPhongMaterial({ color: 0xf48072 })
         this.scene = scene
         this.cannon = cannon
         this.position = position
         this.mesh = new THREE.Mesh(this.geometry, this.material)
 
-        //this.physicsObject = new PhysicsObject()
+        this.physicsObject = null
     }
 
     setgltf(url) {
@@ -24,7 +25,7 @@ export class WorldObject {
             scene.add(root)
 
             this.mixer = new THREE.AnimationMixer(root)
-            this.geometry = root
+            this.mesh = root
 
             const clips = gltf.animations
 
@@ -36,6 +37,15 @@ export class WorldObject {
             action.play()
             //make sure to do action.stop before playing another animation
         })
+    }
+
+    setPhysics() {
+        this.physicsObject = new PhysicsObject(this.geometry, this.shape)
+        this.physicsObject.setmesh(this.mesh)
+    }
+
+    setColor(inputColor) {
+        this.material.color = inputColor
     }
 
     remove() {

@@ -4,6 +4,12 @@ import * as CANNON from 'https://unpkg.com/cannon-es@0.19.0/dist/cannon-es.js'
 
 import { WorldObject } from './worldObjectClasses/worldObject.js'
 
+import { Border } from './worldObjectClasses/Border.js'
+import { Crusher } from './worldObjectClasses/Crusher.js'
+import { Finish } from './worldObjectClasses/Finish.js'
+import { Platform } from './worldObjectClasses/Platform.js'
+import { RobotSpawner } from './worldObjectClasses/RobotSpawner.js'
+
 export class Level {
     //using code I stole from the actor class
     constructor(g_scene, cannon_world, level_data) {
@@ -29,7 +35,8 @@ export class Level {
             for (let j = 0; j < row.length; j++) {
                 const object_id = row[j]
                 //read then create new object depending on level data
-                let world_object = this.getNewObject(object_id)
+                const object_position = THREE.Vector3(0, i, j)
+                let world_object = this.getNewObject(object_id, object_position)
 
                 object_row.push(world_object)
             }
@@ -61,7 +68,7 @@ export class Level {
     // 50 finish object
     // to be filled out
 
-    getNewObject(object_id) {
+    getNewObject(object_id, position) {
         //returns a new object of the corisponding id
         let world_object = null
         switch (object_id) {
@@ -75,7 +82,11 @@ export class Level {
                 world_object = null
                 break
             case 30: // border
-                world_object = null
+                world_object = new Border(
+                    this.scene,
+                    this.cannon_world,
+                    position
+                )
                 break
             case 40: // crusher up / down
                 world_object = null
