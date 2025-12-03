@@ -14,6 +14,7 @@ window.onload = function () {
 const CAMERA_FOV = 50
 const MOUSE_SENSITIVITY = 0.03
 
+
 //GLOBALS
 //g_ stands for this variable being a global variable
 let g_canvas
@@ -134,18 +135,18 @@ function main() {
     )
 
     //add ground plane
-    const plane = new PhysicsObject(
+    const ground = new PhysicsObject(
         new THREE.PlaneGeometry(5, 20),
         new CANNON.Box(new CANNON.Vec3(2.5, 9, 1))
     )
-    plane.instantiateAtPos(g_scene, g_cannon_world, new CANNON.Vec3(0, -5, 0))
-    plane.body.quaternion.setFromAxisAngle(
+    ground.instantiateAtPos(g_scene, g_cannon_world, new CANNON.Vec3(0, -5, 0))
+    ground.body.quaternion.setFromAxisAngle(
         new CANNON.Vec3(1, 0, 0),
         THREE.MathUtils.degToRad(-90)
     )
     //layer 2 for colliding with ground
-    plane.mesh.layers.enable(2)
-    g_ground = plane.mesh
+    ground.mesh.layers.enable(2)
+    g_ground = ground.mesh
 
     //add robots
     const robot = new Robot(g_scene, g_cannon_world, new CANNON.Vec3(0, 1, 0))
