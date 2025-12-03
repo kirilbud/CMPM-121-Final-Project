@@ -24,7 +24,7 @@ export class Robot {
         this.body.angularDamping = 1
 
         //restricts movement to a 2D axis.
-        this.body.linearFactor = new THREE.Vector3(0, 1, 1)
+        this.body.linearFactor = new CANNON.Vec3(0, 1, 1)
 
         //by default, actor moves left.
         this.dir = -1
@@ -70,6 +70,13 @@ export class Robot {
             //make sure to do action.stop before playing another animation
         })
 
+        //set up colision layers
+        const ENV_GROUP = 1
+        const ROBOT_GROUP = 1 << 1
+
+        this.body.collisionFilterGroup = ROBOT_GROUP
+        this.body.collisionFilterMask = ENV_GROUP
+
         //add physics event
         self.addEventListener('physicsStep', () => {
             if (this.bot !== undefined) {
@@ -82,9 +89,9 @@ export class Robot {
                 this.scene.children,
                 true
             )
-            if (groundIntersects.length > 0) {
-                this.body.velocity.z = 1 * this.dir
-            }
+
+            this.body.velocity.z = 1 * this.dir
+
             const wallIntersects = this.wallCheck.intersectObjects(
                 this.scene.children,
                 true

@@ -233,8 +233,8 @@ function main() {
     g_scene.add(directionalLight)
 
     //add robots
-    const robot = new Robot(g_scene, g_cannon_world, new CANNON.Vec3(0, 3, -3))
-    g_robots.push(robot)
+    //const robot = new Robot(g_scene, g_cannon_world, new CANNON.Vec3(0, 3, -3))
+    //g_robots.push(robot)
 
     //initially render the scene
     g_renderer.render(scene, camera)

@@ -134,6 +134,9 @@ export class Level {
             }
         }
 
-        //iterate through level
+        //iterate through robots
+        for (const robot of this.robots) {
+            robot.update(delta)
+        }
     }
 }

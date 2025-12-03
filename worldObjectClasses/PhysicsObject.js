@@ -10,6 +10,8 @@ export class PhysicsObject {
         this.layers = this.mesh.layers
         this.bodyShape = inputShape
         this.body = new CANNON.Body({ shape: this.bodyShape })
+
+        this.body.collisionFilterGroup = 1
     }
     setMass(massInput) {
         this.body.mass = massInput
