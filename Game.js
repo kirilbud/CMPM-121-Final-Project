@@ -21,8 +21,8 @@ const mainDiv = document.querySelector('#mainDiv')
 
 const testDiv = document.createElement('div')
 testDiv.innerText = "hellaur"
-testDiv.style.backgroundColor = "black"
-testDiv.style.color = "white"
+testDiv.style.backgroundColor = "white"
+testDiv.style.color = "black"
 testDiv.style.fontSize = "200%"
 
 mainDiv.appendChild(testDiv)
@@ -109,9 +109,7 @@ class Wall {
 
 //variables :3
 
-let itemsMap = new Map([
-    new Item("platform", 3, new Platform(g_scene, 20))
-])
+let inventory = [ (new Item("platform", 3, new Platform(g_scene, 20))) ]
 
 function main() {
     //set up Three.js
@@ -255,13 +253,17 @@ let canPlace = false
 let buildPoint = new CANNON.Vec3(0, 0, 0)
 
 function setupInventory() {
-    for (i of itemsMap) {
+    const buttonsDiv = document.createElement('div')
+    testDiv.appendChild(buttonsDiv)
+    buttonsDiv.id = 'buttonsDiv'
+    for (const i of inventory) {
         const newButton = document.createElement('button')
         newButton.innerText = i.name + " x" + i.count
-        testDiv.appendChild(newButton)
+        buttonsDiv.appendChild(newButton)
     }
    
 }
+setupInventory()
 
 addEventListener('pointermove', (e) => {
     const mouse = new THREE.Vector2()
