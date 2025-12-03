@@ -5,6 +5,8 @@ import * as CANNON from 'https://unpkg.com/cannon-es@0.19.0/dist/cannon-es.js'
 import { Robot } from './Robot.js'
 import { PhysicsObject } from './PhysicsObject.js'
 import { WorldObject } from './worldObjectClasses/worldObject.js'
+import { Level } from './Level.js'
+import { Platform } from './worldObjectClasses/Platform.js'
 
 //wack ass onload work around
 window.onload = function () {
@@ -52,11 +54,6 @@ const g_cannon_world = new CANNON.World({
 
 const g_physicsStep = new Event('physicsStep')
 
-let itemsMap = new Map([
-    [new Item(Wall, 2, ), 1]
-])
-
-
 class mouseVector {
     constructor() {
         ;(this.x = 0), (this.y = 0)
@@ -68,10 +65,10 @@ class mouseVector {
 }
 
 class Item {
-    constructor(nameInput, countInput, objInput) {
+    constructor(nameInput, countInput, numInput) {
         this.name = nameInput
         this.count = countInput
-        this.worldObject = objInput
+        this.objnumber = numInput
     }
     getName() {
         return this.name
@@ -81,6 +78,9 @@ class Item {
     }
     setCount(input) {
         this.count = input
+    }
+    instantiate(position) {
+        return
     }
 }
 
@@ -106,6 +106,12 @@ class Wall {
         }
     }
 }
+
+//variables :3
+
+let itemsMap = new Map([
+    new Item("platform", 3, new Platform(g_scene, 20))
+])
 
 function main() {
     //set up Three.js
@@ -249,11 +255,12 @@ let canPlace = false
 let buildPoint = new CANNON.Vec3(0, 0, 0)
 
 function setupInventory() {
-    /*for (i of itemsMap) {
+    for (i of itemsMap) {
         const newButton = document.createElement('button')
-        newButton.innerText = 
-    }*/
-   return
+        newButton.innerText = i.name + " x" + i.count
+        testDiv.appendChild(newButton)
+    }
+   
 }
 
 addEventListener('pointermove', (e) => {
