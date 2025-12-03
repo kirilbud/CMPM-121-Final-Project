@@ -303,6 +303,7 @@ addEventListener('mousedown', (event) => {
         g_mouse_last_pos = new mouseVector()
         g_mouse_last_pos.set(event.x, event.y)
     }
+    console.log(event.x + " - " + event.y)
 })
 
 addEventListener('mouseup', (event) => {
