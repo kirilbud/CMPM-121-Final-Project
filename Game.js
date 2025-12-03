@@ -9,6 +9,9 @@ import { Level } from './Level.js'
 import { Platform } from './worldObjectClasses/Platform.js'
 import { Level_1 } from './WorldData.js'
 
+let canPlace = false
+let buildPoint = new CANNON.Vec3(0, 0, 0)
+
 //wack ass onload work around
 window.onload = function () {
     main()
@@ -20,13 +23,13 @@ const MOUSE_SENSITIVITY = 0.03
 
 const mainDiv = document.querySelector('#mainDiv')
 
-const testDiv = document.createElement('div')
-testDiv.innerText = 'hellaur'
-testDiv.style.backgroundColor = 'white'
-testDiv.style.color = 'black'
-testDiv.style.fontSize = '200%'
+const uiDiv = document.createElement('div')
+uiDiv.innerText = 'hellaur'
+uiDiv.style.backgroundColor = 'black'
+uiDiv.style.color = 'white'
+uiDiv.style.fontSize = '200%'
 
-mainDiv.appendChild(testDiv)
+mainDiv.appendChild(uiDiv)
 
 //GLOBALS
 //g_ stands for this variable being a global variable
@@ -113,6 +116,7 @@ class Wall {
 
 let inventory = [new Item('platform', 3, new Platform(g_scene, 20))]
 
+
 function main() {
     //set up Three.js
     const canvas = document.querySelector('#c')
@@ -151,7 +155,6 @@ function main() {
 
         g_raycaster.setFromCamera(mouse, g_camera)
         console.log("mouse: " + mouse.x + " - " + mouse.y)
-        console.log("vect: " + finalVect.x + " - " + finalVect.y)
 
         const intersects = g_raycaster.intersectObjects(g_scene.children, true)
         if (intersects.length > 0) {
@@ -321,20 +324,19 @@ function rotateCamera(axis, angle) {
     }
 }
 
-let canPlace = false
-let buildPoint = new CANNON.Vec3(0, 0, 0)
-
-function setupInventory() {
+function setupInventoryUI() {
+    console.log("adding buttons!")
     const buttonsDiv = document.createElement('div')
-    testDiv.appendChild(buttonsDiv)
+    uiDiv.appendChild(buttonsDiv)
     buttonsDiv.id = 'buttonsDiv'
     for (const i of inventory) {
+        console.log("added button!")
         const newButton = document.createElement('button')
         newButton.innerText = i.name + ' x' + i.count
         buttonsDiv.appendChild(newButton)
     }
 }
-setupInventory()
+setupInventoryUI()
 
 
 
