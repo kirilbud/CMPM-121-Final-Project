@@ -1,6 +1,8 @@
 import * as THREE from 'three'
 import { GLTFLoader } from './lib/addons/GLTFLoader.js'
 import * as CANNON from 'https://unpkg.com/cannon-es@0.19.0/dist/cannon-es.js'
+
+
 import {WorldObject} from `./worldObjectClasses/worldObject.js`
 
 export class Cursor {
@@ -13,9 +15,9 @@ export class Cursor {
             //create new objects and place into array
             const object_row = []
             for (let j = 0; j < row.length; j++) {
-                const element = row[j]
+                const object_id = row[j]
                 //read then create new object depending on level data
-                let world_object
+                let world_object = this.getNewObject(object_id)
 
                 object_row.push(world_object)
             }
@@ -31,24 +33,34 @@ export class Cursor {
     // 30 border
     // 40 crusher up/down
     // 41 crusher left/right
+    // 50 finish object
     // to be filled out
 
-    
-    getNewObject(object_id) { //returns a new object of the corisponding id
-        let world_object
+    getNewObject(object_id) {
+        //returns a new object of the corisponding id
+        let world_object = null
         switch (object_id) {
             case 0: //air
                 world_object = null
                 break
-            case 10 : //spawner
+            case 10: //robotSpawner (5 robots)
                 world_object = null
                 break
-            case 10 : //spawner
+            case 20: //platform
                 world_object = null
                 break
-            default:
+            case 30: //border
+                world_object = null
+                break
+            case 40: //crusher up/down
+                world_object = null
+                break
+            case 41: //crusher left/right
+                world_object = null
                 break
         }
+
+        return world_object
     }
 
     update(delta) {}

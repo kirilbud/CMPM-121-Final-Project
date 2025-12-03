@@ -9,6 +9,7 @@
 // 30 border
 // 40 crusher up/down
 // 41 crusher left/right
+// 50 finish object
 // to be filled out
 
 // levels must be surounded by a border to let players know where the level area
