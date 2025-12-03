@@ -1,10 +1,11 @@
 import * as THREE from 'three'
 import { GLTFLoader } from './lib/addons/GLTFLoader.js'
 
-//planning on making like a little drone that the player controlls as the mouse cursor
+//little pen that follows the cursor
 export class Cursor {
     //using code I stole from the actor class
     constructor(scene, cannon_world, position) {
+        let url = ``
         gltfLoader.load(url, (gltf) => {
             const root = gltf.scene
             root.scale.set(scale, scale, scale)

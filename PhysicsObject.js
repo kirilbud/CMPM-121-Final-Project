@@ -23,12 +23,14 @@ export class PhysicsObject {
     setColor(inputColor) {
         this.material.color = inputColor
     }
+    setmesh(mesh) {
+        this.mesh = mesh
+    }
     instantiate(inputScene, inputWorld) {
         inputScene.add(this.mesh)
         inputWorld.addBody(this.body)
 
         self.addEventListener('physicsStep', () => {
-            //console.log(this.mesh.position.y + " - " + this.body.position.y)
             if (this.body.position) {
                 this.mesh.position.copy(this.body.position)
                 this.mesh.quaternion.copy(this.body.quaternion)

@@ -1,22 +1,30 @@
 import * as THREE from 'three'
-import { GLTFLoader } from './lib/addons/GLTFLoader.js'
+import { GLTFLoader } from '../lib/addons/GLTFLoader.js'
 import * as CANNON from 'https://unpkg.com/cannon-es@0.19.0/dist/cannon-es.js'
+import { PhysicsObject } from './PhysicsObject.js'
 
 //to be implemented
 export class WorldObject {
     constructor(scene, cannon, position) {
-        this.shape = new CANNON.Box(new CANNON.Vec3(1, 1, 1))
         this.geometry = new THREE.BoxGeometry(1, 1, 1)
+        this.material = new THREE.MeshPhongMaterial({ color: 0xf48072 })
+        this.scene = scene
+        this.cannon = cannon
+        this.position = position
+        this.mesh = new THREE.Mesh(this.geometry, this.material)
+
+        this.physicsObject = new PhysicsObject()
     }
+
     setgltf(url) {
         gltfLoader.load(url, (gltf) => {
             const root = gltf.scene
-            root.scale.set(scale, scale, scale)
-            root.position.set(position)
+            root.scale.set(1, 1, 1)
+            root.position.set(this.position)
             scene.add(root)
 
             this.mixer = new THREE.AnimationMixer(root)
-            this.bot = root
+            this.geometry = root
 
             const clips = gltf.animations
 
