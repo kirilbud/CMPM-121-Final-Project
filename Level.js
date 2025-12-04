@@ -123,7 +123,7 @@ export class Level {
                 )
             case 50: // finish object
                 world_object = new Finish(
-                    his.scene,
+                    this.scene,
                     this.cannon_world,
                     position
                 )
