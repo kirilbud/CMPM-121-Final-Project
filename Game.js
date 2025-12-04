@@ -8,6 +8,7 @@ import { WorldObject } from './worldObjectClasses/worldObject.js'
 import { Level } from './Level.js'
 import { Platform } from './worldObjectClasses/Platform.js'
 import { Level_1 } from './WorldData.js'
+import { gameMenu } from './WorldData.js'
 
 let canPlace = false
 let buildPoint = new CANNON.Vec3(0, 0, 0)
@@ -247,7 +248,7 @@ function main() {
     g_renderer.render(scene, camera)
 
     //load level
-    g_level = new Level(g_scene, g_cannon_world, Level_1)
+    g_level = new Level(g_scene, g_cannon_world, gameMenu)
 
     requestAnimationFrame(render)
 }
