@@ -210,7 +210,7 @@ function main() {
     // Load and set the background texture
     var loader = new THREE.TextureLoader()
 
-    loader.load('./graph2.png', function (texture) {
+    loader.load('./graph4.png', function (texture) {
         g_scene.background = texture
     })
 
@@ -221,7 +221,7 @@ function main() {
 
     camera.rotation.y = -Math.PI / 2
 
-    camera.position.z = 0
+    camera.position.z = 4
     camera.position.y = 0
     camera.position.x = -12
 
@@ -231,7 +231,7 @@ function main() {
 
     //Lighting
     //add ambient light aka what colors are the shadows
-    var ambient_light = new THREE.AmbientLight(0xffffff, 0.3)
+    var ambient_light = new THREE.AmbientLight(0xffffff, 0.7)
     g_scene.add(ambient_light)
 
     const directionalLight = new THREE.DirectionalLight(0xffffff, 1)
