@@ -207,13 +207,12 @@ function main() {
 
     g_scene.add(g_focus)
 
+    // Load and set the background texture
     var loader = new THREE.TextureLoader()
 
-    loader.load('./graph-paper.png', function (texture) {
+    loader.load('./graph2.png', function (texture) {
         g_scene.background = texture
     })
-
-    console.log('added a bg')
 
     //set camera
     g_focus.add(camera)
