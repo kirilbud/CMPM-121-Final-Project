@@ -211,7 +211,7 @@ function main() {
     // Load and set the background texture
     var loader = new THREE.TextureLoader()
 
-    loader.load('./graph4.png', function (texture) {
+    loader.load('./graph6.png', function (texture) {
         g_scene.background = texture
     })
 
@@ -232,7 +232,7 @@ function main() {
 
     //Lighting
     //add ambient light aka what colors are the shadows
-    var ambient_light = new THREE.AmbientLight(0xffffff, 0.7)
+    var ambient_light = new THREE.AmbientLight(0xffffff, 0.1)
     g_scene.add(ambient_light)
 
     const directionalLight = new THREE.DirectionalLight(0xffffff, 1)
