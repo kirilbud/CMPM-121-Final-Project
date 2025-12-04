@@ -215,6 +215,8 @@ function main() {
         g_scene.background = texture
     })
 
+    g_scene.backgroundIntensity = 1
+
     //set camera
     g_focus.add(camera)
     g_camera_pivot = g_focus
@@ -232,7 +234,7 @@ function main() {
 
     //Lighting
     //add ambient light aka what colors are the shadows
-    var ambient_light = new THREE.AmbientLight(0xffffff, 0.1)
+    var ambient_light = new THREE.AmbientLight(0xffffff, 0.7)
     g_scene.add(ambient_light)
 
     const directionalLight = new THREE.DirectionalLight(0xffffff, 1)
