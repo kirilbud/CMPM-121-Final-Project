@@ -120,11 +120,21 @@ export class Robot {
         if (this.mixer) this.mixer.update(delta)
     }
 
-    getbody() {
+    getBody() {
         return this.body
     }
 
     remove() {}
+
+    getGridPosition() {
+        if (this.bot === undefined) {
+            return
+        }
+        return new THREE.Vector2(
+            Math.floor(this.bot.position.z),
+            Math.floor(-this.bot.position.y)
+        )
+    }
 
     //need to put a state machine up in this to make it work well
 }

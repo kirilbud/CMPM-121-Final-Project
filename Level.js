@@ -89,7 +89,8 @@ export class Level {
                     this.scene,
                     this.cannon_world,
                     position,
-                    this.robots
+                    this.robots,
+                    5
                 )
                 break
             case 20: // platform
@@ -127,6 +128,7 @@ export class Level {
                     this.cannon_world,
                     position
                 )
+                console.log(world_object)
             case 60:
                 world_object = new Spring(
                     this.scene,
@@ -155,6 +157,21 @@ export class Level {
         //iterate through robots
         for (const robot of this.robots) {
             robot.update(delta)
+
+            const robot_grid_position = robot.getGridPosition()
+
+            if (
+                robot_grid_position === undefined ||
+                robot_grid_position.x <= 0 ||
+                robot_grid_position.y <= 0
+            ) {
+                continue
+            }
+            const current_level_object =
+                this.level_objects[robot_grid_position.y][robot_grid_position.x]
+            if (current_level_object) {
+                current_level_object.interact(robot)
+            }
         }
     }
 }

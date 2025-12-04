@@ -7,10 +7,11 @@ import { Robot } from '../Robot.js'
 
 //to be implemented
 export class RobotSpawner extends WorldObject {
-    constructor(scene, cannon, position, robot_array) {
+    constructor(scene, cannon, position, robot_array, amount) {
         super(scene, cannon, position)
-        this.robots_to_spawn = 5
-        this.robot_spawn_timer = 2
+        this.toatal_robots = amount
+        this.robots_to_spawn = this.toatal_robots
+        this.robot_spawn_timer = 0
 
         this.setColor(0x9c59d1)
         this.robot_array = robot_array
@@ -20,7 +21,7 @@ export class RobotSpawner extends WorldObject {
 
         this.robot_spawn_timer = this.robot_spawn_timer - delta
         if (this.robot_spawn_timer <= 0 && this.robots_to_spawn != 0) {
-            this.robot_spawn_timer = 3
+            this.robot_spawn_timer = 2
             this.robots_to_spawn = this.robots_to_spawn - 1
             this.robot_array.push(
                 new Robot(this.scene, this.cannon, this.position)
