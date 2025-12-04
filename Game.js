@@ -207,6 +207,12 @@ function main() {
 
     g_scene.add(g_focus)
 
+    var loader = new THREE.TextureLoader()
+
+    loader.load('path/to/your/image.jpg', function (texture) {
+        scene.background = texture
+    })
+
     //set camera
     g_focus.add(camera)
     g_camera_pivot = g_focus
