@@ -6,5 +6,18 @@ import { PhysicsObject } from './PhysicsObject.js'
 
 //to be implemented
 export class Crusher extends WorldObject {
-    constructor(scene, cannon, position) {}
+    constructor(scene, cannon, position, varient) {
+        super(scene, cannon, position)
+
+        this.setColor(0xff0000)
+
+        switch (varient) {
+            case 1:
+                //up down
+                break
+            default:
+                //left right
+                break
+        }
+    }
 }

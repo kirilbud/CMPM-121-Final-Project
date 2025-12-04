@@ -93,7 +93,11 @@ export class Level {
                 )
                 break
             case 20: // platform
-                world_object = null
+                world_object = new Platform(
+                    this.scene,
+                    this.cannon_world,
+                    position
+                )
                 break
             case 30: // border
                 world_object = new Border(
@@ -103,10 +107,20 @@ export class Level {
                 )
                 break
             case 40: // crusher up / down
-                world_object = null
+                world_object = new Crusher(
+                    his.scene,
+                    this.cannon_world,
+                    position,
+                    1
+                )
                 break
             case 41: // crusher left / right
-                world_object = null
+                world_object = new Crusher(
+                    his.scene,
+                    this.cannon_world,
+                    position,
+                    2
+                )
             case 50: // finish object
                 world_object = new Finish(
                     his.scene,
