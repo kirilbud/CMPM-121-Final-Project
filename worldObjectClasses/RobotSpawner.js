@@ -18,7 +18,7 @@ export class RobotSpawner extends WorldObject {
     }
     update(delta) {
         super.update(delta)
-
+        //spawn robots if on cool down and there is still robots to spawn
         this.robot_spawn_timer = this.robot_spawn_timer - delta
         if (this.robot_spawn_timer <= 0 && this.robots_to_spawn != 0) {
             this.robot_spawn_timer = 2

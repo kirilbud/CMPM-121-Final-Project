@@ -128,7 +128,7 @@ export class Level {
                     this.cannon_world,
                     position
                 )
-                console.log(world_object)
+                break
             case 60:
                 world_object = new Spring(
                     this.scene,

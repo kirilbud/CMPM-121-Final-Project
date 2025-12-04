@@ -10,4 +10,8 @@ export class Finish extends WorldObject {
         super(scene, cannon, position)
         this.setColor(0xffffff)
     }
+    interact(robot) {
+        //replace with a jumpscare or something idk anymore
+        alert('you won')
+    }
 }

@@ -131,8 +131,8 @@ export class Robot {
             return
         }
         return new THREE.Vector2(
-            Math.floor(this.bot.position.z),
-            Math.floor(-this.bot.position.y)
+            Math.floor(this.bot.position.z + 0.5),
+            Math.floor(-this.bot.position.y - 0.5)
         )
     }
 
