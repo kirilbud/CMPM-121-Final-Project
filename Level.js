@@ -108,7 +108,7 @@ export class Level {
                 break
             case 40: // crusher up / down
                 world_object = new Crusher(
-                    his.scene,
+                    this.scene,
                     this.cannon_world,
                     position,
                     1
@@ -116,7 +116,7 @@ export class Level {
                 break
             case 41: // crusher left / right
                 world_object = new Crusher(
-                    his.scene,
+                    this.scene,
                     this.cannon_world,
                     position,
                     2
