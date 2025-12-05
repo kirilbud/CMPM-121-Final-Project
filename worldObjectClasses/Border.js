@@ -19,6 +19,12 @@ export class Border extends WorldObject {
             this.loaded = false
             this.mesh.layers.enable(3)
             console.log(this.mesh)
+
+            this.mesh.traverse(function (object) {
+                if (object.isMesh) {
+                    object.layers.enable(3)
+                }
+            })
         }
     }
 }
