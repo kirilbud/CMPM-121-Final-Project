@@ -19,7 +19,7 @@ export class Robot {
         this.clips = {} //dictionary for actions for easy stop start
 
         //physics variables
-        this.bodyShape = new CANNON.Box(new CANNON.Vec3(0.2, 0.5, 0.1))
+        this.bodyShape = new CANNON.Box(new CANNON.Vec3(0.2, 0.1, 0.1))
         this.body = new CANNON.Body({ mass: 1, shape: this.bodyShape })
         this.body.angularDamping = 1
 
@@ -81,7 +81,7 @@ export class Robot {
         self.addEventListener('physicsStep', () => {
             if (this.bot !== undefined) {
                 this.bot.position.copy(this.body.position)
-                this.bot.position.y = this.bot.position.y - 1
+                this.bot.position.y = this.bot.position.y - 0.65
                 //ignore the wierd math its just to get this.dir to go from -1 and 1 to 0 and -1
                 this.bot.rotation.y = Math.PI * (this.dir * 0.5 - 0.5)
             }
