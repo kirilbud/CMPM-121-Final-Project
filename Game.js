@@ -203,7 +203,7 @@ function SetUpCanvasChungus(canvas) {
         const rect = canvas.getBoundingClientRect()
         const xCoord = event.clientX - rect.left
         const yCoord = event.clientY - rect.top
-        if ((event.button == 0) && (g_current_item != null)) {
+        if (event.button == 0 && g_current_item != null) {
             if (g_current_item.getCount() > 0) {
                 const newObj = g_level.placeObject(
                     buildPoint.x + 2,
@@ -214,7 +214,6 @@ function SetUpCanvasChungus(canvas) {
                 g_current_item.setCount(g_current_item.getCount() - 1)
                 uiDiv.dispatchEvent(placedEvent)
             }
-            
         } else if (event.button == 2) {
             g_dragging = true
             g_mouse_last_pos = new mouseVector()
@@ -342,10 +341,12 @@ function setUpInventoryUI(inv) {
             console.log('setting item to: ', i.name)
             console.log('item id is ', storedValue.id)
             g_current_item = storedValue
-            
         })
         uiDiv.addEventListener('itemUsed', () => {
-            console.log("current item current count: ", g_current_item.getCount())
+            console.log(
+                'current item current count: ',
+                g_current_item.getCount()
+            )
             newButton.innerText = i.name + ' x' + i.count
         })
     }

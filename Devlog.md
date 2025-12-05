@@ -35,7 +35,6 @@ function that does both of the below:
 
 when level is loaded, center camera on spawning object
 
-
 Inventory:
 
 item object - contains worldobject, modifies current item to that object
@@ -45,7 +44,6 @@ dictionary of items, item obj paired with amount
 display what current item is
 
 buttons for each item, including text for amount in inventory
-
 
 Victory:
 
@@ -59,7 +57,7 @@ on click, load level
 
 Mae
 [ ] Placing blocks
-[ ] Delete robots when colliding with the goal
+[X] Delete robots when colliding with the goal
 [ ] Make a counter for robotsSaved and robotsDestroyed for final survivial rate
 [ ] Add stars to the level so that a secret level is revealed at the end (continuous inventory)
 
@@ -71,4 +69,4 @@ Nina
 [ ] Create a Play button that takes the player to the first level
 [ ] Create the credits button and add them
 [ ] Create a button that changes the language of the game
-[ ] Make it so that when the player clicks on an interactable object, text appears 
+[ ] Make it so that when the player clicks on an interactable object, text appears
