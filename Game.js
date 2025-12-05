@@ -211,6 +211,9 @@ function SetUpCanvasChungus(canvas) {
                     buildPoint.y + 2,
                     g_current_item.id
                 )
+                g_current_item.setCount(g_current_item.getCount() - 1)
+                const placedEvent = new Event("itemUsed")
+                dispatchEvent(placedEvent)
             }
         } else if (event.button == 2) {
             g_dragging = true
@@ -339,8 +342,11 @@ function setUpInventoryUI(inv) {
             console.log('setting item to: ', i.name)
             console.log('item id is ', storedValue.id)
             g_current_item = storedValue
-            g_current_item.setCount(g_current_item.getCount() - 1)
-            newButton.newButton.innerText = i.name + ' x' + i.count
+            
+        })
+        newButton.addEventListener("itemUsed", () => {
+            console.log("current item current count: ", g_current_item.getCount())
+            newButton.innerText = i.name + ' x' + i.count
         })
     }
 }
