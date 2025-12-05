@@ -54,6 +54,7 @@ const g_cannon_world = new CANNON.World({
 })
 
 const g_physicsStep = new Event('physicsStep')
+const placedEvent = new Event("itemUsed")
 
 class mouseVector {
     constructor() {
@@ -203,16 +204,13 @@ function SetUpCanvasChungus(canvas) {
         const xCoord = event.clientX - rect.left
         const yCoord = event.clientY - rect.top
         if (event.button == 0) {
-            console.log('click')
             if (g_current_item != null) {
-                console.log('placing ', g_current_item)
                 const newObj = g_level.placeObject(
                     buildPoint.x + 2,
                     buildPoint.y + 2,
                     g_current_item.id
                 )
                 g_current_item.setCount(g_current_item.getCount() - 1)
-                const placedEvent = new Event("itemUsed")
                 dispatchEvent(placedEvent)
             }
         } else if (event.button == 2) {

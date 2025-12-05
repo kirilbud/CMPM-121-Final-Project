@@ -162,12 +162,10 @@ export class Level {
     // to be filled out
 
     getNewObject(object_id, position) {
-        console.log('getting object of id: ', object_id)
         //returns a new object of the corisponding id
         let world_object = null
         switch (object_id) {
             case 0: // air
-                console.log('case: ', object_id)
                 world_object = null
                 break
             case 10: // robotSpawner (5 robots)
@@ -187,7 +185,6 @@ export class Level {
                 )
                 break
             case 30: // border
-                console.log('case: ', object_id)
                 world_object = new Border(
                     this.scene,
                     this.cannon_world,
@@ -228,7 +225,6 @@ export class Level {
                 world_object = new Star(this.scene, this.cannon_world, position)
                 break
         }
-        console.log(world_object)
         return world_object
     }
 
