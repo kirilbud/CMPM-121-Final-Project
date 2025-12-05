@@ -10,11 +10,8 @@ import { Platform } from './worldObjectClasses/Platform.js'
 import { Level_1 } from './WorldData.js'
 import { gameMenu } from './WorldData.js'
 
-
-
-
 //constants
-const CAMERA_FOV = 50
+const CAMERA_FOV = 60 // camera zoom
 const MOUSE_SENSITIVITY = 0.03
 
 const mainDiv = document.querySelector('#mainDiv')
@@ -144,7 +141,6 @@ function main() {
 
     g_scene.add(g_focus)
 
-
     // Load and set the background texture
     var loader = new THREE.TextureLoader()
 
@@ -163,7 +159,6 @@ function main() {
     camera.position.z = 4
     camera.position.y = -2
     camera.position.x = -12
- 
 
     g_camera_pivot.position.z = 5
     g_camera_pivot.position.y = -5
@@ -179,7 +174,6 @@ function main() {
     directionalLight.target.position.set(0, 0, 0)
     g_scene.add(directionalLight)
 
-
     //initially render the scene
     g_renderer.render(scene, camera)
 
@@ -190,13 +184,12 @@ function main() {
     setUpInventoryUI(inventory)
     g_inventory = inventory
 
-    
     requestAnimationFrame(render)
 }
 
 //sets up the canvas chungus!!!! :D
 function SetUpCanvasChungus(canvas) {
-        canvas.addEventListener('mousedown', (event) => {
+    canvas.addEventListener('mousedown', (event) => {
         //check what button the player is clicking
         //0 for left click
         //2 for right click
@@ -261,7 +254,6 @@ function SetUpCanvasChungus(canvas) {
     })
 }
 
-
 // returns true if the canvas needs to be resized due to the browser being resized
 function resizeRendererToDisplaySize(renderer) {
     const canvas = renderer.domElement
@@ -296,7 +288,7 @@ function render(time) {
         g_camera.updateProjectionMatrix()
     }
     g_renderer.render(g_scene, g_camera) //render the next frame
-    
+
     //render level
     g_level.update(dt)
 
@@ -321,12 +313,12 @@ function rotateCamera(axis, angle) {
 }
 
 function setUpInventoryUI(inv) {
-    console.log("adding buttons!")
+    console.log('adding buttons!')
     const buttonsDiv = document.createElement('div')
     uiDiv.appendChild(buttonsDiv)
     buttonsDiv.id = 'buttonsDiv'
     for (const i of inv) {
-        console.log("added button!")
+        console.log('added button!')
         const newButton = document.createElement('button')
         newButton.innerText = i.name + ' x' + i.count
         buttonsDiv.appendChild(newButton)

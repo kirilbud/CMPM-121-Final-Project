@@ -72,9 +72,17 @@ export class Level {
                 return sprite
             }
 
-            const spriteLabel = createTextSprite('Automaton')
-            spriteLabel.position.set(-2, -4, 9)
-            this.g_scene.add(spriteLabel)
+            const gameTitle = createTextSprite('Automaton')
+            const playButton = createTextSprite('Play')
+            const questionButton = createTextSprite('?')
+
+            gameTitle.position.set(-2, -4, 9)
+            playButton.position.set(0, -12, 12)
+            questionButton.position.set(0, -12, 25)
+
+            this.g_scene.add(playButton)
+            this.g_scene.add(gameTitle)
+            this.g_scene.add(questionButton)
         }
     }
 
