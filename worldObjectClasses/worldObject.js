@@ -34,6 +34,7 @@ export class WorldObject {
             this.mixer = new THREE.AnimationMixer(root)
             this.mesh.removeFromParent()
             this.mesh = root
+            //this.mesh.layers.enable(3)
 
             this.clips = gltf.animations
 
@@ -72,10 +73,6 @@ export class WorldObject {
 
     update(delta) {
         if (this.mixer) this.mixer.update(delta)
-
-        if (this.loaded) {
-            this.mesh.layers.enable(3)
-        }
     }
 
     interact(robot) {}
