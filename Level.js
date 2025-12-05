@@ -13,6 +13,7 @@ import { Spring } from './worldObjectClasses/Spring.js'
 
 import { Robot } from './Robot.js'
 import { Level_1 } from './WorldData.js'
+import { gameMenu } from './WorldData.js'
 
 export class Level {
     //using code I stole from the actor class
@@ -51,6 +52,30 @@ export class Level {
         }
         //this.g_scene.add(this.scene)
         //console.log(this.g_scene)
+
+        if (level_data == gameMenu) {
+            function createTextSprite(message) {
+                const canvas = document.createElement('canvas')
+                const context = canvas.getContext('2d')
+                context.font = 'Bold 60px Arial'
+                context.fillStyle = 'rgba(255, 255, 255, 1.0)' // Change the color of the game title
+                context.fillText(message, 0, 60) // Draw the text
+
+                const texture = new THREE.CanvasTexture(canvas)
+                // Setting needsUpdate to true ensures the texture is updated
+                texture.needsUpdate = true
+
+                const material = new THREE.SpriteMaterial({ map: texture })
+                const sprite = new THREE.Sprite(material)
+                sprite.scale.set(10, 5, 5)
+                return sprite
+            }
+
+            const spriteLabel = createTextSprite('Automaton')
+            console.log('created game title!')
+            spriteLabel.position.set(-2, -4, 9)
+            this.g_scene.add(spriteLabel)
+        }
     }
 
     unloadLevel() {
