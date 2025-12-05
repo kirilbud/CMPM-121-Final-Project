@@ -35,4 +35,8 @@ export class Crusher extends WorldObject {
             action.play()
         }
     }
+
+    interact(robot) {
+        robot.remove()
+    }
 }

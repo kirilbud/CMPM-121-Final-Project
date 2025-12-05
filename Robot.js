@@ -6,6 +6,7 @@ import * as CANNON from 'https://unpkg.com/cannon-es@0.19.0/dist/cannon-es.js'
 export class Robot {
     //using code I stole from the actor class
     constructor(scene, cannon_world, position) {
+        this.cannon_world = cannon_world
         const scale = 0.18
         const RAYCAST_LEN = 0.8
         //robot variables
@@ -124,7 +125,12 @@ export class Robot {
         return this.body
     }
 
-    remove() {}
+    remove() {
+        this.bot.removeFromParent()
+        if (this.body) {
+            this.cannon_world.removeBody(this.body)
+        }
+    }
 
     getGridPosition() {
         if (this.bot === undefined) {

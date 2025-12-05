@@ -174,4 +174,22 @@ export class Level {
             }
         }
     }
+
+    getObject(x, y) {
+        return this.level_objects[y][x]
+    }
+
+    removeObject(x, y) {
+        const obeject = this.getObject(x, y)
+        if (obeject) {
+            obeject.remove()
+        }
+    }
+
+    placeObject(x, y, object_id) {
+        this.removeObject(x, y)
+        const object_position = new THREE.Vector3(0, -y, x)
+        const object_to_add = this.getNewObject(object_id, object_position)
+        this.level_objects[y][x] = object_to_add
+    }
 }
