@@ -20,6 +20,7 @@ export class WorldObject {
             //console.log(this.mesh.material)
             this.scene.add(this.mesh)
         }
+        this.loaded = false
     }
 
     setgltf(url) {
@@ -43,6 +44,7 @@ export class WorldObject {
             //const action = this.mixer.clipAction(clip)
             //action.play()
             //make sure to do action.stop before playing another animation
+            this.loaded = true
         })
     }
 

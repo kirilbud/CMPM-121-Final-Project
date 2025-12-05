@@ -15,6 +15,7 @@ export class RobotSpawner extends WorldObject {
 
         this.setColor(0x9c59d1)
         this.setgltf('./glb/Spawnbox.glb')
+        //this.mesh.rotateY(Math.PI)
 
         this.robot_array = robot_array
     }
@@ -28,6 +29,10 @@ export class RobotSpawner extends WorldObject {
             this.robot_array.push(
                 new Robot(this.scene, this.cannon, this.position)
             )
+        }
+        if (this.loaded) {
+            this.loaded = false
+            this.mesh.rotateY(Math.PI)
         }
     }
 }
