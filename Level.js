@@ -73,7 +73,6 @@ export class Level {
             }
 
             const spriteLabel = createTextSprite('Automaton')
-            console.log('created game title!')
             spriteLabel.position.set(-2, -4, 9)
             this.g_scene.add(spriteLabel)
         }

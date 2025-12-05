@@ -8,24 +8,17 @@ import { WorldObject } from './worldObjectClasses/worldObject.js'
 import { Level } from './Level.js'
 import { Platform } from './worldObjectClasses/Platform.js'
 import { Level_1 } from './WorldData.js'
-import { gameMenu } from './WorldData.js'
 
-let canPlace = false
-let buildPoint = new CANNON.Vec3(0, 0, 0)
 
-//wack ass onload work around
-window.onload = function () {
-    main()
-}
 
 //constants
-const CAMERA_FOV = 60
+const CAMERA_FOV = 50
 const MOUSE_SENSITIVITY = 0.03
 
 const mainDiv = document.querySelector('#mainDiv')
 
 const uiDiv = document.createElement('div')
-uiDiv.innerText = 'hellaur'
+uiDiv.innerText = 'Inventory: '
 uiDiv.style.backgroundColor = 'black'
 uiDiv.style.color = 'white'
 uiDiv.style.fontSize = '200%'
@@ -41,6 +34,7 @@ let g_camera_pivot
 let g_scene
 const g_raycaster = new THREE.Raycaster()
 let g_clock = new THREE.Clock() // use this for delta time
+let g_inventory
 let g_ground
 let g_level
 
@@ -114,13 +108,111 @@ class Wall {
 }
 
 //variables :3
+let canPlace = false
+let buildPoint = new CANNON.Vec3(0, 0, 0)
 
-let inventory = [new Item('platform', 3, new Platform(g_scene, 20))]
+//wack ass onload work around
+window.onload = function () {
+    main()
+}
 
 function main() {
     //set up Three.js
     const canvas = document.querySelector('#c')
-    canvas.addEventListener('mousedown', (event) => {
+
+    SetUpCanvasChungus(canvas)
+
+    g_canvas = canvas
+    const renderer = new THREE.WebGLRenderer({ antialias: true, canvas })
+    g_renderer = renderer
+
+    //create cammera
+    const fov = CAMERA_FOV
+    const aspect = 2 // the canvas default
+    const near = 0.1
+    const far = 1000
+    const camera = new THREE.PerspectiveCamera(fov, aspect, near, far)
+
+    //used for rotating along x axis
+    g_focus = new THREE.Object3D()
+
+    //create scene
+    const scene = new THREE.Scene()
+    g_scene = scene
+
+    g_scene.add(g_focus)
+
+    //set camera
+    g_focus.add(camera)
+    g_camera_pivot = g_focus
+    g_camera = camera
+
+    camera.rotation.y = Math.PI / 2
+
+    camera.position.z = 4
+    camera.position.y = -2
+    camera.position.x = -12
+ 
+
+    g_camera_pivot.position.z = 5
+    g_camera_pivot.position.y = -5
+    g_camera_pivot.position.x = 0
+
+    //Lighting
+    //add ambient light aka what colors are the shadows
+    var ambient_light = new THREE.AmbientLight(0xffffff, 0.3)
+    g_scene.add(ambient_light)
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1)
+    directionalLight.position.set(-1, 1, -1)
+    directionalLight.target.position.set(0, 0, 0)
+    g_scene.add(directionalLight)
+
+    //add Meshes to Scene
+    const cube = new Wall()
+    //layer 3 for colliding with walls
+    cube.instantiateAtPos(g_scene, g_cannon_world, new CANNON.Vec3(0, 0, -5))
+    const secondcube = new Wall()
+    secondcube.instantiateAtPos(
+        g_scene,
+        g_cannon_world,
+        new CANNON.Vec3(0, 0, 5)
+    )
+
+    //add ground plane
+    const ground = new PhysicsObject(
+        new THREE.PlaneGeometry(5, 20),
+        new CANNON.Box(new CANNON.Vec3(2.5, 9, 1))
+    )
+    ground.instantiateAtPos(g_scene, g_cannon_world, new CANNON.Vec3(0, -5, 0))
+    ground.body.quaternion.setFromAxisAngle(
+        new CANNON.Vec3(1, 0, 0),
+        THREE.MathUtils.degToRad(-90)
+    )
+    //layer 2 for colliding with ground
+    ground.mesh.layers.enable(2)
+    g_ground = ground.mesh
+
+    //add robots
+    const robot = new Robot(g_scene, g_cannon_world, new CANNON.Vec3(0, 1, 0))
+    g_robots.push(robot)
+
+    //initially render the scene
+    g_renderer.render(scene, camera)
+
+    //load level
+    g_level = new Level(g_scene, g_cannon_world, Level_1)
+
+    let inventory = [new Item('platform', 3, 20)]
+    setUpInventoryUI(inventory)
+    g_inventory = inventory
+
+    requestAnimationFrame(render)
+}
+
+//sets up the canvas chungus!!!! :D
+function SetUpCanvasChungus(canvas) {
+        canvas.addEventListener('mousedown', (event) => {
         //check what button the player is clicking
         //0 for left click
         //2 for right click
@@ -177,83 +269,14 @@ function main() {
             let end_vector = new THREE.Vector2(event.x, event.y)
             let move_vector = start_vector.sub(end_vector)
             g_focus.position.z =
-                g_focus.position.z + move_vector.x * MOUSE_SENSITIVITY
+                g_focus.position.z - move_vector.x * MOUSE_SENSITIVITY
             g_focus.position.y =
                 g_focus.position.y - move_vector.y * MOUSE_SENSITIVITY
             g_mouse_last_pos.set(event.x, event.y)
         }
     })
-
-    //removes the right click popup
-    document.addEventListener('contextmenu', function (event) {
-        event.preventDefault()
-    })
-    g_canvas = canvas
-    const renderer = new THREE.WebGLRenderer({ antialias: true, canvas })
-    g_renderer = renderer
-
-    //create cammera
-    const fov = CAMERA_FOV
-    const aspect = 2 // the canvas default
-    const near = 0.1
-    const far = 1000
-    const camera = new THREE.PerspectiveCamera(fov, aspect, near, far)
-
-    //used for rotating along x axis
-    g_focus = new THREE.Object3D()
-
-    //create scene
-    const scene = new THREE.Scene()
-    g_scene = scene
-
-    g_scene.add(g_focus)
-
-    // Load and set the background texture
-    var loader = new THREE.TextureLoader()
-
-    loader.load('./graph6.png', function (texture) {
-        g_scene.background = texture
-    })
-
-    g_scene.backgroundIntensity = 1
-
-    //set camera
-    g_focus.add(camera)
-    g_camera_pivot = g_focus
-    g_camera = camera
-
-    camera.rotation.y = -Math.PI / 2
-
-    camera.position.z = 4
-    camera.position.y = 0
-    camera.position.x = -12
-
-    g_camera_pivot.position.z = 5
-    g_camera_pivot.position.y = -5
-    g_camera_pivot.position.x = 0
-
-    //Lighting
-    //add ambient light aka what colors are the shadows
-    var ambient_light = new THREE.AmbientLight(0xffffff, 0.7)
-    g_scene.add(ambient_light)
-
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1)
-    directionalLight.position.set(-1, 1, -1)
-    directionalLight.target.position.set(0, 0, 0)
-    g_scene.add(directionalLight)
-
-    //add robots
-    //const robot = new Robot(g_scene, g_cannon_world, new CANNON.Vec3(0, 3, -3))
-    //g_robots.push(robot)
-
-    //initially render the scene
-    g_renderer.render(scene, camera)
-
-    //load level
-    g_level = new Level(g_scene, g_cannon_world, gameMenu)
-
-    requestAnimationFrame(render)
 }
+
 
 // returns true if the canvas needs to be resized due to the browser being resized
 function resizeRendererToDisplaySize(renderer) {
@@ -290,23 +313,40 @@ function render(time) {
     }
     g_renderer.render(g_scene, g_camera) //render the next frame
 
-    //render level
-    g_level.update(dt)
-
     dispatchEvent(g_physicsStep)
     requestAnimationFrame(render)
 }
 
-function setupInventoryUI() {
-    console.log('adding buttons!')
+function rotateCamera(axis, angle) {
+    //determines if camera rotates by the pivot or camera itself.
+    //NOTE: Camera can only rotate on x and y axes.
+    console.log(axis)
+    const y = new THREE.Vector3(0, 1, 0)
+    const x = new THREE.Vector3(1, 0, 0)
+    if (axis.y == 1 && axis.x == 0) {
+        console.log('rotating y')
+        g_camera_pivot.rotation.y = angle
+    } else if (axis.x == 1) {
+        g_camera.rotation.x = angle
+    } else {
+        console.log('ERROR! Attempting to rotate on invalid axis.')
+    }
+}
+
+function setUpInventoryUI(inv) {
+    console.log("adding buttons!")
     const buttonsDiv = document.createElement('div')
     uiDiv.appendChild(buttonsDiv)
     buttonsDiv.id = 'buttonsDiv'
-    for (const i of inventory) {
-        console.log('added button!')
+    for (const i of inv) {
+        console.log("added button!")
         const newButton = document.createElement('button')
         newButton.innerText = i.name + ' x' + i.count
         buttonsDiv.appendChild(newButton)
     }
 }
-setupInventoryUI()
+
+//removes the right click popup
+document.addEventListener('contextmenu', function (event) {
+    event.preventDefault()
+})
