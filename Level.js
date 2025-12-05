@@ -55,6 +55,39 @@ export class Level {
         //console.log(this.g_scene)
 
         if (level_data == gameMenu) {
+            const geometry = new THREE.BoxGeometry(1, 1, 0.1)
+
+            const material = new THREE.MeshBasicMaterial({
+                color: 0x663399,
+                side: THREE.DoubleSide,
+            })
+
+            const playButton = new THREE.Mesh(geometry, material)
+            playButton.rotation.x = Math.PI
+            playButton.rotation.y += 1.6
+
+            const englishButton = new THREE.Mesh(geometry, material)
+            englishButton.rotation.x = Math.PI
+            englishButton.rotation.y += 1.6
+
+            const chineseButton = new THREE.Mesh(geometry, material)
+            chineseButton.rotation.x = Math.PI
+            chineseButton.rotation.y += 1.6
+
+            const hebrewButton = new THREE.Mesh(geometry, material)
+            hebrewButton.rotation.x = Math.PI
+            hebrewButton.rotation.y += 1.6
+
+            this.g_scene.add(playButton)
+            this.g_scene.add(englishButton)
+            this.g_scene.add(chineseButton)
+            this.g_scene.add(hebrewButton)
+
+            playButton.position.set(4, -12, 5)
+            englishButton.position.set(3, -4.3, 22)
+            chineseButton.position.set(3, -6.3, 22)
+            hebrewButton.position.set(3, -8.3, 22)
+
             function createTextSprite(message) {
                 const canvas = document.createElement('canvas')
                 const context = canvas.getContext('2d')
@@ -73,22 +106,22 @@ export class Level {
             }
 
             const gameTitle = createTextSprite('Automaton')
-            const playButton = createTextSprite('Play')
-            const englishButton = createTextSprite('English')
-            const chineseButton = createTextSprite('Chinese')
-            const hebrewButton = createTextSprite('Hebrew')
+            const playText = createTextSprite('Play')
+            const englishText = createTextSprite('English')
+            const chineseText = createTextSprite('Chinese')
+            const hebrewText = createTextSprite('Hebrew')
 
             gameTitle.position.set(-2, -4, 9)
-            playButton.position.set(0, -12, 12)
-            englishButton.position.set(4, -5, 25)
-            chineseButton.position.set(4, -7, 25)
-            hebrewButton.position.set(4, -9, 25)
+            playText.position.set(0, -12, 12)
+            englishText.position.set(3, -5, 25)
+            chineseText.position.set(3, -7, 25)
+            hebrewText.position.set(3, -9, 25)
 
-            englishButton.scale.set(5, 3, 5)
-            chineseButton.scale.set(5, 3, 5)
-            hebrewButton.scale.set(5, 3, 5)
+            englishText.scale.set(4, 3, 5)
+            chineseText.scale.set(4, 3, 5)
+            hebrewText.scale.set(4, 3, 5)
 
-            this.g_scene.add(playButton)
+            this.g_scene.add(playText)
             this.g_scene.add(gameTitle)
             this.g_scene.add(englishText)
             this.g_scene.add(chineseText)
