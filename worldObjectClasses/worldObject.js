@@ -21,7 +21,8 @@ export class WorldObject {
             this.scene.add(this.mesh)
         }
         this.loaded = false
-    }
+    }//wack ass onload work around
+
 
     setgltf(url) {
         const gltfLoader = new GLTFLoader()

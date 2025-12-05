@@ -9,13 +9,7 @@ import { Level } from './Level.js'
 import { Platform } from './worldObjectClasses/Platform.js'
 import { Level_1 } from './WorldData.js'
 
-let canPlace = false
-let buildPoint = new CANNON.Vec3(0, 0, 0)
 
-//wack ass onload work around
-window.onload = function () {
-    main()
-}
 
 //constants
 const CAMERA_FOV = 50
@@ -40,6 +34,7 @@ let g_camera_pivot
 let g_scene
 const g_raycaster = new THREE.Raycaster()
 let g_clock = new THREE.Clock() // use this for delta time
+let g_inventory
 let g_ground
 let g_level
 
@@ -113,76 +108,20 @@ class Wall {
 }
 
 //variables :3
+let canPlace = false
+let buildPoint = new CANNON.Vec3(0, 0, 0)
 
-let inventory = [new Item('platform', 3, new Platform(g_scene, 20))]
-
+//wack ass onload work around
+window.onload = function () {
+    main()
+}
 
 function main() {
     //set up Three.js
     const canvas = document.querySelector('#c')
-    canvas.addEventListener('mousedown', (event) => {
-        //check what button the player is clicking
-        //0 for left click
-        //2 for right click
-        const rect = canvas.getBoundingClientRect()
-        const xCoord = event.clientX - rect.left
-        const yCoord = event.clientY - rect.top
-        if (event.button == 0) {
-            const newWall = new Wall()
-            if (canPlace) {
-                newWall.instantiateAtPos(g_scene, g_cannon_world, buildPoint)
-            }
-        } else if (event.button == 2) {
-            g_dragging = true
-            g_mouse_last_pos = new mouseVector()
-            g_mouse_last_pos.set(xCoord, yCoord)
-        }
-    })
 
-    canvas.addEventListener('mouseup', (event) => {
-        //check if player let go of the camera
-        if (event.button == 2) {
-            g_dragging = false
-            g_mouse_last_pos = null
-        }
-    })
+    SetUpCanvasChungus(canvas)
 
-    canvas.addEventListener('pointermove', (e) => {
-        const mouse = new THREE.Vector2()
-        mouse.x = (e.clientX / canvas.width) * 2 - 1
-        mouse.y = -(e.clientY / canvas.height) * 2 + 1
-
-        g_raycaster.setFromCamera(mouse, g_camera)
-
-        const intersects = g_raycaster.intersectObjects(g_scene.children, true)
-        if (intersects.length > 0) {
-            const front = intersects[0].object
-            if (front.layers.mask == 5) {
-                canPlace = true
-                const point = intersects[0].point
-                buildPoint = new CANNON.Vec3(0, point.y + 5, point.z)
-            } else {
-                canPlace = false
-                buildPoint = new CANNON.Vec3(0, 0, 0)
-            }
-        }
-    })
-
-    canvas.addEventListener('mousemove', (event) => {
-        if (g_dragging) {
-            let start_vector = new THREE.Vector2(
-                g_mouse_last_pos.x,
-                g_mouse_last_pos.y
-            )
-            let end_vector = new THREE.Vector2(event.x, event.y)
-            let move_vector = start_vector.sub(end_vector)
-            g_focus.position.z =
-                g_focus.position.z - move_vector.x * MOUSE_SENSITIVITY
-            g_focus.position.y =
-                g_focus.position.y - move_vector.y * MOUSE_SENSITIVITY
-            g_mouse_last_pos.set(event.x, event.y)
-        }
-    })
     g_canvas = canvas
     const renderer = new THREE.WebGLRenderer({ antialias: true, canvas })
     g_renderer = renderer
@@ -264,8 +203,80 @@ function main() {
     //load level
     g_level = new Level(g_scene, g_cannon_world, Level_1)
 
+    let inventory = [new Item('platform', 3, 20)]
+    setUpInventoryUI(inventory)
+    g_inventory = inventory
+
     requestAnimationFrame(render)
 }
+
+//sets up the canvas chungus!!!! :D
+function SetUpCanvasChungus(canvas) {
+        canvas.addEventListener('mousedown', (event) => {
+        //check what button the player is clicking
+        //0 for left click
+        //2 for right click
+        const rect = canvas.getBoundingClientRect()
+        const xCoord = event.clientX - rect.left
+        const yCoord = event.clientY - rect.top
+        if (event.button == 0) {
+            const newWall = new Wall()
+            if (canPlace) {
+                newWall.instantiateAtPos(g_scene, g_cannon_world, buildPoint)
+            }
+        } else if (event.button == 2) {
+            g_dragging = true
+            g_mouse_last_pos = new mouseVector()
+            g_mouse_last_pos.set(xCoord, yCoord)
+        }
+    })
+
+    canvas.addEventListener('mouseup', (event) => {
+        //check if player let go of the camera
+        if (event.button == 2) {
+            g_dragging = false
+            g_mouse_last_pos = null
+        }
+    })
+
+    canvas.addEventListener('pointermove', (e) => {
+        const mouse = new THREE.Vector2()
+        mouse.x = (e.clientX / canvas.width) * 2 - 1
+        mouse.y = -(e.clientY / canvas.height) * 2 + 1
+
+        g_raycaster.setFromCamera(mouse, g_camera)
+
+        const intersects = g_raycaster.intersectObjects(g_scene.children, true)
+        if (intersects.length > 0) {
+            const front = intersects[0].object
+            if (front.layers.mask == 5) {
+                canPlace = true
+                const point = intersects[0].point
+                buildPoint = new CANNON.Vec3(0, point.y + 5, point.z)
+            } else {
+                canPlace = false
+                buildPoint = new CANNON.Vec3(0, 0, 0)
+            }
+        }
+    })
+
+    canvas.addEventListener('mousemove', (event) => {
+        if (g_dragging) {
+            let start_vector = new THREE.Vector2(
+                g_mouse_last_pos.x,
+                g_mouse_last_pos.y
+            )
+            let end_vector = new THREE.Vector2(event.x, event.y)
+            let move_vector = start_vector.sub(end_vector)
+            g_focus.position.z =
+                g_focus.position.z - move_vector.x * MOUSE_SENSITIVITY
+            g_focus.position.y =
+                g_focus.position.y - move_vector.y * MOUSE_SENSITIVITY
+            g_mouse_last_pos.set(event.x, event.y)
+        }
+    })
+}
+
 
 // returns true if the canvas needs to be resized due to the browser being resized
 function resizeRendererToDisplaySize(renderer) {
@@ -322,19 +333,18 @@ function rotateCamera(axis, angle) {
     }
 }
 
-function setupInventoryUI() {
+function setUpInventoryUI(inv) {
     console.log("adding buttons!")
     const buttonsDiv = document.createElement('div')
     uiDiv.appendChild(buttonsDiv)
     buttonsDiv.id = 'buttonsDiv'
-    for (const i of inventory) {
+    for (const i of inv) {
         console.log("added button!")
         const newButton = document.createElement('button')
         newButton.innerText = i.name + ' x' + i.count
         buttonsDiv.appendChild(newButton)
     }
 }
-setupInventoryUI()
 
 //removes the right click popup
 document.addEventListener('contextmenu', function (event) {
