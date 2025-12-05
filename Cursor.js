@@ -21,7 +21,6 @@ export class Cursor {
             scene.add(root)
 
             this.mesh = root
-            //make sure to do action.stop before playing another animation
         })
     }
 

@@ -15,7 +15,7 @@ export class Spring extends WorldObject {
     interact(robot) {
         const robot_body = robot.getBody()
         if (robot_body.velocity.y < 0.0001) {
-            robot_body.applyImpulse(new CANNON.Vec3(0, 10, 0), robot.position)
+            robot_body.applyImpulse(new CANNON.Vec3(0, 7, 0), robot.position)
         }
         let clip = THREE.AnimationClip.findByName(this.clips, 'active')
         const action = this.mixer.clipAction(clip)

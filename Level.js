@@ -169,6 +169,9 @@ export class Level {
                     position
                 )
                 break
+            case 70:
+                world_object = new Star(this.scene, this.cannon_world, position)
+                break
         }
 
         return world_object
@@ -217,6 +220,16 @@ export class Level {
         if (obeject) {
             obeject.remove()
         }
+    }
+
+    getGridPosition(position) {
+        if (this.bot === undefined) {
+            return
+        }
+        return new THREE.Vector2(
+            Math.floor(position.z + 0.5),
+            Math.floor(position.y - 0.5)
+        )
     }
 
     placeObject(x, y, object_id) {
