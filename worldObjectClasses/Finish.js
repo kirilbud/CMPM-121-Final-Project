@@ -8,10 +8,26 @@ import { PhysicsObject } from './PhysicsObject.js'
 export class Finish extends WorldObject {
     constructor(scene, cannon, position) {
         super(scene, cannon, position)
+        this.robots_till_win = 3
         this.setColor(0xffffff)
     }
     interact(robot) {
         //replace with a jumpscare or something idk anymore
         //alert('you won')
+
+        if (!robot.alive) {
+            return
+        }
+        robot.remove()
+
+        this.passed_robots.push(robot)
+        //console.log(this.passed_robots)
+
+        this.robots_till_win = this.robots_till_win - 1
+        console.log(this.robots_till_win)
+        if (this.robots_till_win == 0) {
+            alert('brace make me a sandwich')
+            window.location.reload()
+        }
     }
 }

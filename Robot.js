@@ -30,6 +30,8 @@ export class Robot {
         //by default, actor moves left.
         this.dir = -1
 
+        this.alive = true
+
         //raycast that reverses direction upon contact.
         this.wallCheck = new THREE.Raycaster(
             this.body.position,
@@ -126,6 +128,7 @@ export class Robot {
     }
 
     remove() {
+        this.alive = false
         this.bot.removeFromParent()
         if (this.body) {
             this.cannon_world.removeBody(this.body)
