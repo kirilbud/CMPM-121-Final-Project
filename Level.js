@@ -172,7 +172,8 @@ export class Level {
                 world_object = new Finish(
                     this.scene,
                     this.cannon_world,
-                    position
+                    position,
+                    this
                 )
                 break
             case 60:
@@ -245,9 +246,16 @@ export class Level {
 
     placeObject(x, y, object_id) {
         this.removeObject(x, y)
-        const object_position = new THREE.Vector3(0, -y, x);
+        const object_position = new THREE.Vector3(0, -y, x)
         const object_to_add = this.getNewObject(object_id, object_position)
-        console.log("placing ", object_to_add ," at x: ", object_position.z, ", y: ", object_position.y)
+        console.log(
+            'placing ',
+            object_to_add,
+            ' at x: ',
+            object_position.z,
+            ', y: ',
+            object_position.y
+        )
         this.level_objects[y][x] = object_to_add
         console.log(this.level_objects)
     }

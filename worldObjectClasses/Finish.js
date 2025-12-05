@@ -6,7 +6,7 @@ import { PhysicsObject } from './PhysicsObject.js'
 
 //to be implemented
 export class Finish extends WorldObject {
-    constructor(scene, cannon, position) {
+    constructor(scene, cannon, position, level) {
         super(scene, cannon, position)
         this.robots_till_win = 3
         this.setColor(0xffffff)
