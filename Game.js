@@ -47,6 +47,8 @@ let g_focus
 
 let g_mouse_last_pos
 
+let g_current_item
+
 const g_cannon_world = new CANNON.World({
     gravity: new CANNON.Vec3(0, -9.81, 0),
 })
@@ -180,10 +182,14 @@ function main() {
     //load level
     g_level = new Level(g_scene, g_cannon_world, gameMenu)
 
+    //set inventory
     let inventory = [new Item('platform', 3, 20)]
     setUpInventoryUI(inventory)
     g_inventory = inventory
 
+    //set current item
+    g_current_item = null
+    
     requestAnimationFrame(render)
 }
 
@@ -197,10 +203,10 @@ function SetUpCanvasChungus(canvas) {
         const xCoord = event.clientX - rect.left
         const yCoord = event.clientY - rect.top
         if (event.button == 0) {
-            const newWall = new Wall()
-            if (canPlace) {
-                newWall.instantiateAtPos(g_scene, g_cannon_world, buildPoint)
+            if (g_current_item !== null){
+                const newObj = Level.getNewObject(g_current_item.id, buildPoint)
             }
+
         } else if (event.button == 2) {
             g_dragging = true
             g_mouse_last_pos = new mouseVector()
@@ -322,6 +328,11 @@ function setUpInventoryUI(inv) {
         const newButton = document.createElement('button')
         newButton.innerText = i.name + ' x' + i.count
         buttonsDiv.appendChild(newButton)
+
+
+        newButton.addEventListener('click', () => {
+            g_current_item = i
+        })
     }
 }
 
