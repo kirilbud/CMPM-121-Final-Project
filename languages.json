@@ -1,0 +1,28 @@
+{
+    "English": {
+        "gameTitle": "Automaton",
+        "playText": "Play",
+        "crusherText": "This is a crusher! Don't let the robots collide with this or they will be gone forever! This will impact your survivor rate at the end.",
+        "goalText": "This is the goal! You need to lead your robots here in order for them to survive!",
+        "springText": "This is a spring! Use them to take your robots to higher places and keep them out of danger!",
+        "starText": "This is a star! The faster you collect them, the more that you obtain and may unlock a secret level!"
+    },
+
+    "Chinese": {
+        "gameTitle": "自動機",
+        "playText": "玩",
+        "crusherText": "這是個粉碎機！千萬別讓機器人撞上它，否則它們就完全消失了！這會影響你最後的生存率。",
+        "goalText": "這就是目標！你需要帶領你的機器人來到這裡，它們才能生存下去！",
+        "springText": "這是彈簧！用它們把你的機器人送到更高的地方，讓它們遠離危險！",
+        "starText": "這是一顆星星！收集得越快，獲得的星星就越多，還有機會解鎖隱藏關卡！"
+    },
+
+    "Hebrew": {
+        "gameTitle": "אוֹטוֹמָט",
+        "playText": "לְשַׂחֵק",
+        "crusherText": "זה מכתש! אל תתנו לרובוטים להתנגש בזה, אחרת הם ייעלמו לנצח! זה ישפיע על שיעור ההישרדות שלכם בסוף.",
+        "goalText": "זוהי המטרה! אתם צריכים להוביל את הרובוטים שלכם לכאן כדי שהם ישרדו!",
+        "springText": "זהו מעיין! השתמשו בהם כדי לקחת את הרובוטים שלכם למקומות גבוהים יותר ולשמור עליהם מחוץ לסכנה!",
+        "starText": "זה כוכב! ככל שתאספו אותם מהר יותר, כך תקבלו יותר מהם וייתכן שתפתחו שלב סודי!"
+    }
+}
