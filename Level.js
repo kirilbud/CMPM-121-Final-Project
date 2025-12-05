@@ -15,6 +15,7 @@ import { Star } from './worldObjectClasses/Star.js'
 import { Robot } from './Robot.js'
 import { Level_1 } from './WorldData.js'
 import { gameMenu } from './WorldData.js'
+import { gameText } from './languages.js'
 
 export class Level {
     //using code I stole from the actor class
@@ -55,6 +56,8 @@ export class Level {
         //console.log(this.g_scene)
 
         if (level_data == gameMenu) {
+            const langData = gameText['Hebrew']
+
             const geometry = new THREE.BoxGeometry(1, 1, 0.1)
 
             const material = new THREE.MeshBasicMaterial({
@@ -105,8 +108,8 @@ export class Level {
                 return sprite
             }
 
-            const gameTitle = createTextSprite('Automaton')
-            const playText = createTextSprite('Play')
+            const gameTitle = createTextSprite(langData.gameTitle)
+            const playText = createTextSprite(langData.playText)
             const englishText = createTextSprite('English')
             const chineseText = createTextSprite('Chinese')
             const hebrewText = createTextSprite('Hebrew')
