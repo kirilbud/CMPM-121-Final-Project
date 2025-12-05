@@ -9,19 +9,24 @@ export class Spring extends WorldObject {
     constructor(scene, cannon, position) {
         super(scene, cannon, position)
         this.setColor(0x5bcefa)
-        //this.setgltf('./glb/Spawnbox.glb')
+        this.setgltf('./glb/Spring.glb')
     }
 
     interact(robot) {
-        //console.log('bounce')
         const robot_body = robot.getBody()
-        //console.log(robot_body.velocity.y)
         if (robot_body.velocity.y < 0.01) {
             robot_body.applyImpulse(new CANNON.Vec3(0, 15, 0), robot.position)
         }
         //robot_body.applyImpulse(new CANNON.Vec3(0, 1, 0), robot.position)
+        let clip = THREE.AnimationClip.findByName(this.clips, 'active')
+        const action = this.mixer.clipAction(clip)
+        action.setLoop(THREE.LoopOnce, 1)
+        action.clampWhenFinished = true
+        action.reset()
+        action.play()
+        //action.stop()
     }
     update(delta) {
-        //super(delta)
+        super.update(delta)
     }
 }
