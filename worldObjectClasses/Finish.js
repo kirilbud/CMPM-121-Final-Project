@@ -23,8 +23,8 @@ export class Finish extends WorldObject {
         this.robots_till_win = this.robots_till_win - 1
         console.log(this.robots_till_win)
         if (this.robots_till_win == 0) {
-            alert('brace make me a sandwich')
-            window.location.reload()
+            //alert('brace make me a sandwich')
+            //window.location.reload()
         }
     }
 }
