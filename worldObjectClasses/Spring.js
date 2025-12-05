@@ -9,7 +9,7 @@ export class Spring extends WorldObject {
     constructor(scene, cannon, position) {
         super(scene, cannon, position)
         this.setColor(0x5bcefa)
-        this.setgltf('./glb/Spawnbox.glb')
+        //this.setgltf('./glb/Spawnbox.glb')
     }
 
     interact(robot) {
@@ -22,6 +22,6 @@ export class Spring extends WorldObject {
         //robot_body.applyImpulse(new CANNON.Vec3(0, 1, 0), robot.position)
     }
     update(delta) {
-        super(delta)
+        //super(delta)
     }
 }
