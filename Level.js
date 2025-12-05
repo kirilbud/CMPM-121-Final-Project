@@ -107,6 +107,11 @@ export class Level {
                 }
             }
         }
+
+        for (const robot of this.robots) {
+            robot.remove()
+        }
+        this.robots = []
     }
 
     // OBJECT ID NUMBERS

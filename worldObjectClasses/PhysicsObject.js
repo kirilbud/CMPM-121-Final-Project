@@ -29,6 +29,7 @@ export class PhysicsObject {
         this.mesh = mesh
     }
     instantiate(inputScene, inputWorld) {
+        this.cannon = inputWorld
         inputScene.add(this.mesh)
         inputWorld.addBody(this.body)
 
@@ -44,5 +45,9 @@ export class PhysicsObject {
             this.instantiate(inputScene, inputWorld)
             this.body.position.copy(position)
         }
+    }
+
+    remove() {
+        this.cannon.removeBody(this.body)
     }
 }

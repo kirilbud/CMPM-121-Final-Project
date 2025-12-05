@@ -21,8 +21,7 @@ export class WorldObject {
             this.scene.add(this.mesh)
         }
         this.loaded = false
-    }//wack ass onload work around
-
+    } //wack ass onload work around
 
     setgltf(url) {
         const gltfLoader = new GLTFLoader()
@@ -67,12 +66,16 @@ export class WorldObject {
     remove() {
         this.mesh.removeFromParent()
         if (this.physicsObject) {
-            this.cannon.removeBody(this.physicsObject)
+            this.physicsObject.remove()
         }
     }
 
     update(delta) {
         if (this.mixer) this.mixer.update(delta)
+
+        if (this.loaded) {
+            this.mesh.layers.enable(3)
+        }
     }
 
     interact(robot) {}

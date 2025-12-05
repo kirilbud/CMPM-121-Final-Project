@@ -12,4 +12,5 @@ export class Border extends WorldObject {
         this.setColor(0xf5a9b8)
         this.setgltf('./glb/BorderBlock.glb')
     }
+    //update(delta)
 }
