@@ -253,7 +253,7 @@ function SetUpCanvasChungus(canvas) {
             let end_vector = new THREE.Vector2(event.x, event.y)
             let move_vector = start_vector.sub(end_vector)
             g_focus.position.z =
-                g_focus.position.z - move_vector.x * MOUSE_SENSITIVITY
+                g_focus.position.z + move_vector.x * MOUSE_SENSITIVITY
             g_focus.position.y =
                 g_focus.position.y - move_vector.y * MOUSE_SENSITIVITY
             g_mouse_last_pos.set(event.x, event.y)
@@ -296,6 +296,9 @@ function render(time) {
         g_camera.updateProjectionMatrix()
     }
     g_renderer.render(g_scene, g_camera) //render the next frame
+    
+    //render level
+    g_level.update(dt)
 
     dispatchEvent(g_physicsStep)
     requestAnimationFrame(render)
