@@ -10,6 +10,7 @@ import { Finish } from './worldObjectClasses/Finish.js'
 import { Platform } from './worldObjectClasses/Platform.js'
 import { RobotSpawner } from './worldObjectClasses/RobotSpawner.js'
 import { Spring } from './worldObjectClasses/Spring.js'
+import { Star } from './worldObjectClasses/Star.js'
 
 import { Robot } from './Robot.js'
 import { Level_1 } from './WorldData.js'

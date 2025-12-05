@@ -12,6 +12,7 @@
 // 41 crusher left/right
 // 50 finish object
 // 60 spring object
+// 70 stars
 // to be filled out
 
 // levels must be surounded by a border to let players know where the level area
