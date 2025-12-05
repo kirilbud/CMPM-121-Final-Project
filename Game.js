@@ -225,7 +225,7 @@ function main() {
     camera.rotation.y = -Math.PI / 2
 
     camera.position.z = 4
-    camera.position.y = 0
+    camera.position.y = -2
     camera.position.x = -12
 
     g_camera_pivot.position.z = 5
