@@ -69,7 +69,7 @@ class Item {
     constructor(nameInput, countInput, numInput) {
         this.name = nameInput
         this.count = countInput
-        this.objnumber = numInput
+        this.id = numInput
     }
     getName() {
         return this.name
@@ -183,7 +183,7 @@ function main() {
     g_level = new Level(g_scene, g_cannon_world, gameMenu)
 
     //set inventory
-    let inventory = [new Item('platform', 3, 20)]
+    let inventory = [new Item('platform', 3, 30)]
     setUpInventoryUI(inventory)
     g_inventory = inventory
 
@@ -205,7 +205,7 @@ function SetUpCanvasChungus(canvas) {
         if (event.button == 0) {
             console.log("click")
             if (g_current_item != null){
-                console.log('placing chungus')
+                console.log('placing ', g_current_item)
                 const newObj = g_level.placeObject(buildPoint.x + 2,buildPoint.y + 2, g_current_item.id)
             }
 
@@ -326,6 +326,7 @@ function setUpInventoryUI(inv) {
     uiDiv.appendChild(buttonsDiv)
     buttonsDiv.id = 'buttonsDiv'
     for (const i of inv) {
+        const storedValue = i
         console.log('added button!')
         const newButton = document.createElement('button')
         newButton.innerText = i.name + ' x' + i.count
@@ -334,7 +335,8 @@ function setUpInventoryUI(inv) {
 
         newButton.addEventListener('click', () => {
             console.log("setting item to: ", i.name)
-            g_current_item = i
+            console.log("item id is ", storedValue.id)
+            g_current_item = storedValue
         })
     }
 }

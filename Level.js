@@ -121,10 +121,12 @@ export class Level {
     // to be filled out
 
     getNewObject(object_id, position) {
+        console.log('getting object of id: ', object_id)
         //returns a new object of the corisponding id
         let world_object = null
         switch (object_id) {
             case 0: // air
+                console.log('case: ', object_id)
                 world_object = null
                 break
             case 10: // robotSpawner (5 robots)
@@ -144,6 +146,7 @@ export class Level {
                 )
                 break
             case 30: // border
+                console.log('case: ', object_id)
                 world_object = new Border(
                     this.scene,
                     this.cannon_world,
@@ -183,7 +186,7 @@ export class Level {
                 world_object = new Star(this.scene, this.cannon_world, position)
                 break
         }
-
+        console.log(world_object)
         return world_object
     }
 
@@ -233,12 +236,10 @@ export class Level {
     }
 
     getGridPosition(position) {
-        if (this.bot === undefined) {
-            return
-        }
-        return new THREE.Vector2(
-            Math.floor(position.z + 0.5),
-            Math.floor(position.y - 0.5)
+        return new THREE.Vector3(
+            0,
+            Math.floor(position.y - 0.5),
+            Math.floor(position.x + 0.5)
         )
     }
 
@@ -248,7 +249,8 @@ export class Level {
             new THREE.Vector3(0, -y, x)
         )
         const object_to_add = this.getNewObject(object_id, object_position)
-        console.log('placing obj at x: ', x, ', y: ', y)
+        console.log('placing ", object_to_add ," at x: ', x, ', y: ', y)
         this.level_objects[y][x] = object_to_add
+        console.log(this.level_objects)
     }
 }
