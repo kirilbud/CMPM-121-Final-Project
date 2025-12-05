@@ -236,6 +236,7 @@ export class Level {
         this.removeObject(x, y)
         const object_position = this.getGridPosition(new THREE.Vector3(0, -y, x));
         const object_to_add = this.getNewObject(object_id, object_position)
+        console.log("placing obj at x: ", x, ", y: ", y)
         this.level_objects[y][x] = object_to_add
     }
 }

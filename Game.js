@@ -206,7 +206,7 @@ function SetUpCanvasChungus(canvas) {
             console.log("click")
             if (g_current_item != null){
                 console.log('placing chungus')
-                const newObj = g_level.getNewObject(g_current_item.id, buildPoint)
+                const newObj = g_level.placeObject(buildPoint.x + 2,buildPoint.y + 2, g_current_item.id)
             }
 
         } else if (event.button == 2) {
