@@ -8,6 +8,8 @@ import { WorldObject } from './worldObjectClasses/worldObject.js'
 import { Level } from './Level.js'
 import { Platform } from './worldObjectClasses/Platform.js'
 import { Level_1 } from './WorldData.js'
+import { gameMenu } from './WorldData.js'
+
 
 
 
@@ -142,12 +144,21 @@ function main() {
 
     g_scene.add(g_focus)
 
+
+    // Load and set the background texture
+    var loader = new THREE.TextureLoader()
+
+    loader.load('./graph6.png', function (texture) {
+        g_scene.background = texture
+    })
+
+    g_scene.backgroundIntensity = 1
     //set camera
     g_focus.add(camera)
     g_camera_pivot = g_focus
     g_camera = camera
 
-    camera.rotation.y = Math.PI / 2
+    camera.rotation.y = -Math.PI / 2
 
     camera.position.z = 4
     camera.position.y = -2
@@ -168,45 +179,18 @@ function main() {
     directionalLight.target.position.set(0, 0, 0)
     g_scene.add(directionalLight)
 
-    //add Meshes to Scene
-    const cube = new Wall()
-    //layer 3 for colliding with walls
-    cube.instantiateAtPos(g_scene, g_cannon_world, new CANNON.Vec3(0, 0, -5))
-    const secondcube = new Wall()
-    secondcube.instantiateAtPos(
-        g_scene,
-        g_cannon_world,
-        new CANNON.Vec3(0, 0, 5)
-    )
-
-    //add ground plane
-    const ground = new PhysicsObject(
-        new THREE.PlaneGeometry(5, 20),
-        new CANNON.Box(new CANNON.Vec3(2.5, 9, 1))
-    )
-    ground.instantiateAtPos(g_scene, g_cannon_world, new CANNON.Vec3(0, -5, 0))
-    ground.body.quaternion.setFromAxisAngle(
-        new CANNON.Vec3(1, 0, 0),
-        THREE.MathUtils.degToRad(-90)
-    )
-    //layer 2 for colliding with ground
-    ground.mesh.layers.enable(2)
-    g_ground = ground.mesh
-
-    //add robots
-    const robot = new Robot(g_scene, g_cannon_world, new CANNON.Vec3(0, 1, 0))
-    g_robots.push(robot)
 
     //initially render the scene
     g_renderer.render(scene, camera)
 
     //load level
-    g_level = new Level(g_scene, g_cannon_world, Level_1)
+    g_level = new Level(g_scene, g_cannon_world, gameMenu)
 
     let inventory = [new Item('platform', 3, 20)]
     setUpInventoryUI(inventory)
     g_inventory = inventory
 
+    
     requestAnimationFrame(render)
 }
 
