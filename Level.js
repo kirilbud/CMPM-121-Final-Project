@@ -172,7 +172,8 @@ export class Level {
                 world_object = new Finish(
                     this.scene,
                     this.cannon_world,
-                    position
+                    position,
+                    this
                 )
                 break
             case 60:
