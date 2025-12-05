@@ -20,9 +20,6 @@ export class Finish extends WorldObject {
         }
         robot.remove()
 
-        this.passed_robots.push(robot)
-        //console.log(this.passed_robots)
-
         this.robots_till_win = this.robots_till_win - 1
         console.log(this.robots_till_win)
         if (this.robots_till_win == 0) {
