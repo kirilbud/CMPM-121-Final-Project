@@ -90,9 +90,9 @@ export class Level {
 
             this.g_scene.add(playButton)
             this.g_scene.add(gameTitle)
-            this.g_scene.add(englishButton)
-            this.g_scene.add(chineseButton)
-            this.g_scene.add(hebrewButton)
+            this.g_scene.add(englishText)
+            this.g_scene.add(chineseText)
+            this.g_scene.add(hebrewText)
         }
     }
 
