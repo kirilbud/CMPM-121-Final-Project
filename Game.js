@@ -203,8 +203,10 @@ function SetUpCanvasChungus(canvas) {
         const xCoord = event.clientX - rect.left
         const yCoord = event.clientY - rect.top
         if (event.button == 0) {
-            if (g_current_item !== null){
-                const newObj = Level.getNewObject(g_current_item.id, buildPoint)
+            console.log("click")
+            if (g_current_item != null){
+                console.log('placing chungus')
+                const newObj = g_level.getNewObject(g_current_item.id, buildPoint)
             }
 
         } else if (event.button == 2) {
@@ -331,6 +333,7 @@ function setUpInventoryUI(inv) {
 
 
         newButton.addEventListener('click', () => {
+            console.log("setting item to: ", i.name)
             g_current_item = i
         })
     }
