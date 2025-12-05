@@ -340,7 +340,7 @@ function setUpInventoryUI(inv) {
             console.log('item id is ', storedValue.id)
             g_current_item = storedValue
             g_current_item.setCount(g_current_item.getCount() - 1)
-            
+            newButton.newButton.innerText = i.name + ' x' + i.count
         })
     }
 }
