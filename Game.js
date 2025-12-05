@@ -159,13 +159,12 @@ function main() {
 
     camera.rotation.y = -Math.PI / 2
 
-    camera.position.z = 4
-    camera.position.y = -2
+    camera.position.z = 0
+    camera.position.y = 0
     camera.position.x = -12
 
-    g_camera_pivot.position.z = 5
-    g_camera_pivot.position.y = -5
-    g_camera_pivot.position.x = 0
+    g_focus.position.z = 10
+    g_focus.position.y = -6
 
     //Lighting
     //add ambient light aka what colors are the shadows
