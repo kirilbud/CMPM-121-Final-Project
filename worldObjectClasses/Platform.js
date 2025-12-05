@@ -10,5 +10,6 @@ export class Platform extends WorldObject {
         super(scene, cannon, position)
         this.setPhysics()
         this.setColor(0x5bcefa)
+        this.setgltf('./glb/PLaform.glb')
     }
 }

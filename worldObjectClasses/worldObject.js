@@ -64,9 +64,9 @@ export class WorldObject {
     }
 
     remove() {
-        this.scene.remove()
+        this.mesh.removeFromParent()
         if (this.physicsObject) {
-            this.physicsObject.remove()
+            this.cannon.removeBody(this.physicsObject)
         }
     }
 
