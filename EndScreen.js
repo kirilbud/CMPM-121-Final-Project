@@ -10,14 +10,7 @@ export class EndScreen {
         this.end_text.position.set(0, 0, 0)
         this.end_text.scale.set(10, 10, 10)
 
-        const geometry = new THREE.BoxGeometry(1, 1, 1)
-        const material = new THREE.MeshPhongMaterial({ color: 0xf48072 })
-
-        const center_cube = new THREE.Mesh(geometry, material)
-        center_cube.position.set(0, 0, 0)
-
         this.focus_point.add(this.end_text)
-        this.focus_point.add(center_cube)
     }
 }
 function createTextSprite(message) {
