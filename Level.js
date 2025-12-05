@@ -286,15 +286,6 @@ export class Level {
         this.removeObject(x, y)
         const object_position = new THREE.Vector3(0, -y, x)
         const object_to_add = this.getNewObject(object_id, object_position)
-        console.log(
-            'placing ',
-            object_to_add,
-            ' at x: ',
-            object_position.z,
-            ', y: ',
-            object_position.y
-        )
         this.level_objects[y][x] = object_to_add
-        console.log(this.level_objects)
     }
 }
