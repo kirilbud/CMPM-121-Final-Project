@@ -54,3 +54,21 @@ function for pausing game (true, false) - can be used for regular puase game or 
 pause game on win, show new div with button for next level
 
 on click, load level
+
+# Devlog Entry 12/04/2025
+
+Mae
+[ ] Placing blocks
+[ ] Delete robots when colliding with the goal
+[ ] Make a counter for robotsSaved and robotsDestroyed for final survivial rate
+[ ] Add stars to the level so that a secret level is revealed at the end (continuous inventory)
+
+Ash
+[ ] Implement an inventory system that lets the player pick blocks
+
+Nina
+[ ] Create a JSON file that holds all the translated text (3 languages)
+[ ] Create a Play button that takes the player to the first level
+[ ] Create the credits button and add them
+[ ] Create a button that changes the language of the game
+[ ] Make it so that when the player clicks on an interactable object, text appears 
