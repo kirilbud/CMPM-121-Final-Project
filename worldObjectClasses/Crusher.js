@@ -11,13 +11,28 @@ export class Crusher extends WorldObject {
 
         this.setColor(0xff0000)
 
-        switch (varient) {
-            case 1:
-                //up down
-                break
-            default:
-                //left right
-                break
+        this.varient = varient
+
+        this.setgltf('./glb/Crusher.glb')
+    }
+    update(delta) {
+        super.update(delta)
+
+        if (this.loaded) {
+            this.loaded = false
+            switch (this.varient) {
+                case 1:
+                    //up down
+                    //nothing needed
+                    break
+                default:
+                    //left right
+                    this.mesh.rotateX(Math.PI)
+                    break
+            }
+            let clip = THREE.AnimationClip.findByName(this.clips, 'Idle')
+            const action = this.mixer.clipAction(clip)
+            action.play()
         }
     }
 }
