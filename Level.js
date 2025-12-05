@@ -74,15 +74,25 @@ export class Level {
 
             const gameTitle = createTextSprite('Automaton')
             const playButton = createTextSprite('Play')
-            const questionButton = createTextSprite('?')
+            const englishButton = createTextSprite('English')
+            const chineseButton = createTextSprite('Chinese')
+            const hebrewButton = createTextSprite('Hebrew')
 
             gameTitle.position.set(-2, -4, 9)
             playButton.position.set(0, -12, 12)
-            questionButton.position.set(0, -12, 25)
+            englishButton.position.set(4, -5, 25)
+            chineseButton.position.set(4, -7, 25)
+            hebrewButton.position.set(4, -9, 25)
+
+            englishButton.scale.set(5, 3, 5)
+            chineseButton.scale.set(5, 3, 5)
+            hebrewButton.scale.set(5, 3, 5)
 
             this.g_scene.add(playButton)
             this.g_scene.add(gameTitle)
-            this.g_scene.add(questionButton)
+            this.g_scene.add(englishButton)
+            this.g_scene.add(chineseButton)
+            this.g_scene.add(hebrewButton)
         }
     }
 
@@ -234,9 +244,11 @@ export class Level {
 
     placeObject(x, y, object_id) {
         this.removeObject(x, y)
-        const object_position = this.getGridPosition(new THREE.Vector3(0, -y, x));
+        const object_position = this.getGridPosition(
+            new THREE.Vector3(0, -y, x)
+        )
         const object_to_add = this.getNewObject(object_id, object_position)
-        console.log("placing obj at x: ", x, ", y: ", y)
+        console.log('placing obj at x: ', x, ', y: ', y)
         this.level_objects[y][x] = object_to_add
     }
 }
