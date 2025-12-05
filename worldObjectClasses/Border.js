@@ -10,5 +10,6 @@ export class Border extends WorldObject {
         super(scene, cannon, position)
         super.setPhysics()
         this.setColor(0xf5a9b8)
+        this.setgltf('./glb/BorderBlock.glb')
     }
 }

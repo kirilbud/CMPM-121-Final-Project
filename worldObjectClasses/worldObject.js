@@ -23,23 +23,25 @@ export class WorldObject {
     }
 
     setgltf(url) {
+        const gltfLoader = new GLTFLoader()
         gltfLoader.load(url, (gltf) => {
             const root = gltf.scene
-            root.scale.set(1, 1, 1)
-            root.position.set(this.position)
-            scene.add(root)
+            root.scale.set(0.5, 0.5, 0.5)
+            root.position.set(this.position.x, this.position.y, this.position.z)
+            this.scene.add(root)
 
             this.mixer = new THREE.AnimationMixer(root)
+            this.mesh.removeFromParent()
             this.mesh = root
 
-            const clips = gltf.animations
+            this.clips = gltf.animations
 
             //add all animations to a dictionary
-            this.animations = clips
+            //this.animations = clips
 
-            const clip = this.actions['idle']
-            const action = this.mixer.clipAction(clip)
-            action.play()
+            //const clip = this.actions['idle']
+            //const action = this.mixer.clipAction(clip)
+            //action.play()
             //make sure to do action.stop before playing another animation
         })
     }

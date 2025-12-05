@@ -12,6 +12,6 @@ export class Finish extends WorldObject {
     }
     interact(robot) {
         //replace with a jumpscare or something idk anymore
-        alert('you won')
+        //alert('you won')
     }
 }

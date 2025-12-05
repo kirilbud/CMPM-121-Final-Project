@@ -14,6 +14,8 @@ export class RobotSpawner extends WorldObject {
         this.robot_spawn_timer = 0
 
         this.setColor(0x9c59d1)
+        this.setgltf('./glb/Spawnbox.glb')
+
         this.robot_array = robot_array
     }
     update(delta) {
