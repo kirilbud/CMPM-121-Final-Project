@@ -31,16 +31,35 @@ export class Cursor {
         const gltfLoader = new GLTFLoader()
         //let url = `./glb/Cursor.glb`
 
-        gltfLoader.load(url, (gltf) => {
-            const root = gltf.scene
-            root.scale.set(0.2, 0.2, 0.2)
-            root.position.set(this.position)
-            root.rotateY(1.5)
-            root.rotateX(2)
-            this.scene.add(root)
+        this.resetMesh()
 
-            this.mesh = root
-        })
+        if (url != null) {
+            gltfLoader.load(url, (gltf) => {
+                const root = gltf.scene
+                root.scale.set(0.5, 0.5, 0.5)
+                root.position.set(this.position)
+                this.scene.add(root)
+
+                this.mesh = root
+            })
+        }
+    }
+
+    resetMesh() {
+        this.scene.remove(this.mesh)
+        this.mesh = undefined
+    }
+
+    setMeshFromID(id) {
+        if (id == 0) {
+            this.setMeshURL(null)
+        }
+        else if (id == 30) {
+            this.setMeshURL('./glb/PLatform.glb')
+        }
+        else if ( id == 60 ) {
+            this.setMeshURL('./glb/Spring.glb')
+        }
     }
 
     setPosition(x, y) {
