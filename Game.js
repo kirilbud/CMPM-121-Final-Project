@@ -185,16 +185,17 @@ function main() {
     //load level
     g_level = new Level(g_scene, g_cannon_world, gameMenu)
 
+    //cursor setup
+    g_cursor = new Cursor(g_focus, g_level, new THREE.Vector3(0))
+    g_cursor.setMeshFromID(0)
+
     //set inventory
-    let inventory = [new Item('None'), new Item('platform', 3, 30)]
+    let inventory = [new Item('None', 0, 0), new Item('platform', 3, 30)]
     setUpInventoryUI(inventory)
     g_inventory = inventory
 
     //set current item
     g_current_item = null
-
-    g_cursor = new Cursor(g_focus, g_level, new THREE.Vector3(0))
-    g_cursor.setMeshURL(`./glb/Cursor.glb`)
 
     console.log(' mode')
 
@@ -204,7 +205,7 @@ function main() {
             console.log('dark mode')
         } else {
             // Light
-            console.log('dark mode')
+            console.log('light mode')
         }
     } else {
         console.log('none mode')
@@ -226,8 +227,8 @@ function SetUpCanvasChungus(canvas) {
         if (event.button == 0 && g_current_item != null) {
             if ((g_current_item.getCount() > 0) && (g_current_item.name != 'None')) {
                 const newObj = g_level.placeObject(
-                    buildPoint.x + 2,
-                    buildPoint.y + 2,
+                    g_cursor.getPosition().x,
+                    g_cursor.getPosition().y,
                     g_current_item.id
                 )
 
@@ -350,6 +351,7 @@ function setUpInventoryUI(inv) {
     const buttonsDiv = document.createElement('div')
     uiDiv.appendChild(buttonsDiv)
     buttonsDiv.id = 'buttonsDiv'
+    
     for (const i of inv) {
         const storedValue = i
         console.log('added button!')
@@ -361,7 +363,9 @@ function setUpInventoryUI(inv) {
             console.log('setting item to: ', i.name)
             console.log('item id is ', storedValue.id)
             g_current_item = storedValue
+            g_cursor.setMeshFromID(storedValue.id)
         })
+
         uiDiv.addEventListener('itemUsed', () => {
             console.log(
                 'current item current count: ',
