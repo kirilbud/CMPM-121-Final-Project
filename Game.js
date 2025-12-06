@@ -13,7 +13,7 @@ import { Cursor } from './Cursor.js'
 
 //constants
 const CAMERA_FOV = 60 // camera zoom
-const MOUSE_SENSITIVITY = 0.03
+const MOUSE_SENSITIVITY = 1
 
 const mainDiv = document.querySelector('#mainDiv')
 
@@ -192,7 +192,7 @@ function main() {
     g_cursor.setMeshFromID(0)
 
     //set inventory
-    let inventory = [new Item('None', 0, 0), new Item('platform', 3, 30)]
+    let inventory = [new Item('None', 0, 0), new Item('platform', 300, 30)]
     setUpInventoryUI(inventory)
     g_inventory = inventory
 
@@ -234,8 +234,6 @@ function SetUpCanvasChungus(canvas) {
                 g_current_item.getCount() > 0 &&
                 g_current_item.name != 'None'
             ) {
-                const c = g_cursor.getPosition()
-                console.log('current cursor position: ', c.x, ' - ', c.y)
                 const newObj = g_level.placeObject(
                     g_cursor.getPosition().x,
                     g_cursor.getPosition().y,
@@ -248,7 +246,7 @@ function SetUpCanvasChungus(canvas) {
         } else if (event.button == 2) {
             g_dragging = true
             g_mouse_last_pos = new mouseVector()
-            g_mouse_last_pos.set(xCoord, yCoord)
+            g_mouse_last_pos.set(Math.floor(xCoord), Math.floor(yCoord))
         }
     })
 
@@ -282,18 +280,26 @@ function SetUpCanvasChungus(canvas) {
     })
 
     canvas.addEventListener('mousemove', (event) => {
+        const limitY = new THREE.Vector2(5, -10)
+        const limitX = new THREE.Vector2(10, -10)
+
         if (g_dragging) {
             let start_vector = new THREE.Vector2(
                 g_mouse_last_pos.x,
                 g_mouse_last_pos.y
             )
-            let end_vector = new THREE.Vector2(event.x, event.y)
+            let end_vector = new THREE.Vector2(
+                Math.floor(event.x),
+                Math.floor(event.y)
+            )
             let move_vector = start_vector.sub(end_vector)
+
             g_focus.position.z =
                 g_focus.position.z + move_vector.x * MOUSE_SENSITIVITY
             g_focus.position.y =
                 g_focus.position.y - move_vector.y * MOUSE_SENSITIVITY
-            g_mouse_last_pos.set(event.x, event.y)
+            g_mouse_last_pos.set(Math.floor(event.x), Math.floor(event.y))
+            console.log(g_focus.position)
         }
     })
 }

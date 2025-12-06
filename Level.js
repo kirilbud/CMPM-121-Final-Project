@@ -66,7 +66,7 @@ export class Level {
             this.level_objects.push(object_row)
         }
         //this.g_scene.add(this.scene)
-        //console.log(this.g_scene)
+        //(this.g_scene)
 
         if (level_data == gameMenu) {
             const langData = gameText['Hebrew']
@@ -288,14 +288,14 @@ export class Level {
     }
 
     getObject(x, y) {
-        console.log('getting object at', x, ' - ', y)
         return this.level_objects[-y][x]
     }
 
     removeObject(x, y) {
-        const obeject = this.getObject(x, y)
-        if (obeject) {
-            obeject.remove()
+        const object = this.getObject(x, y)
+        if (object) {
+            object.remove()
+            this.level_objects[-y][x] = undefined
         }
     }
 
@@ -308,9 +308,8 @@ export class Level {
     }
 
     placeObject(x, y, object_id) {
-        console.log('placing object at', x, ' - ', y)
         this.removeObject(x, y)
-        const object_position = new THREE.Vector3(0, -y, x)
+        const object_position = new THREE.Vector3(0, y, x)
         const object_to_add = this.getNewObject(object_id, object_position)
         this.level_objects[-y][x] = object_to_add
     }
@@ -330,5 +329,20 @@ export class Level {
 
     reloadLevel() {
         this.loadNewLevel(this.current_level)
+    }
+
+    getLevelCenter() {
+        //index for worldObject in bottom right corner
+        const idx = new THREE.Vector2(this.level_objects[0].length - 1, 
+            this.level_objects.length - 1)
+        const corner = this.level_objects[idx.y][idx.x]
+        let cornerPos = new THREE.Vector3(0,0,0)
+
+        corner.mesh.getWorldPosition(cornerPos)
+
+        const centerPos = new THREE.Vector3(0, Math.floor(cornerPos.y /2), cornerPos.z /2)
+        (centerPos)
+
+        return centerPos
     }
 }
