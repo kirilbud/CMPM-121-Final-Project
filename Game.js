@@ -298,6 +298,7 @@ function SetUpCanvasChungus(canvas) {
                 g_focus.position.z + move_vector.x * MOUSE_SENSITIVITY
             g_focus.position.y =
                 g_focus.position.y - move_vector.y * MOUSE_SENSITIVITY
+    
             g_mouse_last_pos.set(Math.floor(event.x), Math.floor(event.y))
             console.log(g_focus.position)
         }

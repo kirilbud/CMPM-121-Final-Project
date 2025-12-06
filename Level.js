@@ -120,7 +120,7 @@ export class Level {
                 sprite.scale.set(10, 5, 5)
                 return sprite
             }
-
+            /*
             const gameTitle = createTextSprite(langData.gameTitle)
             const playText = createTextSprite(langData.playText)
             const englishText = createTextSprite('English')
@@ -136,12 +136,13 @@ export class Level {
             englishText.scale.set(4, 3, 5)
             chineseText.scale.set(4, 3, 5)
             hebrewText.scale.set(4, 3, 5)
-
+            
             this.g_scene.add(playText)
             this.g_scene.add(gameTitle)
             this.g_scene.add(englishText)
             this.g_scene.add(chineseText)
             this.g_scene.add(hebrewText)
+            */
         }
     }
 
