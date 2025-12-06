@@ -227,8 +227,8 @@ function SetUpCanvasChungus(canvas) {
         if (event.button == 0 && g_current_item != null) {
             if ((g_current_item.getCount() > 0) && (g_current_item.name != 'None')) {
                 const newObj = g_level.placeObject(
-                    buildPoint.x + 2,
-                    buildPoint.y + 2,
+                    g_cursor.getPosition().x,
+                    g_cursor.getPosition().y,
                     g_current_item.id
                 )
 

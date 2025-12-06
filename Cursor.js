@@ -63,8 +63,10 @@ export class Cursor {
     }
 
     setPosition(x, y) {
-        let newx = (x - 0.5) * X_SENS
-        let newy = (y - 0.5) * y_SENS
+        let newx = Math.floor((x - 0.5) * X_SENS)
+        let newy = Math.floor((y - 0.5) * y_SENS)
+
+
         if (this.mesh) {
             this.mesh.position.set(0, -newy, newx)
         }
