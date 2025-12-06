@@ -27,7 +27,7 @@ export class Level {
     //using code I stole from the actor class
     constructor(g_scene, cannon_world, level_data) {
         this.level_order = [Level_1, Level_2, Level_3, Level_4, Level_5]
-
+        this.deaths_till_reset = 0
         this.robots = []
 
         this.g_scene = g_scene
@@ -44,6 +44,7 @@ export class Level {
     loadNewLevel(level_data) {
         //clear level information
         this.unloadLevel()
+        this.deaths_till_reset = 0
 
         this.level_objects = []
         for (let i = 0; i < level_data.length; i++) {
@@ -185,6 +186,7 @@ export class Level {
                     this.robots,
                     5
                 )
+                this.deaths_till_reset += 3
                 break
             case 20: // platform
                 world_object = new Platform(
@@ -251,9 +253,12 @@ export class Level {
         }
 
         //iterate through robots
+        let robots_dead = 0
         for (const robot of this.robots) {
             robot.update(delta)
-
+            if (!robot.alive) {
+                robots_dead = robots_dead + 1
+            }
             const robot_grid_position = robot.getGridPosition()
 
             if (
@@ -298,13 +303,14 @@ export class Level {
     }
 
     LoadNextLevel() {
-        if ((this.level_order.length = 0)) {
+        if (this.level_order.length == 0) {
             //finish
             this.unloadLevel()
             new EndScreen(this.g_scene.parent)
         }
 
         const level_to_load = this.level_order.shift()
+        console.log(level_to_load)
         this.loadNewLevel(level_to_load)
     }
 
