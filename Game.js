@@ -9,6 +9,7 @@ import { Level } from './Level.js'
 import { Platform } from './worldObjectClasses/Platform.js'
 import { Level_1 } from './WorldData.js'
 import { gameMenu } from './WorldData.js'
+import { Cursor } from './Cursor.js'
 
 //constants
 const CAMERA_FOV = 60 // camera zoom
@@ -48,6 +49,8 @@ let g_focus
 let g_mouse_last_pos
 
 let g_current_item
+
+let g_cursor
 
 const g_cannon_world = new CANNON.World({
     gravity: new CANNON.Vec3(0, -9.81, 0),
@@ -189,6 +192,8 @@ function main() {
 
     //set current item
     g_current_item = null
+
+    g_cursor = new Cursor(g_focus, g_level, new THREE.Vector3(0))
 
     requestAnimationFrame(render)
 }
