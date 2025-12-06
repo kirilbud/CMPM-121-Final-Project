@@ -73,8 +73,9 @@ export class Cursor {
     }
 
     getPosition() {
-        const position = this.mesh.getWorldPosition()
-        return new THREE.Vector2(position.z, position.y)
+        const target = new THREE.Vector3(0,0,0)
+        this.mesh.getWorldPosition(target)
+        return new THREE.Vector2(target.x,target.y)
     }
 
     update(delta) {}

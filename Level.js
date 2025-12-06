@@ -272,7 +272,8 @@ export class Level {
     }
 
     getObject(x, y) {
-        return this.level_objects[y][x]
+        console.log("getting object at", x, " - ", y)
+        return this.level_objects[-y][x]
     }
 
     removeObject(x, y) {
@@ -291,10 +292,11 @@ export class Level {
     }
 
     placeObject(x, y, object_id) {
+        console.log("placing object at", x, " - ", y)
         this.removeObject(x, y)
         const object_position = new THREE.Vector3(0, -y, x)
         const object_to_add = this.getNewObject(object_id, object_position)
-        this.level_objects[y][x] = object_to_add
+        this.level_objects[-y][x] = object_to_add
     }
 
     LoadNextLevel() {
