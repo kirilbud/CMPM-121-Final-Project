@@ -25,17 +25,19 @@ export class Cursor {
         const camera = scene.getObjectsByProperty('isCamera', true)[0]
 
         this.focus_point = camera.parent
+    }
 
+    setMeshURL(url) {
         const gltfLoader = new GLTFLoader()
+        //let url = `./glb/Cursor.glb`
 
-        let url = `./glb/Cursor.glb`
         gltfLoader.load(url, (gltf) => {
             const root = gltf.scene
             root.scale.set(0.2, 0.2, 0.2)
             root.position.set(position)
             root.rotateY(1.5)
             root.rotateX(2)
-            scene.add(root)
+            this.scene.add(root)
 
             this.mesh = root
         })

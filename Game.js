@@ -194,6 +194,7 @@ function main() {
     g_current_item = null
 
     g_cursor = new Cursor(g_focus, g_level, new THREE.Vector3(0))
+    g_cursor.setMeshURL(`./glb/Cursor.glb`)
 
     requestAnimationFrame(render)
 }
