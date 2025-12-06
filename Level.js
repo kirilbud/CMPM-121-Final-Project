@@ -27,7 +27,7 @@ import { Level_5 } from './WorldData.js'
 export class Level {
     //using code I stole from the actor class
     constructor(g_scene, cannon_world, level_data) {
-        this.level_order = [Level_1, Level_2, Level_3, Level_4, Level_5]
+        this.level_order = [Level_1, Level_2]
         this.deaths_till_reset = 0
         this.robots = []
 
@@ -333,15 +333,20 @@ export class Level {
 
     getLevelCenter() {
         //index for worldObject in bottom right corner
-        const idx = new THREE.Vector2(this.level_objects[0].length - 1, 
-            this.level_objects.length - 1)
+        const idx = new THREE.Vector2(
+            this.level_objects[0].length - 1,
+            this.level_objects.length - 1
+        )
         const corner = this.level_objects[idx.y][idx.x]
-        let cornerPos = new THREE.Vector3(0,0,0)
+        let cornerPos = new THREE.Vector3(0, 0, 0)
 
         corner.mesh.getWorldPosition(cornerPos)
 
-        const centerPos = new THREE.Vector3(0, Math.floor(cornerPos.y /2), cornerPos.z /2)
-        (centerPos)
+        const centerPos = new THREE.Vector3(
+            0,
+            Math.floor(cornerPos.y / 2),
+            cornerPos.z / 2
+        )(centerPos)
 
         return centerPos
     }
