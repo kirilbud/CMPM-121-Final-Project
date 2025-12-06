@@ -38,6 +38,8 @@ let g_inventory
 let g_ground
 let g_level
 
+export let g_is_dark_mode = true
+
 let g_dragging = false
 
 //this array holds all of the robots
@@ -202,13 +204,16 @@ function main() {
     if (window.matchMedia) {
         if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
             // Dark
+            g_is_dark_mode = true
             console.log('dark mode')
         } else {
             // Light
+            g_is_dark_mode = false
             console.log('light mode')
         }
     } else {
         console.log('none mode')
+        g_is_dark_mode = true
         // Default
     }
 
@@ -225,9 +230,12 @@ function SetUpCanvasChungus(canvas) {
         const xCoord = event.clientX - rect.left
         const yCoord = event.clientY - rect.top
         if (event.button == 0 && g_current_item != null) {
-            if ((g_current_item.getCount() > 0) && (g_current_item.name != 'None')) {
+            if (
+                g_current_item.getCount() > 0 &&
+                g_current_item.name != 'None'
+            ) {
                 const c = g_cursor.getPosition()
-                console.log("current cursor position: ", c.x, " - ", c.y)
+                console.log('current cursor position: ', c.x, ' - ', c.y)
                 const newObj = g_level.placeObject(
                     g_cursor.getPosition().x,
                     g_cursor.getPosition().y,
@@ -353,7 +361,7 @@ function setUpInventoryUI(inv) {
     const buttonsDiv = document.createElement('div')
     uiDiv.appendChild(buttonsDiv)
     buttonsDiv.id = 'buttonsDiv'
-    
+
     for (const i of inv) {
         const storedValue = i
         console.log('added button!')
@@ -375,8 +383,7 @@ function setUpInventoryUI(inv) {
             )
             if (i.name != 'None') {
                 newButton.innerText = i.name + ' x' + i.count
-            }
-            else{
+            } else {
                 newButton.innerText = 'None'
             }
         })
@@ -392,11 +399,12 @@ window
     .matchMedia('(prefers-color-scheme: dark)')
     .addEventListener('change', (event) => {
         console.log(event.matches)
-        const newColorScheme = event.matches ? 'dark' : 'light'
         if (event.matches) {
             //dark mode
+            g_is_dark_mode = true
         } else {
             //light mode
+            g_is_dark_mode = false
         }
     })
 
