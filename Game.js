@@ -226,6 +226,8 @@ function SetUpCanvasChungus(canvas) {
         const yCoord = event.clientY - rect.top
         if (event.button == 0 && g_current_item != null) {
             if ((g_current_item.getCount() > 0) && (g_current_item.name != 'None')) {
+                const c = g_cursor.getPosition()
+                console.log("current cursor position: ", c.x, " - ", c.y)
                 const newObj = g_level.placeObject(
                     g_cursor.getPosition().x,
                     g_cursor.getPosition().y,

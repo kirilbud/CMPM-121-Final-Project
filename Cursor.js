@@ -65,8 +65,6 @@ export class Cursor {
     setPosition(x, y) {
         let newx = Math.floor((x - 0.5) * X_SENS)
         let newy = Math.floor((y - 0.5) * y_SENS)
-
-
         if (this.mesh) {
             this.mesh.position.set(0, -newy, newx)
         }
@@ -75,7 +73,7 @@ export class Cursor {
     getPosition() {
         const target = new THREE.Vector3(0,0,0)
         this.mesh.getWorldPosition(target)
-        return new THREE.Vector2(target.x,target.y)
+        return new THREE.Vector2(target.z,target.y)
     }
 
     update(delta) {}
