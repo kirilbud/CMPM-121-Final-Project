@@ -30,8 +30,7 @@ export class Finish extends WorldObject {
         if (this.robots_till_win == 0) {
             //alert('brace make me a sandwich')
             //window.location.reload()
-            this.level.loadNewLevel(Level_1)
-            new EndScreen(this.scene.parent)
+            this.level.LoadNextLevel()
         }
     }
 }

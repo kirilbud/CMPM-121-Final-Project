@@ -13,13 +13,21 @@ import { Spring } from './worldObjectClasses/Spring.js'
 import { Star } from './worldObjectClasses/Star.js'
 
 import { Robot } from './Robot.js'
-import { Level_1 } from './WorldData.js'
+//import { Level_1 } from './WorldData.js'
 import { gameMenu } from './WorldData.js'
 import { gameText } from './languages.js'
+
+import { Level_1 } from './WorldData.js'
+import { Level_2 } from './WorldData.js'
+import { Level_3 } from './WorldData.js'
+import { Level_4 } from './WorldData.js'
+import { Level_5 } from './WorldData.js'
 
 export class Level {
     //using code I stole from the actor class
     constructor(g_scene, cannon_world, level_data) {
+        this.level_order = [Level_1, Level_2, Level_3, Level_4, Level_5]
+
         this.robots = []
 
         this.g_scene = g_scene
@@ -30,6 +38,7 @@ export class Level {
         //iterate through the selected levels data
         this.level_objects = []
         this.loadNewLevel(level_data)
+        this.current_level = level_data
     }
 
     loadNewLevel(level_data) {
@@ -286,5 +295,20 @@ export class Level {
         const object_position = new THREE.Vector3(0, -y, x)
         const object_to_add = this.getNewObject(object_id, object_position)
         this.level_objects[y][x] = object_to_add
+    }
+
+    LoadNextLevel() {
+        if ((this.level_order.length = 0)) {
+            //finish
+            this.unloadLevel()
+            new EndScreen(this.g_scene.parent)
+        }
+
+        const level_to_load = this.level_order.shift()
+        this.loadNewLevel(level_to_load)
+    }
+
+    reloadLevel() {
+        this.loadNewLevel(this.current_level)
     }
 }
