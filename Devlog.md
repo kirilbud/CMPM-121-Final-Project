@@ -70,3 +70,50 @@ Nina
 [ ] Create the credits button and add them
 [ ] Create a button that changes the language of the game
 [ ] Make it so that when the player clicks on an interactable object, text appears
+
+# Devlog Entry 12/05/2025
+
+## How we satisfied the software requirements
+
+For each of the F2 requirements, give a paragraph of explanation for how your project's implementation satisfies the requirements.
+Your team can earn partial credit for covering only a subset of the F2 requirements at this stage. (It is much better to satisfy the requirements in a sloppy way right now than lock in your partial credit.)
+
+
+[x] "The game uses the same 3D rendering and physics simulation identified by the team for F1 or suitable replacements that still satisfy the F1 requirements."
+
+We didn't really have to change much here, as we've already done F1.
+
+[x] "The game must allow the player to move between scenes (e.g. rooms)"
+
+Our game has levels, each with a puzzle that the player must solve to traverse to the next level. Each level is unique and
+eventually leads to an end screen.
+
+[x] "The game must allow the player to select specific objects in a scene for interaction (e.g. tapping an item to pick it up or examine it)"
+
+the player can select objects in their inventory and place them on top of other objects in the real world. this affects the robot agents wandering the level.
+
+[x] "The game maintains an inventory system allowing the player to carry objects so that what happens in one scene has an impact on what is possible in another scene."
+
+There is an item class and an inventory class that holds the Item data type. The player can switch between holding nothing and holding a block, and the amount persists from level to level.
+
+[x] "The game contains at least one physics-based puzzle that is relevant to the player's progress in the game."
+
+This was already the case in F1, but we've elaborated on the physics element. Robots can now bounce on springs!
+
+[x] "The player can succeed or fail at the physics-based puzzle on the basis of their skill and/or reasoning (rather than luck)."
+
+There is at least one level that requires player intervention, or else the robots all die and the level must restart
+
+[x] "Via play, the game can reach at least one conclusive ending."
+
+There's an end screen! its a bit bugged right now but by tomorrow it should be exclusive to the final level.
+
+## Reflection
+
+[x] "Looking back on how you achieved the F2 requirements, how has your team’s plan changed since your F1 devlog? There’s learning value in you documenting how your team’s thinking has changed over time."
+
+Well, we definitely learned to give up on making anything with any serious amount of scope or placing too much effort into good game design. We're mainly focused on just meeting your requirements, starting with F2 and moving on to F3. 
+
+We've been focused more on making more .js files to accomodate for all of the new classes and making things modular. This is unfortunately not as uniform as we'd like. There's still plenty of classes in game.js that probably should be pulled out at some point or another.
+
+We're doing our best to keep things on a tight schedule, staying up late into the night to blast through this project.
