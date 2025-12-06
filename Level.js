@@ -44,8 +44,9 @@ export class Level {
 
     loadNewLevel(level_data) {
         //clear level information
-        console.log('loading level')
+
         this.unloadLevel()
+        console.log('loading level')
         this.deaths_till_reset = 0
 
         this.level_objects = []
@@ -145,6 +146,7 @@ export class Level {
     }
 
     unloadLevel() {
+        console.log('unloading')
         for (let i = 0; i < this.level_objects.length; i++) {
             const row = this.level_objects[i]
 
@@ -210,7 +212,8 @@ export class Level {
                     this.scene,
                     this.cannon_world,
                     position,
-                    1
+                    1,
+                    this
                 )
                 break
             case 41: // crusher left / right
@@ -218,7 +221,8 @@ export class Level {
                     this.scene,
                     this.cannon_world,
                     position,
-                    2
+                    2,
+                    this
                 )
             case 50: // finish object
                 world_object = new Finish(
@@ -278,10 +282,7 @@ export class Level {
             }
         }
 
-        if (
-            robots_dead >= this.deaths_till_reset &&
-            this.deaths_till_reset > 0
-        ) {
+        if (this.deaths_till_reset < 1) {
             this.reloadLevel()
         }
     }
@@ -324,7 +325,6 @@ export class Level {
 
         const level_to_load = this.level_order.shift()
         this.current_level = level_to_load
-        console.log('loading level')
         this.loadNewLevel(level_to_load)
     }
 

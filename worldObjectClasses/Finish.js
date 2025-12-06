@@ -18,7 +18,6 @@ export class Finish extends WorldObject {
     }
     interact(robot) {
         //replace with a jumpscare or something idk anymore
-        //alert('you won')
 
         if (!robot.alive) {
             return
@@ -30,6 +29,7 @@ export class Finish extends WorldObject {
         if (this.robots_till_win == 0) {
             //alert('brace make me a sandwich')
             //window.location.reload()
+            console.log('win')
             this.level.LoadNextLevel()
         }
     }

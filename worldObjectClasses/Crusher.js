@@ -6,9 +6,9 @@ import { PhysicsObject } from './PhysicsObject.js'
 
 //to be implemented
 export class Crusher extends WorldObject {
-    constructor(scene, cannon, position, varient) {
+    constructor(scene, cannon, position, varient, level) {
         super(scene, cannon, position)
-
+        this.level = level
         this.setColor(0xff0000)
 
         this.varient = varient
@@ -37,6 +37,10 @@ export class Crusher extends WorldObject {
     }
 
     interact(robot) {
+        if (!robot.alive) {
+            return
+        }
         robot.remove()
+        this.level.deaths_till_reset = this.level.deaths_till_reset - 1
     }
 }
