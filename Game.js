@@ -196,6 +196,21 @@ function main() {
     g_cursor = new Cursor(g_focus, g_level, new THREE.Vector3(0))
     g_cursor.setMeshURL(`./glb/Cursor.glb`)
 
+    console.log(' mode')
+
+    if (window.matchMedia) {
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            // Dark
+            console.log('dark mode')
+        } else {
+            // Light
+            console.log('dark mode')
+        }
+    } else {
+        console.log('none mode')
+        // Default
+    }
+
     requestAnimationFrame(render)
 }
 
@@ -361,3 +376,19 @@ function setUpInventoryUI(inv) {
 document.addEventListener('contextmenu', function (event) {
     event.preventDefault()
 })
+
+window
+    .matchMedia('(prefers-color-scheme: dark)')
+    .addEventListener('change', (event) => {
+        console.log(event.matches)
+        const newColorScheme = event.matches ? 'dark' : 'light'
+        if (event.matches) {
+            //dark mode
+        } else {
+            //light mode
+        }
+    })
+
+function SetLightMode() {}
+
+function SetDarktMode() {}

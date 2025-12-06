@@ -9,6 +9,7 @@ export class Star extends WorldObject {
     constructor(scene, cannon, position) {
         super(scene, cannon, position)
         //this.setPhysics()
+        this.exists = true
         this.setColor(0x5bcefa)
         this.setgltf('./glb/star.glb')
     }
@@ -19,5 +20,8 @@ export class Star extends WorldObject {
             this.mesh.rotateY(delta * 10)
         }
     }
-    interact(robot) {}
+    interact(robot) {
+        if (this.exists) {
+        }
+    }
 }
