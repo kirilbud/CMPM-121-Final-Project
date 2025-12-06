@@ -77,7 +77,7 @@ export class Level {
                 color: 0x663399,
                 side: THREE.DoubleSide,
             })
-
+            /*
             const playButton = new THREE.Mesh(geometry, material)
             playButton.rotation.x = Math.PI
             playButton.rotation.y += 1.6
@@ -103,7 +103,7 @@ export class Level {
             englishButton.position.set(3, -4.3, 22)
             chineseButton.position.set(3, -6.3, 22)
             hebrewButton.position.set(3, -8.3, 22)
-
+            */
             function createTextSprite(message) {
                 const canvas = document.createElement('canvas')
                 const context = canvas.getContext('2d')
