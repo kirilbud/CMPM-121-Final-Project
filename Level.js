@@ -16,6 +16,7 @@ import { Robot } from './Robot.js'
 //import { Level_1 } from './WorldData.js'
 import { gameMenu } from './WorldData.js'
 import { gameText } from './languages.js'
+import { EndScreen } from '../EndScreen.js'
 
 import { Level_1 } from './WorldData.js'
 import { Level_2 } from './WorldData.js'
@@ -43,6 +44,7 @@ export class Level {
 
     loadNewLevel(level_data) {
         //clear level information
+        console.log('loading level')
         this.unloadLevel()
         this.deaths_till_reset = 0
 
@@ -158,6 +160,7 @@ export class Level {
             robot.remove()
         }
         this.robots = []
+        this.deaths_till_reset = 0
     }
 
     // OBJECT ID NUMBERS
@@ -275,7 +278,10 @@ export class Level {
             }
         }
 
-        if (robots_dead >= this.deaths_till_reset) {
+        if (
+            robots_dead >= this.deaths_till_reset &&
+            this.deaths_till_reset > 0
+        ) {
             this.reloadLevel()
         }
     }
@@ -312,12 +318,13 @@ export class Level {
         if (this.level_order.length == 0) {
             //finish
             this.unloadLevel()
-            new EndScreen(this.g_scene.parent)
+            new EndScreen(this.g_scene)
+            return
         }
 
         const level_to_load = this.level_order.shift()
         this.current_level = level_to_load
-        console.log(level_to_load)
+        console.log('loading level')
         this.loadNewLevel(level_to_load)
     }
 
