@@ -20,7 +20,7 @@ export class Cursor {
 
         this.level = level
         this.scene = scene
-        this.position
+        this.position = position
 
         const camera = scene.getObjectsByProperty('isCamera', true)[0]
 
@@ -34,7 +34,7 @@ export class Cursor {
         gltfLoader.load(url, (gltf) => {
             const root = gltf.scene
             root.scale.set(0.2, 0.2, 0.2)
-            root.position.set(position)
+            root.position.set(this.position)
             root.rotateY(1.5)
             root.rotateX(2)
             this.scene.add(root)
@@ -46,7 +46,6 @@ export class Cursor {
     setPosition(x, y) {
         let newx = (x - 0.5) * X_SENS
         let newy = (y - 0.5) * y_SENS
-        console.log(this.mesh)
         if (this.mesh) {
             this.mesh.position.set(0, -newy, newx)
         }

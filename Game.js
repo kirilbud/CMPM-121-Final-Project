@@ -186,7 +186,7 @@ function main() {
     g_level = new Level(g_scene, g_cannon_world, gameMenu)
 
     //set inventory
-    let inventory = [new Item('platform', 3, 30)]
+    let inventory = [new Item('None'), new Item('platform', 3, 30)]
     setUpInventoryUI(inventory)
     g_inventory = inventory
 
@@ -224,7 +224,7 @@ function SetUpCanvasChungus(canvas) {
         const xCoord = event.clientX - rect.left
         const yCoord = event.clientY - rect.top
         if (event.button == 0 && g_current_item != null) {
-            if (g_current_item.getCount() > 0) {
+            if ((g_current_item.getCount() > 0) && (g_current_item.name != 'None')) {
                 const newObj = g_level.placeObject(
                     buildPoint.x + 2,
                     buildPoint.y + 2,
@@ -367,7 +367,12 @@ function setUpInventoryUI(inv) {
                 'current item current count: ',
                 g_current_item.getCount()
             )
-            newButton.innerText = i.name + ' x' + i.count
+            if (i.name != 'None') {
+                newButton.innerText = i.name + ' x' + i.count
+            }
+            else{
+                newButton.innerText = 'None'
+            }
         })
     }
 }
