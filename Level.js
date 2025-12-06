@@ -274,10 +274,14 @@ export class Level {
                 current_level_object.interact(robot)
             }
         }
+
+        if (robots_dead >= this.deaths_till_reset) {
+            this.reloadLevel()
+        }
     }
 
     getObject(x, y) {
-        console.log("getting object at", x, " - ", y)
+        console.log('getting object at', x, ' - ', y)
         return this.level_objects[-y][x]
     }
 
@@ -297,7 +301,7 @@ export class Level {
     }
 
     placeObject(x, y, object_id) {
-        console.log("placing object at", x, " - ", y)
+        console.log('placing object at', x, ' - ', y)
         this.removeObject(x, y)
         const object_position = new THREE.Vector3(0, -y, x)
         const object_to_add = this.getNewObject(object_id, object_position)
@@ -312,6 +316,7 @@ export class Level {
         }
 
         const level_to_load = this.level_order.shift()
+        this.current_level = level_to_load
         console.log(level_to_load)
         this.loadNewLevel(level_to_load)
     }
