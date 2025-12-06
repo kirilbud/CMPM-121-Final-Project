@@ -205,7 +205,7 @@ function main() {
             console.log('dark mode')
         } else {
             // Light
-            console.log('dark mode')
+            console.log('light mode')
         }
     } else {
         console.log('none mode')
