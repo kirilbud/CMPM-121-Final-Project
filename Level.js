@@ -16,7 +16,7 @@ import { Robot } from './Robot.js'
 //import { Level_1 } from './WorldData.js'
 import { gameMenu } from './WorldData.js'
 import { gameText } from './languages.js'
-import { EndScreen } from '../EndScreen.js'
+import { EndScreen } from './EndScreen.js'
 
 import { Level_1 } from './WorldData.js'
 import { Level_2 } from './WorldData.js'
