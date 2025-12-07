@@ -91,29 +91,6 @@ class Item {
     }
 }
 
-class Wall {
-    constructor() {
-        ;(this.shape = new CANNON.Box(new CANNON.Vec3(5, 10, 1))),
-            (this.geometry = new THREE.BoxGeometry(5, 10, 1)),
-            (this.obj = new PhysicsObject(this.geometry, this.shape)),
-            this.obj.mesh.layers.enable(3)
-        this.material = new THREE.MeshPhongMaterial({ color: 0x880808 })
-        this.obj.setColor(new THREE.Color(0xffffff))
-        this.obj.setMass(0)
-    }
-    instantiate(inputScene, inputWorld) {
-        inputScene.add(this.obj.mesh)
-        inputWorld.addBody(this.obj.body)
-    }
-    instantiateAtPos(inputScene, inputWorld, position) {
-        if (typeof (position == CANNON.Vec3)) {
-            this.instantiate(inputScene, inputWorld)
-            this.obj.body.position.copy(position)
-            this.obj.mesh.position.copy(position)
-        }
-    }
-}
-
 //variables :3
 let canPlace = false
 let buildPoint = new CANNON.Vec3(0, 0, 0)
@@ -342,22 +319,6 @@ function render(time) {
 
     dispatchEvent(g_physicsStep)
     requestAnimationFrame(render)
-}
-
-function rotateCamera(axis, angle) {
-    //determines if camera rotates by the pivot or camera itself.
-    //NOTE: Camera can only rotate on x and y axes.
-    console.log(axis)
-    const y = new THREE.Vector3(0, 1, 0)
-    const x = new THREE.Vector3(1, 0, 0)
-    if (axis.y == 1 && axis.x == 0) {
-        console.log('rotating y')
-        g_camera_pivot.rotation.y = angle
-    } else if (axis.x == 1) {
-        g_camera.rotation.x = angle
-    } else {
-        console.log('ERROR! Attempting to rotate on invalid axis.')
-    }
 }
 
 function setUpInventoryUI(inv) {

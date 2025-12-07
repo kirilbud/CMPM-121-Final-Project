@@ -26,10 +26,15 @@ import { Level_5 } from './WorldData.js'
 
 export class Level {
     //using code I stole from the actor class
-    constructor(g_scene, cannon_world, level_data) {
+    constructor(g_scene, cannon_world, level_data, inventory) {
         this.level_order = [Level_1, Level_2]
+        this.level_platforms = [10, 10]
+        this.level_springs = [10, 10]
         this.deaths_till_reset = 0
         this.robots = []
+
+        this.max_platforms
+        this.max_springs
 
         this.g_scene = g_scene
         this.cannon_world = cannon_world
