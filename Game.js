@@ -149,14 +149,7 @@ function main() {
 
     g_scene.add(g_focus)
 
-    // Load and set the background texture
-    var loader = new THREE.TextureLoader()
-
-    loader.load('./graph6.png', function (texture) {
-        g_scene.background = texture
-    })
-
-    g_scene.backgroundIntensity = 1
+    // g_scene.backgroundIntensity = 1
     //set camera
     g_focus.add(camera)
     g_camera_pivot = g_focus
@@ -204,17 +197,17 @@ function main() {
     if (window.matchMedia) {
         if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
             // Dark
-            g_is_dark_mode = true
             console.log('dark mode')
+            SetDarktMode()
         } else {
             // Light
-            g_is_dark_mode = false
             console.log('light mode')
+            SetLightMode()
         }
     } else {
-        console.log('none mode')
-        g_is_dark_mode = true
-        // Default
+        console.log('goblin mode')
+        SetDarktMode()
+        // sets it to goblin mode and steals players files or something idc anymore
     }
 
     requestAnimationFrame(render)
@@ -298,7 +291,7 @@ function SetUpCanvasChungus(canvas) {
                 g_focus.position.z + move_vector.x * MOUSE_SENSITIVITY
             g_focus.position.y =
                 g_focus.position.y - move_vector.y * MOUSE_SENSITIVITY
-    
+
             g_mouse_last_pos.set(Math.floor(event.x), Math.floor(event.y))
             console.log(g_focus.position)
         }
@@ -415,6 +408,24 @@ window
         }
     })
 
-function SetLightMode() {}
+function SetLightMode() {
+    g_is_dark_mode = false
 
-function SetDarktMode() {}
+    // Load and set the background texture
+    var loader = new THREE.TextureLoader()
+
+    loader.load('./graph6.png', function (texture) {
+        g_scene.background = texture
+    })
+}
+
+function SetDarktMode() {
+    g_is_dark_mode = true
+
+    // Load and set the background texture
+    var loader = new THREE.TextureLoader()
+
+    loader.load('./textures/darkermode.png', function (texture) {
+        g_scene.background = texture
+    })
+}
