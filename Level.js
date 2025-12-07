@@ -318,7 +318,9 @@ export class Level {
     LoadNextLevel() {
         if (this.level_order.length == 0) {
             //finish
+            this.deaths_till_reset = 100
             this.unloadLevel()
+            this.deaths_till_reset = 100
             new EndScreen(this.g_scene)
             return
         }
@@ -329,6 +331,7 @@ export class Level {
     }
 
     reloadLevel() {
+        console.log('reloading')
         this.loadNewLevel(this.current_level)
     }
 
