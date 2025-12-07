@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { GLTFLoader } from '../lib/addons/GLTFLoader.js'
 import * as CANNON from 'https://unpkg.com/cannon-es@0.19.0/dist/cannon-es.js'
+import { g_robot_cannon_material } from '../Game.js'
 
 export class PhysicsObject {
     constructor(inputGeometry, inputShape) {
@@ -9,7 +10,11 @@ export class PhysicsObject {
         this.mesh = new THREE.Mesh(this.geometry, this.material)
         this.layers = this.mesh.layers
         this.bodyShape = inputShape
-        this.body = new CANNON.Body({ shape: this.bodyShape })
+
+        this.body = new CANNON.Body({
+            shape: this.bodyShape,
+            material: g_robot_cannon_material,
+        })
 
         this.body.collisionFilterGroup = 1
     }

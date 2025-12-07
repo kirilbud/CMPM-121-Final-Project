@@ -3,6 +3,8 @@ import { GLTFLoader } from './lib/addons/GLTFLoader.js'
 import * as CANNON from 'https://unpkg.com/cannon-es@0.19.0/dist/cannon-es.js'
 //import {g_clock} from './Game.js';
 
+import { g_robot_cannon_material } from './Game.js'
+
 export class Robot {
     //using code I stole from the actor class
     constructor(scene, cannon_world, position) {
@@ -21,7 +23,11 @@ export class Robot {
 
         //physics variables
         this.bodyShape = new CANNON.Box(new CANNON.Vec3(0.2, 0.4, 0.1))
-        this.body = new CANNON.Body({ mass: 1, shape: this.bodyShape })
+        this.body = new CANNON.Body({
+            mass: 1,
+            shape: this.bodyShape,
+            material: g_robot_cannon_material,
+        })
         this.body.angularDamping = 1
 
         //restricts movement to a 2D axis.

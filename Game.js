@@ -39,6 +39,8 @@ let g_ground
 let g_level
 
 export let g_is_dark_mode = true
+export let g_robot_cannon_material
+export let g_floor_cannon_material
 
 let g_dragging = false
 
@@ -191,6 +193,14 @@ function main() {
         // sets it to goblin mode and steals players files or something idc anymore
     }
 
+    g_robot_cannon_material = new CANNON.Material('noBounceMaterial')
+    g_floor_cannon_material = new CANNON.Material('groundMaterial')
+    let interact = new CANNON.ContactMaterial(
+        g_robot_cannon_material,
+        g_floor_cannon_material,
+        { restitution: 0 }
+    )
+
     requestAnimationFrame(render)
 }
 
@@ -208,14 +218,21 @@ function SetUpCanvasChungus(canvas) {
                 g_current_item.getCount() > 0 &&
                 g_current_item.name != 'None'
             ) {
-                const newObj = g_level.placeObject(
-                    g_cursor.getPosition().x,
-                    g_cursor.getPosition().y,
-                    g_current_item.id
-                )
+                if (
+                    !g_level.getObject(
+                        g_cursor.getPosition().x,
+                        g_cursor.getPosition().y
+                    )
+                ) {
+                    const newObj = g_level.placeObject(
+                        g_cursor.getPosition().x,
+                        g_cursor.getPosition().y,
+                        g_current_item.id
+                    )
 
-                g_current_item.setCount(g_current_item.getCount() - 1)
-                uiDiv.dispatchEvent(placedEvent)
+                    g_current_item.setCount(g_current_item.getCount() - 1)
+                    uiDiv.dispatchEvent(placedEvent)
+                }
             }
         } else if (event.button == 2) {
             g_dragging = true
