@@ -7,7 +7,7 @@ import { PhysicsObject } from './PhysicsObject.js'
 export class WorldObject {
     constructor(scene, cannon, position) {
         this.geometry = new THREE.BoxGeometry(1, 1, 1)
-        this.shape = new CANNON.Box(new CANNON.Vec3(1, 1, 1))
+        this.shape = new CANNON.Box(new CANNON.Vec3(0.5, 0.5, 0.5))
         this.material = new THREE.MeshPhongMaterial({ color: 0xf48072 })
         this.scene = scene
         this.cannon = cannon
