@@ -185,7 +185,11 @@ function main() {
     g_cursor.setMeshFromID(0)
 
     //set inventory
-    let inventory = [new Item('None', 0, 0), new Item('platform', 300, 30)]
+    let inventory = [
+        new Item('None', 0, 0),
+        new Item('platform', 300, 30),
+        new Item('Spring', 5, 60),
+    ]
     setUpInventoryUI(inventory)
     g_inventory = inventory
 
