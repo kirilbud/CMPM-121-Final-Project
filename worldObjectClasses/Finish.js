@@ -15,6 +15,7 @@ export class Finish extends WorldObject {
         this.robots_till_win = 3
         this.setColor(0xffffff)
         this.level = level
+        this.setgltf('./glb/finish.glb')
     }
     interact(robot) {
         //replace with a jumpscare or something idk anymore
@@ -31,6 +32,14 @@ export class Finish extends WorldObject {
             //window.location.reload()
             console.log('win')
             this.level.LoadNextLevel()
+        }
+    }
+
+    update(delta) {
+        super.update(delta)
+        if (this.loaded) {
+            this.loaded = false
+            this.mesh.rotateY(Math.PI / 2)
         }
     }
 }
