@@ -417,6 +417,9 @@ function SetLightMode() {
     loader.load('./graph6.png', function (texture) {
         g_scene.background = texture
     })
+
+    uiDiv.style.backgroundColor = 'white'
+    uiDiv.style.color = 'black'
 }
 
 function SetDarktMode() {
@@ -428,4 +431,8 @@ function SetDarktMode() {
     loader.load('./textures/darkermode.png', function (texture) {
         g_scene.background = texture
     })
+
+    uiDiv.style.backgroundColor = 'black'
+    uiDiv.style.color = 'white'
+    document.body.style.backgroundColor = 'black'
 }
