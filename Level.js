@@ -24,6 +24,10 @@ import { Level_3 } from './WorldData.js'
 import { Level_4 } from './WorldData.js'
 import { Level_5 } from './WorldData.js'
 
+import { uiDiv } from './Game.js'
+
+const ItemSetEvent = new Event('itemSet')
+
 export class Level {
     //using code I stole from the actor class
     constructor(g_scene, cannon_world, level_data, inventory) {
@@ -32,6 +36,7 @@ export class Level {
         this.level_springs = [1, 1]
         this.deaths_till_reset = 0
         this.robots = []
+        this.level_number = 0
 
         this.inventory = inventory
 
@@ -45,8 +50,41 @@ export class Level {
         this.g_scene.add(this.scene)
         //iterate through the selected levels data
         this.level_objects = []
-        this.loadNewLevel(level_data)
-        this.current_level = level_data
+        //check if save data exists
+        if (localStorage.getItem('save')) {
+            console.log('save found')
+            this.loadSave()
+        } else {
+            console.log('no save found')
+            this.loadNewLevel(level_data)
+            this.current_level = level_data
+        }
+    }
+
+    loadSave() {
+        const save = JSON.parse(localStorage.getItem('save'))
+        const level_number = save.level
+        this.level_number = level_number
+        for (let i = 0; i < level_number; i++) {
+            this.current_level = this.level_order.shift()
+            this.level_platforms.shift()
+            this.inventory[2].getCount() + this.level_springs.shift()
+        }
+
+        this.max_platforms = save.platforms
+        console.log(`platforms = ${this.max_platforms}`)
+        this.max_springs = save.springs
+        uiDiv.dispatchEvent(ItemSetEvent)
+        this.loadNewLevel(this.current_level)
+    }
+
+    save() {
+        const save = {
+            level: this.level_number,
+            platforms: this.max_platforms,
+            springs: this.max_springs,
+        }
+        localStorage.setItem('save', JSON.stringify(save))
     }
 
     loadNewLevel(level_data) {
@@ -54,7 +92,7 @@ export class Level {
 
         this.unloadLevel()
         console.log('loading level')
-
+        console.log(`laoding platforms = ${this.max_platforms}`)
         this.inventory[1].setCount(this.max_platforms)
         this.inventory[2].setCount(this.max_springs)
         this.deaths_till_reset = 0
@@ -344,6 +382,8 @@ export class Level {
             this.inventory[2].getCount() + this.level_springs.shift()
 
         this.loadNewLevel(level_to_load)
+        this.level_number = this.level_number + 1
+        this.save()
     }
 
     reloadLevel() {

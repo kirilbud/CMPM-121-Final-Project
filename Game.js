@@ -17,13 +17,20 @@ const MOUSE_SENSITIVITY = 1
 
 const mainDiv = document.querySelector('#mainDiv')
 
-const uiDiv = document.createElement('div')
+export const uiDiv = document.createElement('div')
 uiDiv.innerText = 'Inventory: '
 uiDiv.style.backgroundColor = 'black'
 uiDiv.style.color = 'white'
 uiDiv.style.fontSize = '200%'
 
 mainDiv.appendChild(uiDiv)
+
+const saveDiv = document.createElement('div')
+mainDiv.appendChild(uiDiv)
+
+const delSaveButton = document.createElement('button')
+delSaveButton.textContent = 'Delete Save'
+mainDiv.appendChild(delSaveButton)
 
 //GLOBALS
 //g_ stands for this variable being a global variable
@@ -337,6 +344,7 @@ function render(time) {
     g_level.update(dt)
 
     dispatchEvent(g_physicsStep)
+    uiDiv.dispatchEvent(ItemSetEvent)
     requestAnimationFrame(render)
 }
 
@@ -361,10 +369,6 @@ function setUpInventoryUI(inv) {
         })
 
         uiDiv.addEventListener('itemSet', () => {
-            console.log(
-                'current item current count: ',
-                g_current_item.getCount()
-            )
             if (i.name != 'None') {
                 newButton.innerText = i.name + ' x' + i.count
             } else {
@@ -432,3 +436,8 @@ function SetDarktMode() {
     uiDiv.style.color = 'white'
     document.body.style.backgroundColor = 'black'
 }
+
+delSaveButton.addEventListener('click', function () {
+    console.log('removing save')
+    localStorage.clear()
+})
