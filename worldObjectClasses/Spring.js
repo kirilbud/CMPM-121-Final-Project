@@ -14,7 +14,6 @@ export class Spring extends WorldObject {
 
     interact(robot) {
         const robot_body = robot.getBody()
-        console.log(robot_body.velocity.y)
         if (robot_body.velocity.y < 0.0001) {
             if (robot_body.velocity.y < -0.0) {
                 robot_body.velocity.y = 0
