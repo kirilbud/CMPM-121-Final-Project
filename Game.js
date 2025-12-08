@@ -36,6 +36,7 @@ uiDiv.appendChild(invDiv)
 const saveDiv = document.createElement('div')
 saveDiv.id = 'saveDiv'
 const saveDivTitle = document.createElement('div')
+saveDivTitle.id = 'saveDivTitle'
 saveDivTitle.innerText = 'Save Options: '
 saveDivTitle.style.color = 'white'
 saveDiv.appendChild(saveDivTitle)
@@ -119,7 +120,7 @@ const english = new UILanguage('English',
     ['None', 'Platform', 'Spring'], 
     ['Light', 'Dark'], 
     'Delete Save Data', 
-    ['English', 'Chinese', 'Hebrew'])
+    ['English', 'Mandarin', 'Hebrew'])
 
 const simplifiedChinese = new UILanguage('中国人', 
     ['存货', '保存数据选项', '设置'], 
@@ -128,7 +129,12 @@ const simplifiedChinese = new UILanguage('中国人',
     '删除存档',
     ['英语','中国人','希伯来语'])
 
-const hebrew = new UILanguage('עִברִית', ['מְלַאי', 'שמור הגדרות נתונים', 'הגדרות'],['אַף לֹא אֶחָד', 'פּלַטפוֹרמָה', 'סלינקי'], ['אוֹר','כֵּהֶה'],'מחק שמור נתונים', ['אַנגְלִית', 'סִינִית', 'עִברִית'])
+const hebrew = new UILanguage('עִברִית', 
+    ['מְלַאי', 'שמור הגדרות נתונים', 'הגדרות'],
+    ['אַף לֹא אֶחָד', 'פּלַטפוֹרמָה', 'סלינקי'], 
+    ['אוֹר','כֵּהֶה'],
+    'מחק שמור נתונים', 
+    ['אַנגְלִית', 'סִינִית', 'עִברִית'])
 
 class Item {
     constructor(nameInput, countInput, numInput) {
@@ -155,17 +161,15 @@ class Item {
 let canPlace = false
 let buildPoint = new CANNON.Vec3(0, 0, 0)
 
+let currentLanguage = null
+
 //wack ass onload work around
 window.onload = function () {
     main()
 }
 
 function main() {
-    //load language
-    if (localStorage.getItem('lan')) {
-        //found save
-        mainDiv.dispatchEvent(langEvent, localStorage.getItem('lan'))
-    }
+
 
     //set up Three.js
     const canvas = document.querySelector('#c')
@@ -227,11 +231,12 @@ function main() {
     //set inventory
     let inventory = [
         new Item('None', 0, 0),
-        new Item('platform', 3, 30),
+        new Item('Platform', 3, 30),
         new Item('Spring', 1, 60),
     ]
-    setUpInventoryUI(inventory)
+    
     g_inventory = inventory
+    setUpInventoryUI(inventory)
 
     //set current item
     g_current_item = null
@@ -266,7 +271,14 @@ function main() {
     )
 
     setUpSettingsUI()
-    addTitleEventListeners()
+
+        //load language
+    if (localStorage.getItem('lan')) {
+        //found save
+        mainDiv.dispatchEvent(langEvent, localStorage.getItem('lan'))
+        setLanguage(localStorage.getItem('lan'))
+    }
+    console.log(localStorage.getItem('lan'))
 
     requestAnimationFrame(render)
 }
@@ -279,6 +291,9 @@ function setUpSettingsUI() {
     for (const i of languages) {
         const language = document.createElement('option')
         language.label = i
+        language.value = i
+
+        language.id = language.label
 
         language.addEventListener('click', () => {
             setLanguage(language.label)
@@ -286,6 +301,7 @@ function setUpSettingsUI() {
 
         languageMenuButton.appendChild(language)
     }
+    languageMenuButton.value = localStorage.getItem('lan')
 
     const themesMenuButton = document.createElement('select')
     const themes = ['Light', 'Dark']
@@ -301,6 +317,7 @@ function setUpSettingsUI() {
 
         themesMenuButton.append(theme)
     }
+
 
     settingsDiv.appendChild(languageMenuButton)
     //settingsDiv.appendChild(themesMenuButton)
@@ -464,6 +481,16 @@ function setUpInventoryUI(inv) {
         newButton.innerText = i.name + ' x' + i.count
         buttonsDiv.appendChild(newButton)
 
+        if (i.id == 0) {
+            newButton.id = "noneButton"
+        }
+        else if (i.id == 30) {
+            newButton.id = "platformButton"
+        }
+        else if (i.id == 60) {
+            newButton.id = "springButton"
+        }
+
         newButton.addEventListener('click', () => {
             console.log('setting item to: ', i.name)
             console.log('item id is ', storedValue.id)
@@ -568,17 +595,41 @@ function setLanguage(language) {
     console.log('setting language ', language)
     mainDiv.dispatchEvent(langEvent, language)
     localStorage.setItem('lan', language)
+    
+    let languageObj = null
+
+    if ((language == 'English') || (language == '英语') || (language == 'אַנגְלִית')) {
+        languageObj = english
+    }
+    else if ((language == 'Mandarin') || (language == '中国人') || (language == 'סִינִית')) {
+        languageObj = simplifiedChinese
+    }
+    else if ((language == 'Hebrew') || (language ==  '希伯来语') || (language == 'עִברִית')) {
+        languageObj = hebrew
+    }
+    translateUI(languageObj)
 }
 
-function addTitleEventListeners() {
-    mainDiv.addEventListener('langChange', (input) => {
-        const Inventory = ['Inventory', '存货', 'מְלַאי']
-        const itemNames = [
-            ['None', 'Platform', 'Spring'],
-            ['没有任何', '平台', '弹簧'],
-            ['אַף לֹא אֶחָד', 'פּלַטפוֹרמָה', 'רזה'],
-        ]
-        const optionsNames = ['Delete Save', '删除存档', 'מחק נתוני שמירה']
-        const saveOptions = []
-    })
+function translateUI(langObj) {
+    invDivTitle.innerText = langObj.uiNames[0]
+    saveDivTitle.innerText = langObj.uiNames[1]
+    settingsDivTitle.innerText = langObj.uiNames[2]
+
+    const noneButton = document.getElementById('noneButton')
+    const platformButton = document.getElementById('platformButton')
+    const springButton = document.getElementById('springButton') 
+
+    noneButton.innerText = langObj.itemNames[0]
+    platformButton.innerText = langObj.itemNames[1] + " x" +  g_inventory[1].count
+    springButton.innerText = langObj.itemNames[2] + " x" +  g_inventory[2].count
+
+    delSaveButton.innerText = langObj.saveOptions
+
+    const englishOption = document.getElementById('English')
+    const chineseOption = document.getElementById('Mandarin')
+    const hebrewOption = document.getElementById('Hebrew')
+    englishOption.label = langObj.languageNames[0]
+    chineseOption.label = langObj.languageNames[1]
+    hebrewOption.label = langObj.languageNames[2]
+
 }
