@@ -37,7 +37,18 @@ export const Level_1 = [
         30,
     ],
 ]
-
+// OBJECT ID NUMBERS
+// 0 = empty space
+// 10 robotSpawner (5 robots)
+// 11 robotSpawner (1 robot)
+// 20 platform
+// 30 border
+// 40 crusher up/down
+// 41 crusher left/right
+// 50 finish object
+// 60 spring object
+// 70 stars
+// to be filled out
 export const Level_2 = [
     [
         30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
@@ -56,7 +67,18 @@ export const Level_2 = [
         30,
     ],
 ]
-
+// OBJECT ID NUMBERS
+// 0 = empty space
+// 10 robotSpawner (5 robots)
+// 11 robotSpawner (1 robot)
+// 20 platform
+// 30 border
+// 40 crusher up/down
+// 41 crusher left/right
+// 50 finish object
+// 60 spring object
+// 70 stars
+// to be filled out
 export const Level_3 = [
     [
         30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
@@ -75,7 +97,18 @@ export const Level_3 = [
         30,
     ],
 ]
-
+// OBJECT ID NUMBERS
+// 0 = empty space
+// 10 robotSpawner (5 robots)
+// 11 robotSpawner (1 robot)
+// 20 platform
+// 30 border
+// 40 crusher up/down
+// 41 crusher left/right
+// 50 finish object
+// 60 spring object
+// 70 stars
+// to be filled out
 export const Level_4 = [
     [
         30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
@@ -94,26 +127,48 @@ export const Level_4 = [
         30,
     ],
 ]
-
+// OBJECT ID NUMBERS
+// 0 = empty space
+// 10 robotSpawner (5 robots)
+// 11 robotSpawner (1 robot)
+// 20 platform
+// 30 border
+// 40 crusher up/down
+// 41 crusher left/right
+// 50 finish object
+// 60 spring object
+// 70 stars
+// to be filled out
 export const Level_5 = [
     [
         30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
         30,
     ],
+    [30, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 30],
     [30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 30],
     [30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 30],
-    [30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 30],
-    [30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 30],
-    [30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 30],
+    [30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 50, 30],
+    [30, 30, 30, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 30, 30, 30],
     [30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 30],
     [30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 30],
     [30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 30],
     [
-        30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
+        40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40,
         30,
     ],
 ]
-
+// OBJECT ID NUMBERS
+// 0 = empty space
+// 10 robotSpawner (5 robots)
+// 11 robotSpawner (1 robot)
+// 20 platform
+// 30 border
+// 40 crusher up/down
+// 41 crusher left/right
+// 50 finish object
+// 60 spring object
+// 70 stars
+// to be filled out
 export const gameMenu = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -128,17 +183,4 @@ export const gameMenu = [
         30, 40, 40, 40, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
         30,
     ],
-
-    // Level 1?
-    /*[30, 30, 30, 30, 30, 30, 30, 30, 30],
-    [30, 0, 0, 0, 0, 0, 0, 0, 30],
-    [30, 0, 0, 0, 0, 0, 0, 0, 30],
-    [30, 0, 10, 0, 0, 0, 0, 0, 30],
-    [30, 0, 0, 0, 0, 0, 0, 0, 30],
-    [30, 0, 0, 0, 0, 0, 0, 0, 30],
-    [30, 0, 0, 0, 0, 0, 0, 0, 30],
-    [30, 0, 0, 0, 0, 0, 0, 0, 30],
-    [30, 0, 0, 0, 0, 0, 60, 0, 30],
-    [30, 30, 30, 30, 30, 30, 30, 30, 30],
-    */
 ]

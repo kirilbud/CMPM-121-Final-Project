@@ -326,7 +326,7 @@ let lastTime = performance.now()
 function render(time) {
     const dt = g_clock.getDelta()
 
-    g_cannon_world.step(1 / 120, dt, 10)
+    g_cannon_world.step(1 / 120, dt / 2, 10)
 
     //update all robots
     for (let index = 0; index < g_robots.length; index++) {

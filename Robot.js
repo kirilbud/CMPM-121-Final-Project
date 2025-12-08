@@ -14,7 +14,7 @@ export class Robot {
         //robot variables
         this.up = new THREE.Vector3(0, 1, 0)
         this.forward = new THREE.Vector3(1, 0, 0) //the direction the bot is walking
-        this.speed = 1
+        this.speed = 2
         this.animations = null //this holds the animations of the bot
         this.mixer //animation mixer for the bot
         this.bot //the robots mesh
@@ -99,7 +99,7 @@ export class Robot {
                 true
             )
 
-            this.body.velocity.z = 1 * this.dir
+            this.body.velocity.z = 1 * this.dir * this.speed
 
             const wallIntersects = this.wallCheck.intersectObjects(
                 this.scene.children,
@@ -108,7 +108,7 @@ export class Robot {
             if (wallIntersects.length > 0) {
                 console.log('hit wall')
                 this.dir *= -1
-                this.body.velocity.z = 1 * this.dir
+                this.body.velocity.z = 1 * this.dir * this.speed
 
                 this.wallCheck.set(
                     this.body.position,
