@@ -21,24 +21,27 @@ export const uiDiv = document.createElement('div')
 uiDiv.style.backgroundColor = 'black'
 uiDiv.style.color = 'white'
 uiDiv.style.fontSize = '200%'
+uiDiv.id = 'uiDiv'
 
 const invDiv = document.createElement('div')
+invDiv.id = 'invDiv'
 invDiv.innerText = 'Inventory: '
 
 mainDiv.appendChild(uiDiv)
 uiDiv.appendChild(invDiv)
 
-//contains settings for language and theme.
-const settingsDiv = document.createElement('div')
-mainDiv.appendChild(settingsDiv)
-
 //contains ui for saving.
 const saveDiv = document.createElement('div')
-mainDiv.appendChild(uiDiv)
+mainDiv.appendChild(saveDiv)
 
 const delSaveButton = document.createElement('button')
 delSaveButton.textContent = 'Delete Save'
 saveDiv.appendChild(delSaveButton)
+
+//contains settings for language and theme.
+const settingsDiv = document.createElement('div')
+settingsDiv.id = 'settingsDiv'
+mainDiv.appendChild(settingsDiv)
 
 //GLOBALS
 //g_ stands for this variable being a global variable
@@ -218,11 +221,23 @@ function main() {
         { restitution: 0 }
     )
 
+    setUpSettingsUI()
+
     requestAnimationFrame(render)
 }
 
-function setUpSettingsUI {
+function setUpSettingsUI() {
+    const languageMenuButton = document.createElement('select')
 
+    const languages =  ['English', 'Mandarin', 'Yiddish']
+
+    for (const i of languages) {
+        const language = document.createElement('option')
+        console.log(i)
+        language.label = i
+        languageMenuButton.appendChild(language)
+    }
+    settingsDiv.appendChild(languageMenuButton)
 }
 
 //sets up the canvas chungus!!!! :D
@@ -364,7 +379,7 @@ function render(time) {
 function setUpInventoryUI(inv) {
     console.log('adding buttons!')
     const buttonsDiv = document.createElement('div')
-    uiDiv.appendChild(buttonsDiv)
+    invDiv.appendChild(buttonsDiv)
     buttonsDiv.id = 'buttonsDiv'
 
     for (const i of inv) {
