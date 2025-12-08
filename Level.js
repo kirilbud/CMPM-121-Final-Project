@@ -31,9 +31,9 @@ const ItemSetEvent = new Event('itemSet')
 export class Level {
     //using code I stole from the actor class
     constructor(g_scene, cannon_world, level_data, inventory) {
-        this.level_order = [Level_1, Level_2, Level_3, Level_4, Level_5]
-        this.level_platforms = [3, 3, 4, 5, 6]
-        this.level_springs = [1, 1, 3, 0, 3]
+        this.level_order = [Level_1, Level_2, Level_3, Level_4]
+        this.level_platforms = [3, 3, 4, 5]
+        this.level_springs = [1, 1, 3, 0]
         this.deaths_till_reset = 0
         this.robots = []
         this.level_number = 0
