@@ -10,7 +10,7 @@ export class Robot {
     constructor(scene, cannon_world, position) {
         this.cannon_world = cannon_world
         const scale = 0.18
-        const RAYCAST_LEN = 0.8
+        const RAYCAST_LEN = 0.4
         //robot variables
         this.up = new THREE.Vector3(0, 1, 0)
         this.forward = new THREE.Vector3(1, 0, 0) //the direction the bot is walking
