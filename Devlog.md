@@ -122,19 +122,21 @@ We're doing our best to keep things on a tight schedule, staying up late into th
 
 [x] "save system - Support multiple save points as well as an auto-save feature so that the player cannot lose progress by accidentally closing the game app."
 
-The game automatically saves upon the completion of each level. This includes saving information about language preferences, the player's inventory, and obviously the current level. The player can close their current tab, reload, and all of this information will be restored.
+The game automatically saves upon the completion of each level. This includes saving information about language preferences, the player's inventory, and obviously the current level. The player can close their current tab, reload, and all of this information will be restored. We picked this because it fit our game's "level" style structure and that it would be easy to implement.
 
 [x] "[visual themes] Support light and dark modes visual styles that respond to the user's preferences set in the host environment (e.g. operating system or browser, not in-game settings), and these visual styles are integrated deeply into the game's display (e.g. day/night lighting of the fictional rooms, not just changing the border color of the game window)"
 
-There is support for a light mode and a dark mode. This changes the background color, as well as the color of the UI on the webpage itself. If there is no easy way to gleam a preference on which mode the user has, it automatically uses dark mode.
+There is support for a light mode and a dark mode. This changes the background color, as well as the color of the UI on the webpage itself. If there is no easy way to gleam a preference on which mode the user has, it automatically uses dark mode. We chose this because it is an extremely quick and easy feature to implement, and we're all fans of being able to choose between light and dark mode.
 
 [x] "touchscreen - Support touchscreen-only gameplay (no requirement of mouse and keyboard)."
 
-Because of the simple control scheme, this game is actually very easily made touchscreen compatible. All actions are done with taps or clicks and there is no broader input requirement than that. We initally wanted to have a pan functionality for the camera but decided it wasn't worth it because it was too finnicky for both mouse and touchscreen.
+Because of the simple control scheme, this game is actually very easily made touchscreen compatible. All actions are done with taps or clicks and there is no broader input requirement than that. We initally wanted to have a pan functionality for the camera but decided it wasn't worth it because it was too finnicky for both mouse and touchscreen. We chose this feature because, as mentioned previously, this game lends itself to touchscreen gameplay with using just taps/clicks.
 
 [x] "[i18n + l10n] Support three different natural languages including English, a language with a logographic script (e.g. 中文), and a language with a right-to-left script (e.g. العربية)."
 
 This was surprisingly esay to implement. We created a language class with a few different attributes for each element in the UI, and then set functions that modified the UI. As mentioned before, this data is saved, so users who dont know where their language is dont have to fish through the list to find their language of choice. We opted to use google translate for our translation.
+
+We chose this feature because it seemed like the LEAST difficult/time consuming option out of what was left, and we chose right! I mean, a third of it was done already with the game having english text, and adding two more wasn't too much of a hassle.
 
 
 ## Reflection
