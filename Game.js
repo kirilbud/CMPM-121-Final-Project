@@ -233,10 +233,10 @@ function main() {
         new Item('None', 0, 0),
         new Item('Platform', 3, 30),
         new Item('Spring', 1, 60),
-    ]
-    
+        ]   
     g_inventory = inventory
-    setUpInventoryUI(inventory)
+
+    setUpInventoryUI(g_inventory)
 
     //set current item
     g_current_item = null
@@ -244,7 +244,7 @@ function main() {
     console.log(' mode')
 
     //load level
-    g_level = new Level(g_scene, g_cannon_world, gameMenu, inventory)
+    g_level = new Level(g_scene, g_cannon_world, gameMenu, g_inventory)
 
     if (window.matchMedia) {
         if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -301,8 +301,12 @@ function setUpSettingsUI() {
 
         languageMenuButton.appendChild(language)
     }
-    languageMenuButton.value = localStorage.getItem('lan')
-
+    if (localStorage.getItem('lan')) {
+        languageMenuButton.value = localStorage.getItem('lan')
+    }
+    else {
+        languageMenuButton.value = "English"
+    }
     const themesMenuButton = document.createElement('select')
     const themes = ['Light', 'Dark']
 
