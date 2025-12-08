@@ -105,7 +105,14 @@ class mouseVector {
 }
 
 class UILanguage {
-    constructor(languageName, uiNames, itemNames, themeNames, saveOptions, languageNames) {
+    constructor(
+        languageName,
+        uiNames,
+        itemNames,
+        themeNames,
+        saveOptions,
+        languageNames
+    ) {
         this.languageName = languageName
         this.uiNames = uiNames
         this.itemNames = itemNames
@@ -115,26 +122,32 @@ class UILanguage {
     }
 }
 
-const english = new UILanguage('English', 
-    ['Inventory','Save Options', 'Settings'], 
-    ['None', 'Platform', 'Spring'], 
-    ['Light', 'Dark'], 
-    'Delete Save Data', 
-    ['English', 'Mandarin', 'Hebrew'])
+const english = new UILanguage(
+    'English',
+    ['Inventory', 'Save Options', 'Settings'],
+    ['None', 'Platform', 'Spring'],
+    ['Light', 'Dark'],
+    'Delete Save Data',
+    ['English', 'Mandarin', 'Hebrew']
+)
 
-const simplifiedChinese = new UILanguage('中国人', 
-    ['存货', '保存数据选项', '设置'], 
+const simplifiedChinese = new UILanguage(
+    '中国人',
+    ['存货', '保存数据选项', '设置'],
     ['没有任何', '平台', '弹簧'],
-    ['光','黑暗的'],
+    ['光', '黑暗的'],
     '删除存档',
-    ['英语','中国人','希伯来语'])
+    ['英语', '中国人', '希伯来语']
+)
 
-const hebrew = new UILanguage('עִברִית', 
+const hebrew = new UILanguage(
+    'עִברִית',
     ['מְלַאי', 'שמור הגדרות נתונים', 'הגדרות'],
-    ['אַף לֹא אֶחָד', 'פּלַטפוֹרמָה', 'סלינקי'], 
-    ['אוֹר','כֵּהֶה'],
-    'מחק שמור נתונים', 
-    ['אַנגְלִית', 'סִינִית', 'עִברִית'])
+    ['אַף לֹא אֶחָד', 'פּלַטפוֹרמָה', 'סלינקי'],
+    ['אוֹר', 'כֵּהֶה'],
+    'מחק שמור נתונים',
+    ['אַנגְלִית', 'סִינִית', 'עִברִית']
+)
 
 class Item {
     constructor(nameInput, countInput, numInput) {
@@ -169,8 +182,6 @@ window.onload = function () {
 }
 
 function main() {
-
-
     //set up Three.js
     const canvas = document.querySelector('#c')
 
@@ -233,7 +244,7 @@ function main() {
         new Item('None', 0, 0),
         new Item('Platform', 3, 30),
         new Item('Spring', 1, 60),
-        ]   
+    ]
     g_inventory = inventory
 
     setUpInventoryUI(g_inventory)
@@ -269,7 +280,7 @@ function main() {
 
     setUpSettingsUI()
 
-        //load language
+    //load language
     if (localStorage.getItem('lan')) {
         //found save
         mainDiv.dispatchEvent(langEvent, localStorage.getItem('lan'))
@@ -292,18 +303,19 @@ function setUpSettingsUI() {
 
         language.id = language.label
 
-        language.addEventListener('click', () => {
-            setLanguage(language.label)
-            mainDiv.dispatchEvent(langEvent, language.label)
-        })
-
         languageMenuButton.appendChild(language)
     }
+
+    languageMenuButton.addEventListener('click', () => {
+        console.log('yeah')
+        setLanguage(languageMenuButton.value)
+        mainDiv.dispatchEvent(langEvent, languageMenuButton.value)
+    })
+
     if (localStorage.getItem('lan')) {
         languageMenuButton.value = localStorage.getItem('lan')
-    }
-    else {
-        languageMenuButton.value = "English"
+    } else {
+        languageMenuButton.value = 'English'
     }
     const themesMenuButton = document.createElement('select')
     const themes = ['Light', 'Dark']
@@ -319,7 +331,6 @@ function setUpSettingsUI() {
 
         themesMenuButton.append(theme)
     }
-
 
     settingsDiv.appendChild(languageMenuButton)
     //settingsDiv.appendChild(themesMenuButton)
@@ -484,13 +495,11 @@ function setUpInventoryUI(inv) {
         buttonsDiv.appendChild(newButton)
 
         if (i.id == 0) {
-            newButton.id = "noneButton"
-        }
-        else if (i.id == 30) {
-            newButton.id = "platformButton"
-        }
-        else if (i.id == 60) {
-            newButton.id = "springButton"
+            newButton.id = 'noneButton'
+        } else if (i.id == 30) {
+            newButton.id = 'platformButton'
+        } else if (i.id == 60) {
+            newButton.id = 'springButton'
         }
 
         newButton.addEventListener('click', () => {
@@ -597,16 +606,26 @@ function setLanguage(language) {
     //console.log('setting language ', language)
     mainDiv.dispatchEvent(langEvent, language)
     localStorage.setItem('lan', language)
-    
+
     let languageObj = null
 
-    if ((language == 'English') || (language == '英语') || (language == 'אַנגְלִית')) {
+    if (
+        language == 'English' ||
+        language == '英语' ||
+        language == 'אַנגְלִית'
+    ) {
         languageObj = english
-    }
-    else if ((language == 'Mandarin') || (language == '中国人') || (language == 'סִינִית')) {
+    } else if (
+        language == 'Mandarin' ||
+        language == '中国人' ||
+        language == 'סִינִית'
+    ) {
         languageObj = simplifiedChinese
-    }
-    else if ((language == 'Hebrew') || (language ==  '希伯来语') || (language == 'עִברִית')) {
+    } else if (
+        language == 'Hebrew' ||
+        language == '希伯来语' ||
+        language == 'עִברִית'
+    ) {
         languageObj = hebrew
     }
     translateUI(languageObj)
@@ -623,11 +642,12 @@ function translateUI(langObj) {
 
     const noneButton = document.getElementById('noneButton')
     const platformButton = document.getElementById('platformButton')
-    const springButton = document.getElementById('springButton') 
+    const springButton = document.getElementById('springButton')
 
     noneButton.innerText = langObj.itemNames[0]
-    platformButton.innerText = langObj.itemNames[1] + " x" +  g_inventory[1].count
-    springButton.innerText = langObj.itemNames[2] + " x" +  g_inventory[2].count
+    platformButton.innerText =
+        langObj.itemNames[1] + ' x' + g_inventory[1].count
+    springButton.innerText = langObj.itemNames[2] + ' x' + g_inventory[2].count
 
     delSaveButton.innerText = langObj.saveOptions
 
@@ -637,5 +657,4 @@ function translateUI(langObj) {
     englishOption.label = langObj.languageNames[0]
     chineseOption.label = langObj.languageNames[1]
     hebrewOption.label = langObj.languageNames[2]
-
 }
