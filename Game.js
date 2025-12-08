@@ -25,6 +25,7 @@ uiDiv.id = 'uiDiv'
 
 const invDiv = document.createElement('div')
 invDiv.id = 'invDiv'
+idvDivTitle = document.createElement('div')
 invDiv.innerText = 'Inventory: '
 
 mainDiv.appendChild(uiDiv)
@@ -32,7 +33,9 @@ uiDiv.appendChild(invDiv)
 
 //contains ui for saving.
 const saveDiv = document.createElement('div')
-mainDiv.appendChild(saveDiv)
+saveDiv.innerText = "Save Options: "
+saveDiv.style.color = 'white'
+uiDiv.appendChild(saveDiv)
 
 const delSaveButton = document.createElement('button')
 delSaveButton.textContent = 'Delete Save'
@@ -41,7 +44,9 @@ saveDiv.appendChild(delSaveButton)
 //contains settings for language and theme.
 const settingsDiv = document.createElement('div')
 settingsDiv.id = 'settingsDiv'
-mainDiv.appendChild(settingsDiv)
+settingsDiv.style.color = 'white'
+settingsDiv.innerText = "Settings: "
+uiDiv.appendChild(settingsDiv)
 
 //GLOBALS
 //g_ stands for this variable being a global variable
@@ -229,7 +234,7 @@ function main() {
 function setUpSettingsUI() {
     const languageMenuButton = document.createElement('select')
 
-    const languages =  ['English', 'Mandarin', 'Yiddish']
+    const languages =  ['English', 'Mandarin', 'Hebrew']
 
     for (const i of languages) {
         const language = document.createElement('option')
