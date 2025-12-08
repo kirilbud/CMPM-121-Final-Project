@@ -61,6 +61,12 @@ export class Level {
         }
     }
 
+    setFinaleText(lan) {
+        if (this.endScreen) {
+            this.endScreen.setFinalTextLanguage(lan)
+        } 
+    }
+
     loadSave() {
         const save = JSON.parse(localStorage.getItem('save'))
         const level_number = save.level
@@ -92,7 +98,7 @@ export class Level {
 
         this.unloadLevel()
         console.log('loading level')
-        console.log(`laoding platforms = ${this.max_platforms}`)
+        console.log(`loading platforms = ${this.max_platforms}`)
         this.inventory[1].setCount(this.max_platforms)
         this.inventory[2].setCount(this.max_springs)
         this.deaths_till_reset = 0
@@ -370,7 +376,7 @@ export class Level {
             this.deaths_till_reset = 100
             this.unloadLevel()
             this.deaths_till_reset = 100
-            new EndScreen(this.g_scene)
+            this.endScreen = new EndScreen(this.g_scene)
             return
         }
 

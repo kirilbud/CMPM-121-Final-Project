@@ -85,28 +85,27 @@ We didn't really have to change much here, as we've already done F1.
 
 [x] "The game must allow the player to move between scenes (e.g. rooms)"
 
-Our game has levels, each with a puzzle that the player must solve to traverse to the next level. Each level is unique and
-eventually leads to an end screen.
+Our game has levels, each with a puzzle that the player must solve to traverse to the next level. Eventually, if the player beats the final levl, they reach the end screen. While we haven't finished all of the levels yet, we have a solid system for putting them together.
 
 [x] "The game must allow the player to select specific objects in a scene for interaction (e.g. tapping an item to pick it up or examine it)"
 
-the player can select objects in their inventory and place them on top of other objects in the real world. this affects the robot agents wandering the level.
+the player can select objects in their inventory and place them on top of other objects in the real world. This interaction affects the robot agents wandering the level, which in turn affects the state of the overall world. If too many robots are killed by the player's inaction, the game resets.
 
 [x] "The game maintains an inventory system allowing the player to carry objects so that what happens in one scene has an impact on what is possible in another scene."
 
-There is an item class and an inventory class that holds the Item data type. The player can switch between holding nothing and holding a block, and the amount persists from level to level.
+There is an item class and an inventory class that holds the Item data type. The player can switch between holding nothing and holding a block, and the amount persists from level to level. There is an HTML section next to the browser that allows the player to manage these items.
 
 [x] "The game contains at least one physics-based puzzle that is relevant to the player's progress in the game."
 
-This was already the case in F1, but we've elaborated on the physics element. Robots can now bounce on springs!
+This was already the case in F1, but we've elaborated on the physics element.  If a robot touches a cursher, it is destroyed. Robots can now bounce on springs! All the levels are going to be physics puzzles that require that the player to protect robots wandering the level.
 
 [x] "The player can succeed or fail at the physics-based puzzle on the basis of their skill and/or reasoning (rather than luck)."
 
-There is at least one level that requires player intervention, or else the robots all die and the level must restart
+There is at least one level that requires player intervention, or else the robots all die and the level must restart. The first level is a passive one, where no robots can be destroyed but that will change soon. 
 
 [x] "Via play, the game can reach at least one conclusive ending."
 
-There's an end screen! its a bit bugged right now but by tomorrow it should be exclusive to the final level.
+There's an end screen! its a bit bugged right now but by tomorrow it should be exclusive to the final level. We're intending on later iterations having support for multiple languages and also being places on an empty screen as opposed to one with the level actively on it.
 
 ## Reflection
 

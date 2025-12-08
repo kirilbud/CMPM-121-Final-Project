@@ -240,24 +240,21 @@ function main() {
 
     //set current item
     g_current_item = null
-
-    console.log(' mode')
-
     //load level
     g_level = new Level(g_scene, g_cannon_world, gameMenu, g_inventory)
 
     if (window.matchMedia) {
         if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
             // Dark
-            console.log('dark mode')
+            //console.log('dark mode')
             SetDarkMode()
         } else {
             // Light
-            console.log('light mode')
+            //console.log('light mode')
             SetLightMode()
         }
     } else {
-        console.log('goblin mode')
+        //console.log('goblin mode')
         SetDarkMode()
         // sets it to goblin mode and steals players files or something idc anymore
     }
@@ -278,7 +275,7 @@ function main() {
         mainDiv.dispatchEvent(langEvent, localStorage.getItem('lan'))
         setLanguage(localStorage.getItem('lan'))
     }
-    console.log(localStorage.getItem('lan'))
+    //console.log(localStorage.getItem('lan'))
 
     requestAnimationFrame(render)
 }
@@ -297,6 +294,7 @@ function setUpSettingsUI() {
 
         language.addEventListener('click', () => {
             setLanguage(language.label)
+            mainDiv.dispatchEvent(langEvent, language.label)
         })
 
         languageMenuButton.appendChild(language)
@@ -327,13 +325,13 @@ function setUpSettingsUI() {
     //settingsDiv.appendChild(themesMenuButton)
 
     if (g_is_dark_mode == true) {
-        console.log('setting to dark')
+        //console.log('setting to dark')
         themesMenuButton.value = 'Dark'
     } else {
-        console.log('setting to light')
+        //console.log('setting to light')
         themesMenuButton.value = 'Light'
     }
-    console.log(themesMenuButton.value)
+    //console.log(themesMenuButton.value)
 }
 
 //sets up the canvas chungus!!!! :D
@@ -424,7 +422,7 @@ function SetUpCanvasChungus(canvas) {
                 g_focus.position.y - move_vector.y * MOUSE_SENSITIVITY
 
             g_mouse_last_pos.set(Math.floor(event.x), Math.floor(event.y))
-            console.log(g_focus.position)
+            //console.log(g_focus.position)
         }
     })
 }
@@ -473,14 +471,14 @@ function render(time) {
 }
 
 function setUpInventoryUI(inv) {
-    console.log('adding buttons!')
+    //console.log('adding buttons!')
     const buttonsDiv = document.createElement('div')
     invDiv.appendChild(buttonsDiv)
     buttonsDiv.id = 'buttonsDiv'
 
     for (const i of inv) {
         const storedValue = i
-        console.log('added button!')
+        //console.log('added button!')
         const newButton = document.createElement('button')
         newButton.innerText = i.name + ' x' + i.count
         buttonsDiv.appendChild(newButton)
@@ -496,8 +494,8 @@ function setUpInventoryUI(inv) {
         }
 
         newButton.addEventListener('click', () => {
-            console.log('setting item to: ', i.name)
-            console.log('item id is ', storedValue.id)
+            //console.log('setting item to: ', i.name)
+            //console.log('item id is ', storedValue.id)
             g_current_item = storedValue
             g_cursor.setMeshFromID(storedValue.id)
         })
@@ -532,7 +530,7 @@ document.addEventListener('contextmenu', function (event) {
 window
     .matchMedia('(prefers-color-scheme: dark)')
     .addEventListener('change', (event) => {
-        console.log(event.matches)
+        //console.log(event.matches)
         if (event.matches) {
             //dark mode
             g_is_dark_mode = true
@@ -591,12 +589,12 @@ function SetDarkMode() {
 }
 
 delSaveButton.addEventListener('click', function () {
-    console.log('removing save')
+    //console.log('removing save')
     localStorage.clear()
 })
 
 function setLanguage(language) {
-    console.log('setting language ', language)
+    //console.log('setting language ', language)
     mainDiv.dispatchEvent(langEvent, language)
     localStorage.setItem('lan', language)
     
@@ -612,6 +610,10 @@ function setLanguage(language) {
         languageObj = hebrew
     }
     translateUI(languageObj)
+
+    if (g_level.endScreen != null) {
+        g_level.setFinaleText(language)
+    }
 }
 
 function translateUI(langObj) {
