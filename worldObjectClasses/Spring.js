@@ -21,6 +21,9 @@ export class Spring extends WorldObject {
             }
             robot_body.applyImpulse(new CANNON.Vec3(0, 7, 0), robot.position)
         }
+        if (!this.clips) {
+            return
+        }
         let clip = THREE.AnimationClip.findByName(this.clips, 'active')
         const action = this.mixer.clipAction(clip)
         action.setLoop(THREE.LoopOnce, 1)
