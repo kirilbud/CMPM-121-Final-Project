@@ -18,12 +18,15 @@ const MOUSE_SENSITIVITY = 1
 const mainDiv = document.querySelector('#mainDiv')
 
 export const uiDiv = document.createElement('div')
-uiDiv.innerText = 'Inventory: '
 uiDiv.style.backgroundColor = 'black'
 uiDiv.style.color = 'white'
 uiDiv.style.fontSize = '200%'
 
+const invDiv = document.createElement('div')
+invDiv.innerText = 'Inventory: '
+
 mainDiv.appendChild(uiDiv)
+uiDiv.appendChild(invDiv)
 
 const saveDiv = document.createElement('div')
 mainDiv.appendChild(uiDiv)
@@ -95,7 +98,7 @@ class Item {
     }
     setCount(input) {
         this.count = input
-        uiDiv.dispatchEvent(ItemSetEvent)
+        invDiv.dispatchEvent(ItemSetEvent)
     }
     instantiate(position) {
         return
@@ -368,7 +371,7 @@ function setUpInventoryUI(inv) {
             g_cursor.setMeshFromID(storedValue.id)
         })
 
-        uiDiv.addEventListener('itemSet', () => {
+        invDiv.addEventListener('itemSet', () => {
             if (i.name != 'None') {
                 newButton.innerText = i.name + ' x' + i.count
             } else {
@@ -376,7 +379,7 @@ function setUpInventoryUI(inv) {
             }
         })
 
-        uiDiv.addEventListener('itemUsed', () => {
+        invDiv.addEventListener('itemUsed', () => {
             console.log(
                 'current item current count: ',
                 g_current_item.getCount()
