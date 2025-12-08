@@ -116,3 +116,29 @@ Well, we definitely learned to give up on making anything with any serious amoun
 We've been focused more on making more .js files to accomodate for all of the new classes and making things modular. This is unfortunately not as uniform as we'd like. There's still plenty of classes in game.js that probably should be pulled out at some point or another.
 
 We're doing our best to keep things on a tight schedule, staying up late into the night to blast through this project.
+
+
+# Devlog Entry 12/8/2025
+
+[x] "save system - Support multiple save points as well as an auto-save feature so that the player cannot lose progress by accidentally closing the game app."
+
+The game automatically saves upon the completion of each level. This includes saving information about language preferences, the player's inventory, and obviously the current level. The player can close their current tab, reload, and all of this information will be restored.
+
+[x] "[visual themes] Support light and dark modes visual styles that respond to the user's preferences set in the host environment (e.g. operating system or browser, not in-game settings), and these visual styles are integrated deeply into the game's display (e.g. day/night lighting of the fictional rooms, not just changing the border color of the game window)"
+
+There is support for a light mode and a dark mode. This changes the background color, as well as the color of the UI on the webpage itself. If there is no easy way to gleam a preference on which mode the user has, it automatically uses dark mode.
+
+[x] "touchscreen - Support touchscreen-only gameplay (no requirement of mouse and keyboard)."
+
+Because of the simple control scheme, this game is actually very easily made touchscreen compatible. All actions are done with taps or clicks and there is no broader input requirement than that. We initally wanted to have a pan functionality for the camera but decided it wasn't worth it because it was too finnicky for both mouse and touchscreen.
+
+[x] "[i18n + l10n] Support three different natural languages including English, a language with a logographic script (e.g. 中文), and a language with a right-to-left script (e.g. العربية)."
+
+This was surprisingly esay to implement. We created a language class with a few different attributes for each element in the UI, and then set functions that modified the UI. As mentioned before, this data is saved, so users who dont know where their language is dont have to fish through the list to find their language of choice. We opted to use google translate for our translation.
+
+
+## Reflection
+
+[x] "Looking back on how you achieved the F3 requirements, how has your team’s plan changed since your F2 devlog? There’s learning value in you documenting how your team’s thinking has changed over time."
+
+Somehow, we made it. We were honestly quite surprised how quickly these last few features were able to be implemented. We were quite scared of not making the deadline throughout all of this, but with organized meetings and careful coordination through pair programming, we got it done. There's a lot of unclean code. There's unused code. There's stuff left on the cutting room floor, but it's a game that we're proud to have made from "scratch" relatively speaking. 
