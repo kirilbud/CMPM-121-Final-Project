@@ -92,8 +92,7 @@ const g_cannon_world = new CANNON.World({
 const g_physicsStep = new Event('physicsStep')
 const placedEvent = new Event('itemUsed')
 const ItemSetEvent = new Event('itemSet')
-const langEvent = new Event('langChange', { 'language': null })
-
+const langEvent = new Event('langChange')
 class mouseVector {
     constructor() {
         ;(this.x = 0), (this.y = 0)
@@ -234,6 +233,7 @@ function main() {
     )
 
     setUpSettingsUI()
+    addTitleEventListeners()
 
     requestAnimationFrame(render)
 }
@@ -270,7 +270,7 @@ function setUpSettingsUI() {
     }
 
     settingsDiv.appendChild(languageMenuButton)
-    settingsDiv.appendChild(themesMenuButton)
+    //settingsDiv.appendChild(themesMenuButton)
 
     if (g_is_dark_mode == true) {
         console.log('setting to dark')
@@ -536,6 +536,15 @@ delSaveButton.addEventListener('click', function () {
 
 function setLanguage(language) {
     console.log("setting language ", language)
-    mainDiv.dispatchEvent(langEvent, {'language': language})
+    mainDiv.dispatchEvent(langEvent, language)
+}
 
+function addTitleEventListeners() {
+    mainDiv.addEventListener('langChange', (input) => {
+
+        const titles = ['Inventory', '存货', 'מְלַאי']
+        const itemNames = [['None', 'Platform', 'Spring'], ['没有任何', '平台', '弹簧'], ['אַף לֹא אֶחָד', 'פּלַטפוֹרמָה', 'רזה']]
+        const optionsNames = ['Delete Save', '删除存档', 'מחק נתוני שמירה']
+        const saveOptions = []
+    })
 }
