@@ -28,13 +28,15 @@ export class Level {
     //using code I stole from the actor class
     constructor(g_scene, cannon_world, level_data, inventory) {
         this.level_order = [Level_1, Level_2]
-        this.level_platforms = [10, 10]
-        this.level_springs = [10, 10]
+        this.level_platforms = [3, 3]
+        this.level_springs = [1, 1]
         this.deaths_till_reset = 0
         this.robots = []
 
-        this.max_platforms
-        this.max_springs
+        this.inventory = inventory
+
+        this.max_platforms = inventory[1].getCount()
+        this.max_springs = inventory[2].getCount()
 
         this.g_scene = g_scene
         this.cannon_world = cannon_world
@@ -52,6 +54,9 @@ export class Level {
 
         this.unloadLevel()
         console.log('loading level')
+
+        this.inventory[1].setCount(this.max_platforms)
+        this.inventory[2].setCount(this.max_springs)
         this.deaths_till_reset = 0
 
         this.level_objects = []
@@ -332,6 +337,12 @@ export class Level {
 
         const level_to_load = this.level_order.shift()
         this.current_level = level_to_load
+
+        this.max_platforms =
+            this.inventory[1].getCount() + this.level_platforms.shift()
+        this.max_springs =
+            this.inventory[2].getCount() + this.level_springs.shift()
+
         this.loadNewLevel(level_to_load)
     }
 

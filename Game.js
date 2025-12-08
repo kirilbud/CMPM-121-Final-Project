@@ -62,6 +62,7 @@ const g_cannon_world = new CANNON.World({
 
 const g_physicsStep = new Event('physicsStep')
 const placedEvent = new Event('itemUsed')
+const ItemSetEvent = new Event('itemSet')
 
 class mouseVector {
     constructor() {
@@ -87,6 +88,7 @@ class Item {
     }
     setCount(input) {
         this.count = input
+        uiDiv.dispatchEvent(ItemSetEvent)
     }
     instantiate(position) {
         return
@@ -156,9 +158,6 @@ function main() {
     //initially render the scene
     g_renderer.render(scene, camera)
 
-    //load level
-    g_level = new Level(g_scene, g_cannon_world, gameMenu)
-
     //cursor setup
     g_cursor = new Cursor(g_focus, g_level, new THREE.Vector3(0))
     g_cursor.setMeshFromID(0)
@@ -166,8 +165,8 @@ function main() {
     //set inventory
     let inventory = [
         new Item('None', 0, 0),
-        new Item('platform', 300, 30),
-        new Item('Spring', 5, 60),
+        new Item('platform', 3, 30),
+        new Item('Spring', 1, 60),
     ]
     setUpInventoryUI(inventory)
     g_inventory = inventory
@@ -176,6 +175,9 @@ function main() {
     g_current_item = null
 
     console.log(' mode')
+
+    //load level
+    g_level = new Level(g_scene, g_cannon_world, gameMenu, inventory)
 
     if (window.matchMedia) {
         if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -356,6 +358,18 @@ function setUpInventoryUI(inv) {
             console.log('item id is ', storedValue.id)
             g_current_item = storedValue
             g_cursor.setMeshFromID(storedValue.id)
+        })
+
+        uiDiv.addEventListener('itemSet', () => {
+            console.log(
+                'current item current count: ',
+                g_current_item.getCount()
+            )
+            if (i.name != 'None') {
+                newButton.innerText = i.name + ' x' + i.count
+            } else {
+                newButton.innerText = 'None'
+            }
         })
 
         uiDiv.addEventListener('itemUsed', () => {
