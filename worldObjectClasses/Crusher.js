@@ -27,7 +27,7 @@ export class Crusher extends WorldObject {
                     break
                 default:
                     //left right
-                    this.mesh.rotateX(Math.PI)
+                    this.mesh.rotateX(Math.PI / 2)
                     break
             }
             let clip = THREE.AnimationClip.findByName(this.clips, 'Idle')

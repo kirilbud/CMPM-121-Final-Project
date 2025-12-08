@@ -273,6 +273,7 @@ export class Level {
                     2,
                     this
                 )
+                break
             case 50: // finish object
                 world_object = new Finish(
                     this.scene,
