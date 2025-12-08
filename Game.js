@@ -33,6 +33,7 @@ uiDiv.appendChild(invDiv)
 
 //contains ui for saving.
 const saveDiv = document.createElement('div')
+saveDiv.id = 'saveDiv'
 const saveDivTitle = document.createElement('div')
 saveDivTitle.innerText = "Save Options: "
 saveDivTitle.style.color = 'white'
@@ -45,9 +46,11 @@ saveDiv.appendChild(delSaveButton)
 
 //contains settings for language and theme.
 const settingsDiv = document.createElement('div')
+const settingsDivTitle = document.createElement('div')
 settingsDiv.id = 'settingsDiv'
-settingsDiv.style.color = 'white'
-settingsDiv.innerText = "Settings: "
+settingsDivTitle.style.color = 'white'
+settingsDivTitle.innerText = "Settings: "
+settingsDiv.appendChild(settingsDivTitle)
 uiDiv.appendChild(settingsDiv)
 
 //GLOBALS
