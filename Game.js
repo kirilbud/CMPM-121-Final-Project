@@ -36,7 +36,7 @@ uiDiv.appendChild(invDiv)
 const saveDiv = document.createElement('div')
 saveDiv.id = 'saveDiv'
 const saveDivTitle = document.createElement('div')
-saveDivTitle.innerText = "Save Options: "
+saveDivTitle.innerText = 'Save Options: '
 saveDivTitle.style.color = 'white'
 saveDiv.appendChild(saveDivTitle)
 uiDiv.appendChild(saveDiv)
@@ -50,7 +50,7 @@ const settingsDiv = document.createElement('div')
 const settingsDivTitle = document.createElement('div')
 settingsDiv.id = 'settingsDiv'
 settingsDivTitle.style.color = 'white'
-settingsDivTitle.innerText = "Settings: "
+settingsDivTitle.innerText = 'Settings: '
 settingsDiv.appendChild(settingsDivTitle)
 uiDiv.appendChild(settingsDiv)
 
@@ -134,6 +134,12 @@ window.onload = function () {
 }
 
 function main() {
+    //load language
+    if (localStorage.getItem('lan')) {
+        //found save
+        mainDiv.dispatchEvent(langEvent, localStorage.getItem('lan'))
+    }
+
     //set up Three.js
     const canvas = document.querySelector('#c')
 
@@ -241,7 +247,7 @@ function main() {
 function setUpSettingsUI() {
     const languageMenuButton = document.createElement('select')
 
-    const languages =  ['English', 'Mandarin', 'Hebrew']
+    const languages = ['English', 'Mandarin', 'Hebrew']
 
     for (const i of languages) {
         const language = document.createElement('option')
@@ -274,9 +280,8 @@ function setUpSettingsUI() {
 
     if (g_is_dark_mode == true) {
         console.log('setting to dark')
-        themesMenuButton.value = "Dark"
-    }
-    else {
+        themesMenuButton.value = 'Dark'
+    } else {
         console.log('setting to light')
         themesMenuButton.value = 'Light'
     }
@@ -313,7 +318,7 @@ function SetUpCanvasChungus(canvas) {
                     uiDiv.dispatchEvent(placedEvent)
                 }
             }
-        } 
+        }
         /*else if (event.button == 2) {
             g_dragging = true
             g_mouse_last_pos = new mouseVector()
@@ -482,11 +487,9 @@ window
 function setTheme(input) {
     if (input == 'Light') {
         SetLightMode()
-    }
-    else {
+    } else {
         SetDarkMode()
     }
-
 }
 
 function SetLightMode() {
@@ -502,7 +505,7 @@ function SetLightMode() {
     document.body.style.backgroundColor = 'white'
     mainDiv.style.backgroundColor = 'white'
     uiDiv.style.backgroundColor = 'white'
-    
+
     invDivTitle.style.color = 'black'
     saveDivTitle.style.color = 'black'
     settingsDivTitle.style.color = 'black'
@@ -535,15 +538,19 @@ delSaveButton.addEventListener('click', function () {
 })
 
 function setLanguage(language) {
-    console.log("setting language ", language)
+    console.log('setting language ', language)
     mainDiv.dispatchEvent(langEvent, language)
+    localStorage.setItem('lan', language)
 }
 
 function addTitleEventListeners() {
     mainDiv.addEventListener('langChange', (input) => {
-
         const titles = ['Inventory', '存货', 'מְלַאי']
-        const itemNames = [['None', 'Platform', 'Spring'], ['没有任何', '平台', '弹簧'], ['אַף לֹא אֶחָד', 'פּלַטפוֹרמָה', 'רזה']]
+        const itemNames = [
+            ['None', 'Platform', 'Spring'],
+            ['没有任何', '平台', '弹簧'],
+            ['אַף לֹא אֶחָד', 'פּלַטפוֹרמָה', 'רזה'],
+        ]
         const optionsNames = ['Delete Save', '删除存档', 'מחק נתוני שמירה']
         const saveOptions = []
     })
