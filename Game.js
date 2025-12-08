@@ -243,8 +243,12 @@ function setUpSettingsUI() {
 
     for (const i of languages) {
         const language = document.createElement('option')
-        console.log(i)
         language.label = i
+
+        language.addEventListener('click', () => {
+            setLanguage(language.label)
+        })
+
         languageMenuButton.appendChild(language)
     }
     settingsDiv.appendChild(languageMenuButton)
@@ -479,3 +483,8 @@ delSaveButton.addEventListener('click', function () {
     console.log('removing save')
     localStorage.clear()
 })
+
+function setLanguage(language) {
+    console.log("setting language ", language)
+
+}
