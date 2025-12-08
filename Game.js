@@ -104,8 +104,31 @@ class mouseVector {
 }
 
 class UILanguage {
-    
+    constructor(languageName, uiNames, itemNames, themeNames, saveOptions, languageNames) {
+        this.languageName = languageName
+        this.uiNames = uiNames
+        this.itemNames = itemNames
+        this.themeNames = themeNames
+        this.saveOptions = saveOptions
+        this.languageNames = languageNames
+    }
 }
+
+const english = new UILanguage('English', 
+    ['Inventory','Save Options', 'Settings'], 
+    ['None', 'Platform', 'Spring'], 
+    ['Light', 'Dark'], 
+    'Delete Save Data', 
+    ['English', 'Chinese', 'Hebrew'])
+
+const simplifiedChinese = new UILanguage('中国人', 
+    ['存货', '保存数据选项', '设置'], 
+    ['没有任何', '平台', '弹簧'],
+    ['光','黑暗的'],
+    '删除存档',
+    ['英语','中国人','希伯来语'])
+
+const hebrew = new UILanguage('עִברִית', ['מְלַאי', 'שמור הגדרות נתונים', 'הגדרות'],['אַף לֹא אֶחָד', 'פּלַטפוֹרמָה', 'סלינקי'], ['אוֹר','כֵּהֶה'],'מחק שמור נתונים', ['אַנגְלִית', 'סִינִית', 'עִברִית'])
 
 class Item {
     constructor(nameInput, countInput, numInput) {
@@ -549,7 +572,7 @@ function setLanguage(language) {
 
 function addTitleEventListeners() {
     mainDiv.addEventListener('langChange', (input) => {
-        const titles = ['Inventory', '存货', 'מְלַאי']
+        const Inventory = ['Inventory', '存货', 'מְלַאי']
         const itemNames = [
             ['None', 'Platform', 'Spring'],
             ['没有任何', '平台', '弹簧'],
