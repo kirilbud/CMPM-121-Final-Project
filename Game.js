@@ -103,6 +103,10 @@ class mouseVector {
     }
 }
 
+class UILanguage {
+    
+}
+
 class Item {
     constructor(nameInput, countInput, numInput) {
         this.name = nameInput
