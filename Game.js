@@ -25,7 +25,7 @@ uiDiv.id = 'uiDiv'
 
 const invDiv = document.createElement('div')
 invDiv.id = 'invDiv'
-idvDivTitle = document.createElement('div')
+const invDivTitle = document.createElement('div')
 invDiv.innerText = 'Inventory: '
 
 mainDiv.appendChild(uiDiv)
@@ -33,8 +33,10 @@ uiDiv.appendChild(invDiv)
 
 //contains ui for saving.
 const saveDiv = document.createElement('div')
-saveDiv.innerText = "Save Options: "
-saveDiv.style.color = 'white'
+const saveDivTitle = document.createElement('div')
+saveDivTitle.innerText = "Save Options: "
+saveDivTitle.style.color = 'white'
+saveDiv.appendChild(saveDivTitle)
 uiDiv.appendChild(saveDiv)
 
 const delSaveButton = document.createElement('button')
