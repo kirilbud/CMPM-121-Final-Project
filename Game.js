@@ -92,7 +92,7 @@ const g_cannon_world = new CANNON.World({
 const g_physicsStep = new Event('physicsStep')
 const placedEvent = new Event('itemUsed')
 const ItemSetEvent = new Event('itemSet')
-const langEvent = new Event('langChange')
+const langEvent = new Event('langChange', { 'language': null })
 
 class mouseVector {
     constructor() {
@@ -536,5 +536,6 @@ delSaveButton.addEventListener('click', function () {
 
 function setLanguage(language) {
     console.log("setting language ", language)
+    mainDiv.dispatchEvent(langEvent, {'language': language})
 
 }
