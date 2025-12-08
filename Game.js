@@ -26,7 +26,8 @@ uiDiv.id = 'uiDiv'
 const invDiv = document.createElement('div')
 invDiv.id = 'invDiv'
 const invDivTitle = document.createElement('div')
-invDiv.innerText = 'Inventory: '
+invDivTitle.innerText = 'Inventory: '
+invDiv.appendChild(invDivTitle)
 
 mainDiv.appendChild(uiDiv)
 uiDiv.appendChild(invDiv)
@@ -211,7 +212,7 @@ function main() {
         if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
             // Dark
             console.log('dark mode')
-            SetDarktMode()
+            SetDarkMode()
         } else {
             // Light
             console.log('light mode')
@@ -219,7 +220,7 @@ function main() {
         }
     } else {
         console.log('goblin mode')
-        SetDarktMode()
+        SetDarkMode()
         // sets it to goblin mode and steals players files or something idc anymore
     }
 
@@ -251,7 +252,34 @@ function setUpSettingsUI() {
 
         languageMenuButton.appendChild(language)
     }
+
+    const themesMenuButton = document.createElement('select')
+    const themes = ['Light', 'Dark']
+
+    for (const i of themes) {
+        const theme = document.createElement('option')
+        theme.label = i
+        theme.value = i
+
+        theme.addEventListener('click', () => {
+            setTheme(theme.label)
+        })
+
+        themesMenuButton.append(theme)
+    }
+
     settingsDiv.appendChild(languageMenuButton)
+    settingsDiv.appendChild(themesMenuButton)
+
+    if (g_is_dark_mode == true) {
+        console.log('setting to dark')
+        themesMenuButton.value = "Dark"
+    }
+    else {
+        console.log('setting to light')
+        themesMenuButton.value = 'Light'
+    }
+    console.log(themesMenuButton.value)
 }
 
 //sets up the canvas chungus!!!! :D
@@ -450,6 +478,16 @@ window
         }
     })
 
+function setTheme(input) {
+    if (input == 'Light') {
+        SetLightMode()
+    }
+    else {
+        SetDarkMode()
+    }
+
+}
+
 function SetLightMode() {
     g_is_dark_mode = false
 
@@ -460,11 +498,17 @@ function SetLightMode() {
         g_scene.background = texture
     })
 
+    document.body.style.backgroundColor = 'white'
+    mainDiv.style.backgroundColor = 'white'
     uiDiv.style.backgroundColor = 'white'
+    
+    invDivTitle.style.color = 'black'
+    saveDivTitle.style.color = 'black'
+    settingsDivTitle.style.color = 'black'
     uiDiv.style.color = 'black'
 }
 
-function SetDarktMode() {
+function SetDarkMode() {
     g_is_dark_mode = true
 
     // Load and set the background texture
@@ -474,9 +518,14 @@ function SetDarktMode() {
         g_scene.background = texture
     })
 
-    uiDiv.style.backgroundColor = 'black'
-    uiDiv.style.color = 'white'
     document.body.style.backgroundColor = 'black'
+    mainDiv.style.backgroundColor = 'black'
+    uiDiv.style.backgroundColor = 'black'
+
+    invDivTitle.style.color = 'white'
+    saveDivTitle.style.color = 'white'
+    settingsDivTitle.style.color = 'white'
+    uiDiv.style.color = 'white'
 }
 
 delSaveButton.addEventListener('click', function () {
