@@ -28,6 +28,10 @@ invDiv.innerText = 'Inventory: '
 mainDiv.appendChild(uiDiv)
 uiDiv.appendChild(invDiv)
 
+//contains settings for language and theme.
+const settingsDiv = document.createElement('div')
+
+//contains ui for saving.
 const saveDiv = document.createElement('div')
 mainDiv.appendChild(uiDiv)
 
@@ -215,6 +219,10 @@ function main() {
 
     requestAnimationFrame(render)
 }
+/*
+function setUpSettingsUI {
+
+}*/
 
 //sets up the canvas chungus!!!! :D
 function SetUpCanvasChungus(canvas) {
@@ -246,11 +254,12 @@ function SetUpCanvasChungus(canvas) {
                     uiDiv.dispatchEvent(placedEvent)
                 }
             }
-        } else if (event.button == 2) {
+        } 
+        /*else if (event.button == 2) {
             g_dragging = true
             g_mouse_last_pos = new mouseVector()
             g_mouse_last_pos.set(Math.floor(xCoord), Math.floor(yCoord))
-        }
+        }*/
     })
 
     canvas.addEventListener('mouseup', (event) => {
