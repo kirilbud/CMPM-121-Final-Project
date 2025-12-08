@@ -30,6 +30,7 @@ uiDiv.appendChild(invDiv)
 
 //contains settings for language and theme.
 const settingsDiv = document.createElement('div')
+mainDiv.appendChild(settingsDiv)
 
 //contains ui for saving.
 const saveDiv = document.createElement('div')
@@ -37,7 +38,7 @@ mainDiv.appendChild(uiDiv)
 
 const delSaveButton = document.createElement('button')
 delSaveButton.textContent = 'Delete Save'
-mainDiv.appendChild(delSaveButton)
+saveDiv.appendChild(delSaveButton)
 
 //GLOBALS
 //g_ stands for this variable being a global variable
@@ -219,10 +220,10 @@ function main() {
 
     requestAnimationFrame(render)
 }
-/*
+
 function setUpSettingsUI {
 
-}*/
+}
 
 //sets up the canvas chungus!!!! :D
 function SetUpCanvasChungus(canvas) {
