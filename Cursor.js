@@ -15,7 +15,7 @@ export class Cursor {
             //console.log(yeah)
             let x = e.x / this.width
             let y = e.y / this.height
-            temp.setPosition(x + 0.022, y + 0.16)
+            temp.setPosition(x - 0.1, y - 0.01)
         })
 
         this.level = level
